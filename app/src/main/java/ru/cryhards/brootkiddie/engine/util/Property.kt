@@ -3,30 +3,26 @@ package ru.cryhards.brootkiddie.engine.util
 /**
  * Created with love by luna_koly on 26.10.2017.
  */
-open class Property<T>(value: T? = null) {
-    private var onChangeListeners = ArrayList<(T?, T?) -> Unit>()
+open class Property<T>(value: T? = null,
+                       var handle: PropertyHandler<T>? = null) {
 
     var value: T? = value
-    set(value) {
-        onChangeListeners
-                .forEach { it.invoke(field, value) }
-        field = value
-    }
-
-    private fun bindForward(prop: Property<T>) {
-        onChangeListeners.add {
-            _, new ->
-            prop.value = new
+        get() {
+            handle?.onUse(this, field)
+            return field
         }
-    }
+        set(value) {
+            handle?.onChange(this, field, value)
+            field = value
+        }
 
     operator fun plus(prop: Property<T>) : Property<T> {
-        bindForward(prop)
+        handle?.bindForward(prop)
         return prop
     }
 
     operator fun minus(prop: Property<T>) : Property<T> {
-        bindForward(prop)
+        handle?.bindForward(prop)
         return this
     }
 }
