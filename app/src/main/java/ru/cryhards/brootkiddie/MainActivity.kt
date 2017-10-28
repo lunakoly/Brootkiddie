@@ -1,12 +1,14 @@
 package ru.cryhards.brootkiddie
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import ru.cryhards.brootkiddie.templates.InnerApplicationActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : InnerApplicationActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mainFrame.addView(TextView(this))
+        sideBar.addView(TextView(this))
     }
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Brootkiddie</string>
+    <dimen name="topBarSize">45dp</dimen>
+    <dimen name="titleFontSize">23sp</dimen>
 </resources>
