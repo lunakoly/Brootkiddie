@@ -1,9 +1,11 @@
-package ru.cryhards.brootkiddie.engine.shapes
+package ru.cryhards.brootkiddie.engine.scene
 
 import android.opengl.GLES30
 import android.opengl.Matrix
+import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -15,6 +17,7 @@ import java.nio.ShortBuffer
 class RectanglePlane : Mesh {
     val shaderProgram = Shaders.COLOR_TRANSITION
     val position = CoordProperty()
+    var rotation = RotationProperty()
     val v1 = CoordProperty()
     val v2 = CoordProperty()
     val v3 = CoordProperty()
@@ -30,15 +33,6 @@ class RectanglePlane : Mesh {
             0.0f, 0.7f, 0.7f, 1.0f,  // right
             1.0f, 1.0f, 1.0f, 1.0f) // extra
 
-    private fun getCoordArray(): FloatArray {
-        return floatArrayOf(
-                v1.x.value!!, v1.y.value!!, v1.z.value!!,
-                v2.x.value!!, v2.y.value!!, v2.z.value!!,
-                v3.x.value!!, v3.y.value!!, v3.z.value!!,
-                v4.x.value!!, v4.y.value!!, v4.z.value!!
-        )
-    }
-
     override fun draw(mvpMatrix: FloatArray): Mesh {
         GLES30.glUseProgram(shaderProgram)
 
@@ -50,10 +44,11 @@ class RectanglePlane : Mesh {
         GLES30.glEnableVertexAttribArray(aColorHandle)
         GLES30.glVertexAttribPointer(aColorHandle, 4, GLES30.GL_FLOAT, false, 4 * 4, colorBuffer)
 
-        Matrix.translateM(mvpMatrix, 0, position.x.value!!, position.y.value!!, position.z.value!!)
+        val modelMatrix = getMatrix()
+        Matrix.multiplyMM(modelMatrix, 0, mvpMatrix, 0, modelMatrix, 0)
 
         val uMVPMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVPMatrix")
-        GLES30.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, mvpMatrix, 0)
+        GLES30.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, modelMatrix, 0)
 
         GLES30.glDrawElements(GLES30.GL_TRIANGLES, 6, GLES30.GL_UNSIGNED_SHORT, drawBuffer)
         GLES30.glDisableVertexAttribArray(aPositionHandle)
@@ -98,5 +93,23 @@ class RectanglePlane : Mesh {
         v4.y.value = floatArrayOf[10]
         v4.z.value = floatArrayOf[11]
         return this
+    }
+
+    private fun getCoordArray(): FloatArray {
+        return floatArrayOf(
+                v1.x.value!!, v1.y.value!!, v1.z.value!!,
+                v2.x.value!!, v2.y.value!!, v2.z.value!!,
+                v3.x.value!!, v3.y.value!!, v3.z.value!!,
+                v4.x.value!!, v4.y.value!!, v4.z.value!!
+        )
+    }
+
+    override fun getMatrix(): FloatArray {
+        val rotationMatrix = MoreMatrix.getLookAroundRotationM(rotation.horizontal.value!!, rotation.vertical.value!!)
+        val translationMatrix = MoreMatrix.getTranslationM(position.x.value!!, position.y.value!!, position.z.value!!)
+
+        val modelMatrix = FloatArray(16)
+        Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)
+        return modelMatrix
     }
 }

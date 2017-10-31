@@ -14,10 +14,9 @@ class GLSurface(context: Context) : GLSurfaceView(context) {
         setEGLContextClientVersion(3)
         val renderer = MainRenderer(context)
         setRenderer(renderer)
-        renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+//        renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
 
         registry = renderer.registry
         registry.surface = this
     }
-
 }

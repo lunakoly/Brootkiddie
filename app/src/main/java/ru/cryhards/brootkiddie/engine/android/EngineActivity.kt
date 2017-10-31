@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.engine.android
 
 import android.os.Bundle
+import android.view.MotionEvent
 import ru.cryhards.brootkiddie.engine.util.GameRegistry
 import ru.cryhards.brootkiddie.templates.FullScreenActivity
 
@@ -17,5 +18,16 @@ open class EngineActivity : FullScreenActivity() {
 
         registry = surface.registry
         registry.activity = this
+    }
+
+    private val onTouchListeners = ArrayList<(MotionEvent) -> Unit>()
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        onTouchListeners.forEach { it.invoke(event) }
+        return true
+    }
+
+    fun addOnTouchListener(listener: (MotionEvent) -> Unit) {
+        onTouchListeners.add(listener)
     }
 }

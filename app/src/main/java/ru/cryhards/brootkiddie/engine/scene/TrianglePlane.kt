@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.shapes
+package ru.cryhards.brootkiddie.engine.scene
 
 import android.opengl.GLES30
 import android.opengl.Matrix
@@ -24,14 +24,6 @@ class TrianglePlane : Mesh {
     private lateinit var vertexBuffer: FloatBuffer
     private val testColor = floatArrayOf(0.7f, 0.7f, 1.0f, 1.0f)
 
-    private fun getCoordArray(): FloatArray {
-        return floatArrayOf(
-                v1.x.value!!, v1.y.value!!, v1.z.value!!,
-                v2.x.value!!, v2.y.value!!, v2.z.value!!,
-                v3.x.value!!, v3.y.value!!, v3.z.value!!
-        )
-    }
-
     override fun draw(mvpMatrix: FloatArray): Mesh {
         GLES30.glUseProgram(shaderProgram)
 
@@ -42,14 +34,7 @@ class TrianglePlane : Mesh {
         val uColorHandle = GLES30.glGetUniformLocation(shaderProgram, "uColor")
         GLES30.glUniform4fv(uColorHandle, 1, testColor, 0)
 
-        val rotationMatrix = MoreMatrix.getLookAroundRotationM(rotation.x.value!!, rotation.y.value!!, rotation.z.value!!)
-        val translationMatrix = MoreMatrix.getTranslationM(position.x.value!!, position.y.value!!, position.z.value!!)
-
-        //Matrix.multiplyMM(mvpMatrix, 0, rotationMatrix, 0, mvpMatrix, 0)
-//        Matrix.translateM(mvpMatrix, 0, position.x.value!!, position.y.value!!, position.z.value!!)
-
-        var modelMatrix = FloatArray(16)
-        Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)
+        val modelMatrix = getMatrix()
         Matrix.multiplyMM(modelMatrix, 0, mvpMatrix, 0, modelMatrix, 0)
 
         val uMVPMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVPMatrix")
@@ -83,5 +68,22 @@ class TrianglePlane : Mesh {
         v3.y.value = floatArrayOf[7]
         v3.z.value = floatArrayOf[8]
         return this
+    }
+
+    private fun getCoordArray(): FloatArray {
+        return floatArrayOf(
+                v1.x.value!!, v1.y.value!!, v1.z.value!!,
+                v2.x.value!!, v2.y.value!!, v2.z.value!!,
+                v3.x.value!!, v3.y.value!!, v3.z.value!!
+        )
+    }
+
+    override fun getMatrix(): FloatArray {
+        val rotationMatrix = MoreMatrix.getLookAroundRotationM(rotation.horizontal.value!!, rotation.vertical.value!!)
+        val translationMatrix = MoreMatrix.getTranslationM(position.x.value!!, position.y.value!!, position.z.value!!)
+
+        val modelMatrix = FloatArray(16)
+        Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)
+        return modelMatrix
     }
 }
