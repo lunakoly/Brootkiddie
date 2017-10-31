@@ -25,5 +25,8 @@ class MyTask1 : Task {
 
         registry.primaryLayer.add(mesh1)
         registry.primaryLayer.add(mesh2)
+
+        (mesh2 as RectanglePlane).position.x.value = 1f
+        (mesh1 as TrianglePlane).rotation.x.value = -1.3
     }
 }

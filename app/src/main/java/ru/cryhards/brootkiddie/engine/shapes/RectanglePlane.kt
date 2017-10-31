@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.engine.shapes
 
 import android.opengl.GLES30
+import android.opengl.Matrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import java.nio.ByteBuffer
@@ -38,7 +39,7 @@ class RectanglePlane : Mesh {
         )
     }
 
-    override fun draw(): Mesh {
+    override fun draw(mvpMatrix: FloatArray): Mesh {
         GLES30.glUseProgram(shaderProgram)
 
         val aPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "aPosition")
@@ -48,6 +49,11 @@ class RectanglePlane : Mesh {
         val aColorHandle = GLES30.glGetAttribLocation(shaderProgram, "aColor")
         GLES30.glEnableVertexAttribArray(aColorHandle)
         GLES30.glVertexAttribPointer(aColorHandle, 4, GLES30.GL_FLOAT, false, 4 * 4, colorBuffer)
+
+        Matrix.translateM(mvpMatrix, 0, position.x.value!!, position.y.value!!, position.z.value!!)
+
+        val uMVPMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVPMatrix")
+        GLES30.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, mvpMatrix, 0)
 
         GLES30.glDrawElements(GLES30.GL_TRIANGLES, 6, GLES30.GL_UNSIGNED_SHORT, drawBuffer)
         GLES30.glDisableVertexAttribArray(aPositionHandle)

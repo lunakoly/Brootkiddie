@@ -1,8 +1,11 @@
 package ru.cryhards.brootkiddie.engine.shapes
 
 import android.opengl.GLES30
+import android.opengl.Matrix
+import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -13,6 +16,7 @@ import java.nio.FloatBuffer
 class TrianglePlane : Mesh {
     val shaderProgram = Shaders.BASIC
     val position = CoordProperty()
+    var rotation = RotationProperty()
     val v1 = CoordProperty()
     val v2 = CoordProperty()
     val v3 = CoordProperty()
@@ -28,7 +32,7 @@ class TrianglePlane : Mesh {
         )
     }
 
-    override fun draw(): Mesh {
+    override fun draw(mvpMatrix: FloatArray): Mesh {
         GLES30.glUseProgram(shaderProgram)
 
         val aPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "aPosition")
@@ -37,6 +41,19 @@ class TrianglePlane : Mesh {
 
         val uColorHandle = GLES30.glGetUniformLocation(shaderProgram, "uColor")
         GLES30.glUniform4fv(uColorHandle, 1, testColor, 0)
+
+        val rotationMatrix = MoreMatrix.getLookAroundRotationM(rotation.x.value!!, rotation.y.value!!, rotation.z.value!!)
+        val translationMatrix = MoreMatrix.getTranslationM(position.x.value!!, position.y.value!!, position.z.value!!)
+
+        //Matrix.multiplyMM(mvpMatrix, 0, rotationMatrix, 0, mvpMatrix, 0)
+//        Matrix.translateM(mvpMatrix, 0, position.x.value!!, position.y.value!!, position.z.value!!)
+
+        var modelMatrix = FloatArray(16)
+        Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)
+        Matrix.multiplyMM(modelMatrix, 0, mvpMatrix, 0, modelMatrix, 0)
+
+        val uMVPMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVPMatrix")
+        GLES30.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, modelMatrix, 0)
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
         GLES30.glDisableVertexAttribArray(aPositionHandle)
