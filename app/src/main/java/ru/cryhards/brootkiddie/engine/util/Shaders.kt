@@ -8,27 +8,46 @@ import android.opengl.GLES30
  */
 object Shaders {
     var BASIC = 0
+    var COLOR_TRANSITION = 0
 
-    fun init(context: Context) {
+    fun init() {
         BASIC = genShaderProgram(
                 genShader(GLES30.GL_VERTEX_SHADER,
-                        "attribute vec4 vPosition;\n" +
+                        "attribute vec4 aPosition;\n" +
                         "\n" +
                         "void main() {\n" +
-                        "    gl_Position = vPosition;\n" +
+                        "    gl_Position = aPosition;\n" +
                         "}"),
                 genShader(GLES30.GL_FRAGMENT_SHADER,
                         "precision mediump float;\n" +
-                        "uniform vec4 vColor;\n" +
+                        "uniform vec4 uColor;\n" +
                         "\n" +
                         "void main() {\n" +
-                        "    gl_FragColor = vColor;\n" +
+                        "    gl_FragColor = uColor;\n" +
                         "}")
         )
 //        BASIC = genShaderProgram(
 //                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "basic_vertex_shader.vsh")),
 //                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "basic_fragment_shader.fsh"))
 //        )
+        COLOR_TRANSITION = genShaderProgram(
+                genShader(GLES30.GL_VERTEX_SHADER,
+                        "attribute vec4 aPosition;\n" +
+                                "attribute vec4 aColor;" +
+                                "varying vec4 vColor;" +
+                                "\n" +
+                                "void main() {\n" +
+                                "    vColor = aColor;" +
+                                "    gl_Position = aPosition;\n" +
+                                "}"),
+                genShader(GLES30.GL_FRAGMENT_SHADER,
+                        "precision mediump float;\n" +
+                                "varying vec4 vColor;\n" +
+                                "\n" +
+                                "void main() {\n" +
+                                "    gl_FragColor = vColor;\n" +
+                                "}")
+        )
     }
 
     private fun loadFile(context: Context, path: String): String {

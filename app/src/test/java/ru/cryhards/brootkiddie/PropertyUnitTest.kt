@@ -2,9 +2,9 @@ package ru.cryhards.brootkiddie
 
 import org.junit.Assert
 import org.junit.Test
-import ru.cryhards.brootkiddie.engine.util.Property
-import ru.cryhards.brootkiddie.engine.util.PropertyHandler
-import ru.cryhards.brootkiddie.engine.util.complicated.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.Property
+import ru.cryhards.brootkiddie.engine.util.prop.PropertyHandler
+import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 
 /**
  * Created with love by luna_koly on 29.10.2017.

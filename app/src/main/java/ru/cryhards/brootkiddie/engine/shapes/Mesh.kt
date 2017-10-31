@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.util
+package ru.cryhards.brootkiddie.engine.shapes
 
 /**
  * Created with love by luna_koly on 29.10.2017.

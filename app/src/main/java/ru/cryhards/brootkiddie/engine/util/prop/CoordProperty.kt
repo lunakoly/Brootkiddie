@@ -1,6 +1,6 @@
-package ru.cryhards.brootkiddie.engine.util.complicated
+package ru.cryhards.brootkiddie.engine.util.prop
 
-import ru.cryhards.brootkiddie.engine.util.Property
+import ru.cryhards.brootkiddie.engine.util.prop.Property
 
 /**
  * Created with love by luna_koly on 29.10.2017.

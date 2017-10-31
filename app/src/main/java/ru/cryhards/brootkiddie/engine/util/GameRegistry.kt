@@ -4,6 +4,7 @@ import android.content.Context
 import ru.cryhards.brootkiddie.engine.android.EngineActivity
 import ru.cryhards.brootkiddie.engine.android.GLSurface
 import ru.cryhards.brootkiddie.engine.android.MainRenderer
+import ru.cryhards.brootkiddie.engine.shapes.Mesh
 
 /**
  * Created with love by luna_koly on 29.10.2017.

@@ -1,10 +1,8 @@
 package ru.cryhards.brootkiddie.engine.shapes
 
 import android.opengl.GLES30
-import ru.cryhards.brootkiddie.engine.util.GameRegistry
-import ru.cryhards.brootkiddie.engine.util.Mesh
 import ru.cryhards.brootkiddie.engine.util.Shaders
-import ru.cryhards.brootkiddie.engine.util.complicated.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -32,13 +30,16 @@ class TrianglePlane : Mesh {
 
     override fun draw(): Mesh {
         GLES30.glUseProgram(shaderProgram)
-        val vPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "vPosition")
-        GLES30.glEnableVertexAttribArray(vPositionHandle)
-        GLES30.glVertexAttribPointer(vPositionHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer)
-        val vColorHandle = GLES30.glGetUniformLocation(shaderProgram, "vColor")
-        GLES30.glUniform4fv(vColorHandle, 1, testColor, 0)
+
+        val aPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "aPosition")
+        GLES30.glEnableVertexAttribArray(aPositionHandle)
+        GLES30.glVertexAttribPointer(aPositionHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer)
+
+        val uColorHandle = GLES30.glGetUniformLocation(shaderProgram, "uColor")
+        GLES30.glUniform4fv(uColorHandle, 1, testColor, 0)
+
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
-        GLES30.glDisableVertexAttribArray(vPositionHandle)
+        GLES30.glDisableVertexAttribArray(aPositionHandle)
         return this
     }
 

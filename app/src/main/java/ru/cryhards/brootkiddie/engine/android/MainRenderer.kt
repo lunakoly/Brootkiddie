@@ -17,7 +17,7 @@ class MainRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         registry.renderer = this
         GLES30.glClearColor(0.7f, 1.0f, 0.7f, 1.0f)
-        Shaders.init(context)
+        Shaders.init()
         registry.runTask()
     }
 
