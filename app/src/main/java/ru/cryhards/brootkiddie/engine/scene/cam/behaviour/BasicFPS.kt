@@ -27,8 +27,8 @@ class BasicFPS(private val registry: GameRegistry) : CameraBehaviour {
             if (event.action == MotionEvent.ACTION_DOWN) {
                 dragStartX = event.x
                 dragStartY = event.y
-                oldHorizontal = theCam.rotation.horizontal.value!!
-                oldVertical = theCam.rotation.vertical.value!!
+                oldHorizontal = theCam.rotation.horizontal.value
+                oldVertical = theCam.rotation.vertical.value
                 return@addOnTouchListener
             }
 

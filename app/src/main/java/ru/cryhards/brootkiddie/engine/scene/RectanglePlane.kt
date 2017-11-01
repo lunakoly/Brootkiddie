@@ -5,7 +5,7 @@ import android.opengl.Matrix
 import ru.cryhards.brootkiddie.engine.util.Environment
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
-import ru.cryhards.brootkiddie.engine.util.prop.Vec3FloatProperty
+import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -17,12 +17,12 @@ import java.nio.ShortBuffer
  */
 class RectanglePlane : Mesh {
     val shaderProgram = Shaders.COLOR_TRANSITION
-    val position = Vec3FloatProperty()
+    val position = CoordProperty()
     var rotation = RotationProperty()
-    val v1 = Vec3FloatProperty()
-    val v2 = Vec3FloatProperty()
-    val v3 = Vec3FloatProperty()
-    val v4 = Vec3FloatProperty()
+    val v1 = CoordProperty()
+    val v2 = CoordProperty()
+    val v3 = CoordProperty()
+    val v4 = CoordProperty()
 
     private lateinit var vertexBuffer: FloatBuffer
     private lateinit var drawBuffer: ShortBuffer
@@ -53,9 +53,9 @@ class RectanglePlane : Mesh {
 
         val uAmbientLightHandle = GLES30.glGetUniformLocation(shaderProgram, "uAmbientLight")
         GLES30.glUniform3f(uAmbientLightHandle,
-                environment.ambientLight.x.value!!,
-                environment.ambientLight.y.value!!,
-                environment.ambientLight.z.value!!)
+                environment.ambientLight.x.value,
+                environment.ambientLight.y.value,
+                environment.ambientLight.z.value)
 
         GLES30.glDrawElements(GLES30.GL_TRIANGLES, 6, GLES30.GL_UNSIGNED_SHORT, drawBuffer)
         GLES30.glDisableVertexAttribArray(aPositionHandle)
@@ -104,16 +104,21 @@ class RectanglePlane : Mesh {
 
     private fun getCoordArray(): FloatArray {
         return floatArrayOf(
-                v1.x.value!!, v1.y.value!!, v1.z.value!!,
-                v2.x.value!!, v2.y.value!!, v2.z.value!!,
-                v3.x.value!!, v3.y.value!!, v3.z.value!!,
-                v4.x.value!!, v4.y.value!!, v4.z.value!!
+                v1.x.value, v1.y.value, v1.z.value,
+                v2.x.value, v2.y.value, v2.z.value,
+                v3.x.value, v3.y.value, v3.z.value,
+                v4.x.value, v4.y.value, v4.z.value
         )
     }
 
     override fun getMatrix(): FloatArray {
-        val rotationMatrix = MoreMatrix.getLookAroundRotationM(rotation.horizontal.value!!, rotation.vertical.value!!)
-        val translationMatrix = MoreMatrix.getTranslationM(position.x.value!!, position.y.value!!, position.z.value!!)
+        val rotationMatrix = MoreMatrix.getLookAroundRotationM(
+                rotation.horizontal.value,
+                rotation.vertical.value)
+        val translationMatrix = MoreMatrix.getTranslationM(
+                position.x.value,
+                position.y.value,
+                position.z.value)
 
         val modelMatrix = FloatArray(16)
         Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)

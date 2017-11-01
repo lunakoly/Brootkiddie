@@ -5,7 +5,6 @@ import ru.cryhards.brootkiddie.engine.android.EngineActivity
 import ru.cryhards.brootkiddie.engine.android.GLSurface
 import ru.cryhards.brootkiddie.engine.android.MainRenderer
 import ru.cryhards.brootkiddie.engine.scene.Mesh
-import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.scene.Viewable
 
 /**

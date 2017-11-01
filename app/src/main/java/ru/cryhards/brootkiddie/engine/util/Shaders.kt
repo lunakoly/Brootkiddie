@@ -12,12 +12,16 @@ object Shaders {
 
     fun init(context: Context) {
         BASIC = genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "shaders/basic_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "shaders/basic_fragment_shader.fsh"))
+                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+                        "shaders/basic_vertex_shader.vsh")),
+                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+                        "shaders/basic_fragment_shader.fsh"))
         )
         COLOR_TRANSITION = genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "shaders/color_transition_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "shaders/color_transition_fragment_shader.fsh"))
+                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+                        "shaders/color_transition_vertex_shader.vsh")),
+                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+                        "shaders/color_transition_fragment_shader.fsh"))
         )
     }
 
