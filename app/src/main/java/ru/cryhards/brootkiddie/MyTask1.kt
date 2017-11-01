@@ -33,7 +33,7 @@ class MyTask1 : Task {
         registry.primaryLayer.add(mesh2)
 
 
-        val cam = FPSCamera().withBehaviourOf(BasicFPS(registry.activity))
+        val cam = FPSCamera().withBehaviourOf(BasicFPS(registry))
         registry.activeCamera = cam
         cam.position.z.value = -4f
         cam.rotation.horizontal.value = 0.2

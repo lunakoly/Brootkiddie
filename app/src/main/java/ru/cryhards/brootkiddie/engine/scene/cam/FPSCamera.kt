@@ -1,17 +1,17 @@
 package ru.cryhards.brootkiddie.engine.scene.cam
 
 import android.opengl.Matrix
-import ru.cryhards.brootkiddie.engine.scene.CameraBehaviour
+import ru.cryhards.brootkiddie.engine.scene.cam.behaviour.CameraBehaviour
 import ru.cryhards.brootkiddie.engine.scene.Viewable
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
-import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.Vec3FloatProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 
 /**
  * Created with love by luna_koly on 31.10.2017.
  */
 class FPSCamera: Viewable {
-    val position = CoordProperty()
+    val position = Vec3FloatProperty()
     val rotation = RotationProperty()
 
     override fun getMatrix(): FloatArray {

@@ -10,52 +10,18 @@ object Shaders {
     var BASIC = 0
     var COLOR_TRANSITION = 0
 
-    fun init() {
+    fun init(context: Context) {
         BASIC = genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER,
-                        "attribute vec4 aPosition;\n" +
-                                "uniform mat4 uMVPMatrix;" +
-                                "\n" +
-                                "void main() {\n" +
-                                "    gl_Position = uMVPMatrix * aPosition;\n" +
-                                "}"),
-                genShader(GLES30.GL_FRAGMENT_SHADER,
-                        "precision mediump float;\n" +
-                                "uniform vec4 uColor;\n" +
-                                "\n" +
-                                "void main() {\n" +
-                                "    gl_FragColor = uColor;\n" +
-                                "}")
+                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "shaders/basic_vertex_shader.vsh")),
+                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "shaders/basic_fragment_shader.fsh"))
         )
-//        BASIC = genShaderProgram(
-//                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "basic_vertex_shader.vsh")),
-//                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "basic_fragment_shader.fsh"))
-//        )
         COLOR_TRANSITION = genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER,
-                        "attribute vec4 aPosition;\n" +
-                                "attribute vec4 aColor;" +
-                                "varying vec4 vColor;" +
-                                "uniform mat4 uMVPMatrix;" +
-                                "\n" +
-                                "void main() {\n" +
-                                "    vColor = aColor;" +
-                                "    gl_Position = uMVPMatrix * aPosition;\n" +
-                                "}"),
-                genShader(GLES30.GL_FRAGMENT_SHADER,
-                        "precision mediump float;\n" +
-                                "varying vec4 vColor;\n" +
-                                "\n" +
-                                "void main() {\n" +
-                                "    gl_FragColor = vColor;\n" +
-                                "}")
+                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context, "shaders/color_transition_vertex_shader.vsh")),
+                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context, "shaders/color_transition_fragment_shader.fsh"))
         )
     }
 
     private fun loadFile(context: Context, path: String): String {
-        println("============")
-        context.assets.list(path).forEach(::println)
-
         val input = context.assets.open(path)
         return input.bufferedReader().readText()
     }

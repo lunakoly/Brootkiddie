@@ -2,9 +2,10 @@ package ru.cryhards.brootkiddie.engine.scene
 
 import android.opengl.GLES30
 import android.opengl.Matrix
+import ru.cryhards.brootkiddie.engine.util.Environment
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
-import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.Vec3FloatProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -15,16 +16,16 @@ import java.nio.FloatBuffer
  */
 class TrianglePlane : Mesh {
     val shaderProgram = Shaders.BASIC
-    val position = CoordProperty()
+    val position = Vec3FloatProperty()
     var rotation = RotationProperty()
-    val v1 = CoordProperty()
-    val v2 = CoordProperty()
-    val v3 = CoordProperty()
+    val v1 = Vec3FloatProperty()
+    val v2 = Vec3FloatProperty()
+    val v3 = Vec3FloatProperty()
 
     private lateinit var vertexBuffer: FloatBuffer
     private val testColor = floatArrayOf(0.7f, 0.7f, 1.0f, 1.0f)
 
-    override fun draw(mvpMatrix: FloatArray): Mesh {
+    override fun draw(environment: Environment): Mesh {
         GLES30.glUseProgram(shaderProgram)
 
         val aPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "aPosition")
@@ -35,10 +36,16 @@ class TrianglePlane : Mesh {
         GLES30.glUniform4fv(uColorHandle, 1, testColor, 0)
 
         val modelMatrix = getMatrix()
-        Matrix.multiplyMM(modelMatrix, 0, mvpMatrix, 0, modelMatrix, 0)
+        Matrix.multiplyMM(modelMatrix, 0, environment.mvpMatrix, 0, modelMatrix, 0)
 
         val uMVPMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVPMatrix")
         GLES30.glUniformMatrix4fv(uMVPMatrixHandle, 1, false, modelMatrix, 0)
+
+        val uAmbientLightHandle = GLES30.glGetUniformLocation(shaderProgram, "uAmbientLight")
+        GLES30.glUniform3f(uAmbientLightHandle,
+                environment.ambientLight.x.value!!,
+                environment.ambientLight.y.value!!,
+                environment.ambientLight.z.value!!)
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
         GLES30.glDisableVertexAttribArray(aPositionHandle)

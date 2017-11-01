@@ -12,16 +12,15 @@ import javax.microedition.khronos.opengles.GL10
 /**
  * Created with love by luna_koly on 29.10.2017.
  */
-class MainRenderer(context: Context) : GLSurfaceView.Renderer {
+class MainRenderer(private val context: Context) : GLSurfaceView.Renderer {
     var registry = GameRegistry(context)
 
     private var projectionMatrix = FloatArray(16)
-    private var mvpMatrix = FloatArray(16)
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         registry.renderer = this
         GLES30.glClearColor(0.7f, 1.0f, 0.7f, 1.0f)
-        Shaders.init()
+        Shaders.init(context)
         registry.runTask()
     }
 
@@ -36,10 +35,10 @@ class MainRenderer(context: Context) : GLSurfaceView.Renderer {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
 
         val viewMatrix = registry.activeCamera.getMatrix()
-        Matrix.multiplyMM(mvpMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
+        Matrix.multiplyMM(registry.environment.mvpMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
 
         registry.primaryLayer
-                .forEach { it.draw(mvpMatrix) }
+                .forEach { it.draw(registry.environment) }
     }
 
 }

@@ -28,4 +28,6 @@ class GameRegistry(var context: Context) {
 
     val primaryLayer = ArrayList<Mesh>()
     lateinit var activeCamera: Viewable
+
+    var environment = Environment()
 }

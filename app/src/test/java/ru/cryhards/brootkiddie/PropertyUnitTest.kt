@@ -4,7 +4,7 @@ import org.junit.Assert
 import org.junit.Test
 import ru.cryhards.brootkiddie.engine.util.prop.Property
 import ru.cryhards.brootkiddie.engine.util.prop.PropertyHandler
-import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import ru.cryhards.brootkiddie.engine.util.prop.Vec3FloatProperty
 
 /**
  * Created with love by luna_koly on 29.10.2017.
@@ -40,7 +40,7 @@ class PropertyUnitTest {
 
     @Test
     fun testCoordProperty() {
-        val coord = CoordProperty(0.1f, 2.3f, 9.8f)
+        val coord = Vec3FloatProperty(0.1f, 2.3f, 9.8f)
         Assert.assertEquals(9.8f, coord.z.value!!)
     }
 }

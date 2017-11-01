@@ -1,15 +1,14 @@
 package ru.cryhards.brootkiddie.engine.scene.cam.behaviour
 
 import android.view.MotionEvent
-import ru.cryhards.brootkiddie.engine.android.EngineActivity
-import ru.cryhards.brootkiddie.engine.scene.CameraBehaviour
 import ru.cryhards.brootkiddie.engine.scene.Viewable
 import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
+import ru.cryhards.brootkiddie.engine.util.GameRegistry
 
 /**
  * Created with love by luna_koly on 31.10.2017.
  */
-class BasicFPS(private val activity: EngineActivity) : CameraBehaviour {
+class BasicFPS(private val registry: GameRegistry) : CameraBehaviour {
     private lateinit var cam: Viewable
 
     override fun setCam(cam: Viewable) {
@@ -22,7 +21,7 @@ class BasicFPS(private val activity: EngineActivity) : CameraBehaviour {
     private var oldVertical: Double = 0.0
 
     override fun init() {
-        activity.addOnTouchListener { event ->
+        registry.activity.addOnTouchListener { event ->
             val theCam = cam as FPSCamera
 
             if (event.action == MotionEvent.ACTION_DOWN) {
