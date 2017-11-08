@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.engine.scene.RectanglePlane
 import ru.cryhards.brootkiddie.engine.scene.TrianglePlane
+import ru.cryhards.brootkiddie.engine.scene.VertexObject
 import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.scene.cam.behaviour.BasicFPS
 import ru.cryhards.brootkiddie.engine.util.GameRegistry
@@ -28,9 +29,58 @@ class MyTask1 : Task {
         mesh2.position.x.value = 1f
         mesh1.rotation.vertical.value = -1.3
 
+        val cube = VertexObject(floatArrayOf(
+                // Front face
+                -1.0f, -1.0f,  1.0f,
+                1.0f, -1.0f,  1.0f,
+                1.0f,  1.0f,  1.0f,
+                -1.0f,  1.0f,  1.0f,
+
+                // Back face
+                -1.0f, -1.0f, -1.0f,
+                -1.0f,  1.0f, -1.0f,
+                1.0f,  1.0f, -1.0f,
+                1.0f, -1.0f, -1.0f,
+
+                // Top face
+                -1.0f,  1.0f, -1.0f,
+                -1.0f,  1.0f,  1.0f,
+                1.0f,  1.0f,  1.0f,
+                1.0f,  1.0f, -1.0f,
+
+                // Bottom face
+                -1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f,  1.0f,
+                -1.0f, -1.0f,  1.0f,
+
+                // Right face
+                1.0f, -1.0f, -1.0f,
+                1.0f,  1.0f, -1.0f,
+                1.0f,  1.0f,  1.0f,
+                1.0f, -1.0f,  1.0f,
+
+                // Left face
+                -1.0f, -1.0f, -1.0f,
+                -1.0f, -1.0f,  1.0f,
+                -1.0f,  1.0f,  1.0f,
+                -1.0f,  1.0f, -1.0f
+        ), shortArrayOf(
+                0,  1,  2,      0,  2,  3,    // front
+                4,  5,  6,      4,  6,  7,    // back
+                8,  9,  10,     8,  10, 11,   // top
+                12, 13, 14,     12, 14, 15,   // bottom
+                16, 17, 18,     16, 18, 19,   // right
+                20, 21, 22,     20, 22, 23   // left
+        )).genBuffers() as VertexObject
+        cube.position.z.value -= 3
+        cube.position.x.value -= 3
+        cube.rotation.vertical.value = 0.7
+        cube.rotation.horizontal.value = -0.3
 
         registry.primaryLayer.add(mesh1)
         registry.primaryLayer.add(mesh2)
+        registry.primaryLayer.add(cube)
 
 
         val cam = FPSCamera().withBehaviourOf(BasicFPS(registry))
@@ -38,5 +88,12 @@ class MyTask1 : Task {
         cam.position.z.value = -4f
         cam.rotation.horizontal.value = 0.2
         cam.rotation.vertical.value = 0.2
+
+//        cam.position.x.value += 2
+//        cam.position.y.value -= 2
+
+        registry.environment.sunDirection.z.value = 0.3f
+        registry.environment.sunDirection.x.value = 0.5f
+        registry.environment.sunDirection.y.value = 1.0f
     }
 }

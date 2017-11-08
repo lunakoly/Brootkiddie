@@ -83,22 +83,22 @@ class RectanglePlane : Mesh {
         return this
     }
 
-    override fun build(floatArrayOf: FloatArray): Mesh {
-        v1.x.value = floatArrayOf[0]
-        v1.y.value = floatArrayOf[1]
-        v1.z.value = floatArrayOf[2]
+    override fun build(src: FloatArray): Mesh {
+        v1.x.value = src[0]
+        v1.y.value = src[1]
+        v1.z.value = src[2]
 
-        v2.x.value = floatArrayOf[3]
-        v2.y.value = floatArrayOf[4]
-        v2.z.value = floatArrayOf[5]
+        v2.x.value = src[3]
+        v2.y.value = src[4]
+        v2.z.value = src[5]
 
-        v3.x.value = floatArrayOf[6]
-        v3.y.value = floatArrayOf[7]
-        v3.z.value = floatArrayOf[8]
+        v3.x.value = src[6]
+        v3.y.value = src[7]
+        v3.z.value = src[8]
 
-        v4.x.value = floatArrayOf[9]
-        v4.y.value = floatArrayOf[10]
-        v4.z.value = floatArrayOf[11]
+        v4.x.value = src[9]
+        v4.y.value = src[10]
+        v4.z.value = src[11]
         return this
     }
 
@@ -121,7 +121,7 @@ class RectanglePlane : Mesh {
                 position.z.value)
 
         val modelMatrix = FloatArray(16)
-        Matrix.multiplyMM(modelMatrix, 0, rotationMatrix, 0, translationMatrix, 0)
+        Matrix.multiplyMM(modelMatrix, 0, translationMatrix, 0, rotationMatrix, 0)
         return modelMatrix
     }
 }

@@ -8,5 +8,5 @@ import ru.cryhards.brootkiddie.engine.util.Environment
 interface Mesh : Viewable {
     fun draw(environment: Environment): Mesh
     fun genBuffers(): Mesh
-    fun build(floatArrayOf: FloatArray): Mesh
+    fun build(src: FloatArray): Mesh
 }

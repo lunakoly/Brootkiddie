@@ -2,32 +2,74 @@ package ru.cryhards.brootkiddie.engine.scene
 
 import android.opengl.GLES30
 import android.opengl.Matrix
+import android.util.Log
 import ru.cryhards.brootkiddie.engine.util.Environment
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
-import java.lang.Math.sqrt
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
+import java.nio.ShortBuffer
 
 /**
- * Created with love by luna_koly on 29.10.2017.
+ * Created with love by luna_koly on 08.11.2017.
  */
-class TrianglePlane : Mesh {
+class VertexObject(private val vertices: FloatArray, private val drawOrder: ShortArray) : Mesh {
     val shaderProgram = Shaders.BASIC
     val position = CoordProperty()
     var rotation = RotationProperty()
-    val v1 = CoordProperty()
-    val v2 = CoordProperty()
-    val v3 = CoordProperty()
-    var surfaceNormal = FloatArray(3)
 
     private lateinit var vertexBuffer: FloatBuffer
+    private lateinit var drawBuffer: ShortBuffer
     private lateinit var normalsBuffer: FloatBuffer
 
-    private val testColor = floatArrayOf(0.7f, 0.7f, 1.0f, 1.0f)
+    private val testColor = floatArrayOf(0.8f, 0.5f, 0.5f, 1.0f)
+    private var normals = FloatArray(drawOrder.size)
+
+    init {
+        for (i in 0 until drawOrder.size / 3) {
+            var vert = floatArrayOf(
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 2],
+
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 2],
+
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 2]
+            )
+            vert = calcSurfaceNormal(vert)
+            normals[i * 3] = vert[0]
+            normals[i * 3 + 1] = vert[1]
+            normals[i * 3 + 2] = vert[2]
+
+            Log.d("NORMALS", vert.joinToString(separator = ", "))
+        }
+    }
+
+    private fun calcSurfaceNormal(vertices: FloatArray): FloatArray {
+        val vec1 = floatArrayOf(
+                vertices[3] - vertices[0],
+                vertices[4] - vertices[1],
+                vertices[5] - vertices[2]
+        )
+        val vec2 = floatArrayOf(
+                vertices[6] - vertices[0],
+                vertices[7] - vertices[1],
+                vertices[8] - vertices[2]
+        )
+
+        val normal = FloatArray(3)
+        normal[0] = vec1[1] * vec2[2] - vec2[1] * vec1[2]
+        normal[1] = vec1[2] * vec2[0] - vec2[2] * vec1[0]
+        normal[2] = vec1[0] * vec2[1] - vec2[0] * vec1[1]
+        return normal
+    }
 
     override fun draw(environment: Environment): Mesh {
         GLES30.glUseProgram(shaderProgram)
@@ -72,69 +114,40 @@ class TrianglePlane : Mesh {
         GLES30.glEnableVertexAttribArray(aSurfaceNormalHandle)
         GLES30.glVertexAttribPointer(aSurfaceNormalHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer)
 
-        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3)
+        GLES30.glDrawElements(GLES30.GL_TRIANGLES, drawOrder.size, GLES30.GL_UNSIGNED_SHORT, drawBuffer)
         GLES30.glDisableVertexAttribArray(aPositionHandle)
         return this
     }
 
     override fun genBuffers(): Mesh {
-        var bb = ByteBuffer.allocateDirect(36)  //  3 vertices * 3 coordinates * 4 bites
+        var bb = ByteBuffer.allocateDirect(vertices.size * 4)  //  4 vertices * 3 coordinates * 4 bytes
         bb.order(ByteOrder.nativeOrder())
-
         vertexBuffer = bb.asFloatBuffer()
-        vertexBuffer.put(getCoordArray())
+        vertexBuffer.put(vertices)
         vertexBuffer.position(0)
 
-        bb = ByteBuffer.allocateDirect(surfaceNormal.size * 4) // drawOrder.size * 2
+        bb = ByteBuffer.allocateDirect(drawOrder.size * 2) // drawOrder.size * 2
+        bb.order(ByteOrder.nativeOrder())
+        drawBuffer = bb.asShortBuffer()
+        drawBuffer.put(drawOrder)
+        drawBuffer.position(0)
+
+        bb = ByteBuffer.allocateDirect(normals.size * 4) // drawOrder.size * 2
         bb.order(ByteOrder.nativeOrder())
         normalsBuffer = bb.asFloatBuffer()
-        normalsBuffer.put(surfaceNormal)
+        normalsBuffer.put(normals)
         normalsBuffer.position(0)
         return this
     }
 
     override fun build(src: FloatArray): Mesh {
-        v1.x.value = src[0]
-        v1.y.value = src[1]
-        v1.z.value = src[2]
-
-        v2.x.value = src[3]
-        v2.y.value = src[4]
-        v2.z.value = src[5]
-
-        v3.x.value = src[6]
-        v3.y.value = src[7]
-        v3.z.value = src[8]
-
-        val vec1 = floatArrayOf(
-                src[3] - src[0],
-                src[4] - src[1],
-                src[5] - src[2]
-        )
-        val vec2 = floatArrayOf(
-                src[6] - src[0],
-                src[7] - src[1],
-                src[8] - src[2]
-        )
-
-        surfaceNormal[0] = vec1[1] * vec2[2] - vec2[1] * vec1[2]
-        surfaceNormal[1] = vec1[2] * vec2[0] - vec2[2] * vec1[0]
-        surfaceNormal[2] = vec1[0] * vec2[1] - vec2[0] * vec1[1]
-        return this
-    }
-
-    private fun getCoordArray(): FloatArray {
-        return floatArrayOf(
-                v1.x.value, v1.y.value, v1.z.value,
-                v2.x.value, v2.y.value, v2.z.value,
-                v3.x.value, v3.y.value, v3.z.value
-        )
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getMatrix(): FloatArray {
         val rotationMatrix = MoreMatrix.getLookAroundRotationM(
-                rotation.horizontal.value,
-                rotation.vertical.value)
+            rotation.horizontal.value,
+            rotation.vertical.value)
         val translationMatrix = MoreMatrix.getTranslationM(
                 position.x.value,
                 position.y.value,

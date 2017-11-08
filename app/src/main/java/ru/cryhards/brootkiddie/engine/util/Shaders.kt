@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.engine.util
 
 import android.content.Context
 import android.opengl.GLES30
+import android.util.Log
 
 /**
  * Created with love by luna_koly on 29.10.2017.
@@ -34,6 +35,13 @@ object Shaders {
         val shader = GLES30.glCreateShader(type)
         GLES30.glShaderSource(shader, shaderSource)
         GLES30.glCompileShader(shader)
+
+        val status = IntArray(1)
+        GLES30.glGetShaderiv(shader, GLES30.GL_COMPILE_STATUS, status, 0)
+
+        if (status[0] == 0)
+            Log.e("SHADER", GLES30.glGetShaderInfoLog(shader))
+
         return shader
     }
 
@@ -42,6 +50,13 @@ object Shaders {
         GLES30.glAttachShader(program, vertexShader)
         GLES30.glAttachShader(program, fragmentShader)
         GLES30.glLinkProgram(program)
+
+        val status = IntArray(1)
+        GLES30.glGetProgramiv(program, GLES30.GL_LINK_STATUS, status, 0)
+
+        if (status[0] == 0)
+            Log.e("PROGRAM", GLES30.glGetProgramInfoLog(program))
+
         return program
     }
 }
