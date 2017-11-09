@@ -9,7 +9,8 @@ varying vec4 vSunDirection;
 
 
 void main() {
-    vSurfaceNormal = uMMatrix * vec4(aSurfaceNormal.xyz, 0.0);
-    vSunDirection = vec4(uSunDirection.xyz, 0.0);
+    vSurfaceNormal = normalize(vec4(aSurfaceNormal.xyz, 0.0));
+    vSunDirection = normalize(uMMatrix * vec4(uSunDirection.xyz, 0.0));
+    vSunDirection.xyz *= -1.0;
     gl_Position = uMVPMatrix * aPosition;
 }

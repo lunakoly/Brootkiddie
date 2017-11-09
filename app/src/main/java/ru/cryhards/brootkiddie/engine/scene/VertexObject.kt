@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.engine.scene
 
 import android.opengl.GLES30
+import android.opengl.GLES31
 import android.opengl.Matrix
 import android.util.Log
 import ru.cryhards.brootkiddie.engine.util.Environment
@@ -26,30 +27,78 @@ class VertexObject(private val vertices: FloatArray, private val drawOrder: Shor
     private lateinit var normalsBuffer: FloatBuffer
 
     private val testColor = floatArrayOf(0.8f, 0.5f, 0.5f, 1.0f)
-    private var normals = FloatArray(drawOrder.size)
+    private var normals = FloatArray(drawOrder.size * 3)
 
     init {
-        for (i in 0 until drawOrder.size / 3) {
-            var vert = floatArrayOf(
-                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 0],
-                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 1],
-                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 2],
+//        for (i in 0 until drawOrder.size / 3) {
+//            var vert = floatArrayOf(
+//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 0],
+//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 1],
+//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 2],
+//
+//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 0],
+//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 1],
+//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 2],
+//
+//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 0],
+//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 1],
+//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 2]
+//            )
+//            vert = calcSurfaceNormal(vert)
+//            normals[i * 9] = vert[0]
+//            normals[i * 9 + 1] = vert[1]
+//            normals[i * 9 + 2] = vert[2]
+//
+//            normals[i * 9 + 3] = vert[0]
+//            normals[i * 9 + 4] = vert[1]
+//            normals[i * 9 + 5] = vert[2]
+//
+//            normals[i * 9 + 6] = vert[0]
+//            normals[i * 9 + 7] = vert[1]
+//            normals[i * 9 + 8] = vert[2]
+//
+//            Log.d("NORMALS", vert.joinToString(separator = ", "))
+//        }
 
-                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 0],
-                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 1],
-                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 2],
+        normals = floatArrayOf(
+                // Front face
+                0.0f, 0.0f, 1.0f,
+                0.0f, 0.0f, 1.0f,
+                0.0f, 0.0f, 1.0f,
+                0.0f, 0.0f, 1.0f,
 
-                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 0],
-                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 1],
-                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 2]
-            )
-            vert = calcSurfaceNormal(vert)
-            normals[i * 3] = vert[0]
-            normals[i * 3 + 1] = vert[1]
-            normals[i * 3 + 2] = vert[2]
+                // Back face
+                0.0f, 0.0f, -1.0f,
+                0.0f, 0.0f, -1.0f,
+                0.0f, 0.0f, -1.0f,
+                0.0f, 0.0f, -1.0f,
 
-            Log.d("NORMALS", vert.joinToString(separator = ", "))
-        }
+                // Top face
+                0.0f, 1.0f, 0.0f,
+                0.0f, 1.0f, 0.0f,
+                0.0f, 1.0f, 0.0f,
+                0.0f, 1.0f, 0.0f,
+
+                // Bottom face
+                0.0f, -1.0f, 0.0f,
+                0.0f, -1.0f, 0.0f,
+                0.0f, -1.0f, 0.0f,
+                0.0f, -1.0f, 0.0f,
+
+                // Right face
+                1.0f, 0.0f, 0.0f,
+                1.0f, 0.0f, 0.0f,
+                1.0f, 0.0f, 0.0f,
+                1.0f, 0.0f, 0.0f,
+
+                // Left face
+                -1.0f, 0.0f, 0.0f,
+                -1.0f, 0.0f, 0.0f,
+                -1.0f, 0.0f, 0.0f,
+                -1.0f, 0.0f, 0.0f
+        )
+
+        Log.d("NORMALS_ARRAY", (normals.size / 3).toString())
     }
 
     private fun calcSurfaceNormal(vertices: FloatArray): FloatArray {
@@ -76,14 +125,16 @@ class VertexObject(private val vertices: FloatArray, private val drawOrder: Shor
 
         val aPositionHandle = GLES30.glGetAttribLocation(shaderProgram, "aPosition")
         GLES30.glEnableVertexAttribArray(aPositionHandle)
-        GLES30.glVertexAttribPointer(aPositionHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer)
+        GLES30.glVertexAttribPointer(aPositionHandle, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer)
 
         val uColorHandle = GLES30.glGetUniformLocation(shaderProgram, "uColor")
         GLES30.glUniform4fv(uColorHandle, 1, testColor, 0)
 
         val modelMatrix = getMatrix()
         val uMMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMMatrix")
-        GLES30.glUniformMatrix4fv(uMMatrixHandle, 1, false, modelMatrix, 0)
+        val inverted = modelMatrix.clone()
+        Matrix.invertM(inverted, 0, inverted, 0)
+        GLES30.glUniformMatrix4fv(uMMatrixHandle, 1, false, inverted, 0)
 
         val uMVMatrixHandle = GLES30.glGetUniformLocation(shaderProgram, "uMVMatrix")
         GLES30.glUniformMatrix4fv(uMVMatrixHandle, 1, false, environment.mvpMatrix, 0)
@@ -112,7 +163,7 @@ class VertexObject(private val vertices: FloatArray, private val drawOrder: Shor
 
         val aSurfaceNormalHandle = GLES30.glGetAttribLocation(shaderProgram, "aSurfaceNormal")
         GLES30.glEnableVertexAttribArray(aSurfaceNormalHandle)
-        GLES30.glVertexAttribPointer(aSurfaceNormalHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, vertexBuffer)
+        GLES30.glVertexAttribPointer(aSurfaceNormalHandle, 3, GLES30.GL_FLOAT, false, 0, normalsBuffer)
 
         GLES30.glDrawElements(GLES30.GL_TRIANGLES, drawOrder.size, GLES30.GL_UNSIGNED_SHORT, drawBuffer)
         GLES30.glDisableVertexAttribArray(aPositionHandle)
@@ -132,7 +183,7 @@ class VertexObject(private val vertices: FloatArray, private val drawOrder: Shor
         drawBuffer.put(drawOrder)
         drawBuffer.position(0)
 
-        bb = ByteBuffer.allocateDirect(normals.size * 4) // drawOrder.size * 2
+        bb = ByteBuffer.allocateDirect(normals.size * 4)
         bb.order(ByteOrder.nativeOrder())
         normalsBuffer = bb.asFloatBuffer()
         normalsBuffer.put(normals)

@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie
 
+import android.os.Handler
 import ru.cryhards.brootkiddie.engine.scene.RectanglePlane
 import ru.cryhards.brootkiddie.engine.scene.TrianglePlane
 import ru.cryhards.brootkiddie.engine.scene.VertexObject
@@ -7,6 +8,8 @@ import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.scene.cam.behaviour.BasicFPS
 import ru.cryhards.brootkiddie.engine.util.GameRegistry
 import ru.cryhards.brootkiddie.engine.util.Task
+import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
+import java.util.*
 
 /**
  * Created with love by luna_koly on 29.10.2017.
@@ -75,8 +78,14 @@ class MyTask1 : Task {
         )).genBuffers() as VertexObject
         cube.position.z.value -= 3
         cube.position.x.value -= 3
-        cube.rotation.vertical.value = 0.7
-        cube.rotation.horizontal.value = -0.3
+        cube.rotation.vertical.value = -0.7
+        cube.rotation.horizontal.value = -0.7
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                cube.rotation.horizontal.value -= -0.01
+            }
+        }, 0, 16)
 
         registry.primaryLayer.add(mesh1)
         registry.primaryLayer.add(mesh2)
@@ -90,10 +99,14 @@ class MyTask1 : Task {
         cam.rotation.vertical.value = 0.2
 
 //        cam.position.x.value += 2
-//        cam.position.y.value -= 2
+//        cam.position.y.value += 4
+//        cam.rotation.horizontal.value = -0.1
+//        cam.rotation.vertical.value = -0.6
 
-        registry.environment.sunDirection.z.value = 0.3f
-        registry.environment.sunDirection.x.value = 0.5f
-        registry.environment.sunDirection.y.value = 1.0f
+        registry.environment.sunDirection.z.value = -0.3f
+        registry.environment.sunDirection.x.value = -0.5f
+        registry.environment.sunDirection.y.value = -1.0f
+
+        registry.environment.ambientLight = CoordProperty(0.1f, 0.1f, 0.1f)
     }
 }
