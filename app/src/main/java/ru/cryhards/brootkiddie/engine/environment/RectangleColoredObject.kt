@@ -1,10 +1,9 @@
 package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
-import android.opengl.Matrix
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
-import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
+import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 import java.nio.ByteBuffer
@@ -85,18 +84,15 @@ class RectangleColoredObject(
         return this
     }
 
-    override fun getMatrix(): FloatArray {
-        val rotationMatrix = MoreMatrix.getLookAroundRotationM(
+    override fun getMatrix(): Mat4 {
+        val rotationMatrix = Mat4.lookAroundRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
-        val translationMatrix = MoreMatrix.getTranslationM(
+        val translationMatrix = Mat4.translate(
                 position.x.value,
                 position.y.value,
                 position.z.value)
-
-        val modelMatrix = FloatArray(16)
-        Matrix.multiplyMM(modelMatrix, 0, translationMatrix, 0, rotationMatrix, 0)
-        return modelMatrix
+        return translationMatrix.multiply(rotationMatrix)
     }
 
     private fun genNormal(): RectangleColoredObject {
@@ -145,13 +141,12 @@ class RectangleColoredObject(
         val aSurfaceNormalHandle = shaderProgram.setAttribute("aSurfaceNormal", 3, GLES30.GL_FLOAT, vertexNormalsBuffer)
         val aColorHandle = shaderProgram.setAttribute("aColor", 4, GLES30.GL_FLOAT, vertexColorsBuffer)
 
-        val modelMatrix = getMatrix()
-        val inverted = modelMatrix.clone()
-        Matrix.invertM(inverted, 0, inverted, 0)
-        shaderProgram.setUniformMatrix4fv("uMMatrix", inverted)
-        shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix)
-        Matrix.multiplyMM(modelMatrix, 0, environment.mvpMatrix, 0, modelMatrix, 0)
-        shaderProgram.setUniformMatrix4fv("uMVPMatrix", modelMatrix)
+        var modelMatrix = getMatrix()
+        val inverted = modelMatrix.invert()!!
+        shaderProgram.setUniformMatrix4fv("uMMatrix", inverted.m)
+        shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)
+        modelMatrix = environment.mvpMatrix.multiply(modelMatrix)
+        shaderProgram.setUniformMatrix4fv("uMVPMatrix", modelMatrix.m)
 
         shaderProgram.setUniform3f("uAmbientLight",
                 environment.ambientLight.x.value,

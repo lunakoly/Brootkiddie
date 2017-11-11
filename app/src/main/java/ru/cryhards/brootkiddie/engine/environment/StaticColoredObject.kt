@@ -1,14 +1,8 @@
 package ru.cryhards.brootkiddie.engine.environment
 
-import android.opengl.GLES30
-import android.opengl.Matrix
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
-import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
-import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
-import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
@@ -39,7 +33,7 @@ class StaticColoredObject(
         delegate.shaderProgram = shaderProgram
     }
 
-    override fun getMatrix(): FloatArray {
+    override fun getMatrix(): Mat4 {
         return delegate.getMatrix()
     }
 
