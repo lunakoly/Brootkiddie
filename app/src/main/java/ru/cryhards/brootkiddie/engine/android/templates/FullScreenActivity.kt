@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.templates
+package ru.cryhards.brootkiddie.engine.android.templates
 
 import android.app.Activity
 import android.os.Bundle

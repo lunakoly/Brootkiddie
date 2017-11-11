@@ -2,17 +2,16 @@ package ru.cryhards.brootkiddie.engine.android
 
 import android.content.Context
 import android.opengl.GLSurfaceView
-import ru.cryhards.brootkiddie.engine.util.GameRegistry
 
 /**
  * Created with love by luna_koly on 29.10.2017.
  */
-class GLSurface(context: Context) : GLSurfaceView(context) {
-    var registry: GameRegistry
+class EngineSurface(context: Context) : GLSurfaceView(context) {
+    var registry: EngineRegistry
 
     init {
         setEGLContextClientVersion(3)
-        val renderer = MainRenderer(context)
+        val renderer = EngineRenderer(context)
         setRenderer(renderer)
 
         registry = renderer.registry

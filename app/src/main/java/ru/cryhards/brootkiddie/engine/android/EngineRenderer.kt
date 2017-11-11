@@ -4,7 +4,6 @@ import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
-import ru.cryhards.brootkiddie.engine.util.GameRegistry
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -12,8 +11,8 @@ import javax.microedition.khronos.opengles.GL10
 /**
  * Created with love by luna_koly on 29.10.2017.
  */
-class MainRenderer(private val context: Context) : GLSurfaceView.Renderer {
-    var registry = GameRegistry(context)
+class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
+    var registry = EngineRegistry(context)
 
     private var projectionMatrix = FloatArray(16)
 

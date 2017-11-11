@@ -1,6 +1,4 @@
-package ru.cryhards.brootkiddie.engine.scene.cam.behaviour
-
-import ru.cryhards.brootkiddie.engine.scene.Viewable
+package ru.cryhards.brootkiddie.engine.environment.interfaces
 
 /**
  * Created with love by luna_koly on 31.10.2017.

@@ -2,18 +2,17 @@ package ru.cryhards.brootkiddie.engine.android
 
 import android.os.Bundle
 import android.view.MotionEvent
-import ru.cryhards.brootkiddie.engine.util.GameRegistry
-import ru.cryhards.brootkiddie.templates.FullScreenActivity
+import ru.cryhards.brootkiddie.engine.android.templates.FullScreenActivity
 
 /**
  * Created with love by luna_koly on 29.10.2017.
  */
 open class EngineActivity : FullScreenActivity() {
-    lateinit var registry: GameRegistry
+    lateinit var registry: EngineRegistry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val surface = GLSurface(this)
+        val surface = EngineSurface(this)
         setContentView(surface)
 
         registry = surface.registry

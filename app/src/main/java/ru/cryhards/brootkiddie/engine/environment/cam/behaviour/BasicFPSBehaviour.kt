@@ -1,14 +1,15 @@
-package ru.cryhards.brootkiddie.engine.scene.cam.behaviour
+package ru.cryhards.brootkiddie.engine.environment.cam.behaviour
 
 import android.view.MotionEvent
-import ru.cryhards.brootkiddie.engine.scene.Viewable
-import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
-import ru.cryhards.brootkiddie.engine.util.GameRegistry
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
+import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
+import ru.cryhards.brootkiddie.engine.android.EngineRegistry
+import ru.cryhards.brootkiddie.engine.environment.interfaces.CameraBehaviour
 
 /**
  * Created with love by luna_koly on 31.10.2017.
  */
-class BasicFPS(private val registry: GameRegistry) : CameraBehaviour {
+class BasicFPSBehaviour(private val registry: EngineRegistry) : CameraBehaviour {
     private lateinit var cam: Viewable
 
     override fun setCam(cam: Viewable) {
@@ -40,9 +41,7 @@ class BasicFPS(private val registry: GameRegistry) : CameraBehaviour {
             try {
                 theCam.rotation.horizontal.value = oldHorizontal + dx / 1000
                 theCam.rotation.vertical.value = oldVertical - dy / 1000
-            } catch (e: Exception) {
-                println("FUCK")
-            }
+            } catch (e: Exception) {}
         }
     }
 }

@@ -1,8 +1,12 @@
 precision mediump float;
-varying vec4 vColor;
 uniform vec3 uAmbientLight;
+uniform vec3 uSunlight;
+
+varying vec4 vSurfaceNormal;
+varying vec4 vSunDirection;
+varying vec4 vColor;
 
 void main() {
-    vec4 newColor = vec4(vColor.rgb * uAmbientLight.rgb, vColor.a);
-    gl_FragColor = newColor;
+    float angleCos = max(0.0, dot(vSurfaceNormal, vSunDirection));
+    gl_FragColor = vec4(angleCos * vColor.xyz + vColor.xyz * uAmbientLight.xyz, vColor.a);
 }

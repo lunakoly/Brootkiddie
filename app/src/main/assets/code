@@ -1,10 +1,8 @@
-package ru.cryhards.brootkiddie.engine.scene
+package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
-import android.opengl.GLES31
 import android.opengl.Matrix
-import android.util.Log
-import ru.cryhards.brootkiddie.engine.util.Environment
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
@@ -17,7 +15,7 @@ import java.nio.ShortBuffer
 /**
  * Created with love by luna_koly on 08.11.2017.
  */
-class VertexObject(private val vertices: FloatArray, private val drawOrder: ShortArray) : Mesh {
+class VertexObject000(private val vertices: FloatArray, private val drawOrder: ShortArray) : Mesh {
     val shaderProgram = Shaders.BASIC
     val position = CoordProperty()
     var rotation = RotationProperty()

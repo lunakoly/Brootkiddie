@@ -1,8 +1,8 @@
-package ru.cryhards.brootkiddie.engine.scene.cam
+package ru.cryhards.brootkiddie.engine.environment.cam
 
 import android.opengl.Matrix
-import ru.cryhards.brootkiddie.engine.scene.cam.behaviour.CameraBehaviour
-import ru.cryhards.brootkiddie.engine.scene.Viewable
+import ru.cryhards.brootkiddie.engine.environment.interfaces.CameraBehaviour
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
 import ru.cryhards.brootkiddie.engine.util.MoreMatrix
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty

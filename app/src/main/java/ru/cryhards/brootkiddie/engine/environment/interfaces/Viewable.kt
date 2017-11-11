@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.scene
+package ru.cryhards.brootkiddie.engine.environment.interfaces
 
 /**
  * Created with love by luna_koly on 31.10.2017.
