@@ -1,12 +1,12 @@
 package ru.cryhards.brootkiddie
 
-import android.os.Handler
 import ru.cryhards.brootkiddie.engine.scene.RectanglePlane
 import ru.cryhards.brootkiddie.engine.scene.TrianglePlane
 import ru.cryhards.brootkiddie.engine.scene.VertexObject
 import ru.cryhards.brootkiddie.engine.scene.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.scene.cam.behaviour.BasicFPS
 import ru.cryhards.brootkiddie.engine.util.GameRegistry
+import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.Task
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import java.util.*
@@ -78,6 +78,7 @@ class MyTask1 : Task {
         )).genBuffers() as VertexObject
         cube.position.z.value -= 3
         cube.position.x.value -= 3
+        cube.position.y.value -= 3
         cube.rotation.vertical.value = -0.7
         cube.rotation.horizontal.value = -0.7
 
@@ -87,9 +88,9 @@ class MyTask1 : Task {
             }
         }, 0, 16)
 
-        registry.primaryLayer.add(mesh1)
-        registry.primaryLayer.add(mesh2)
-        registry.primaryLayer.add(cube)
+//        registry.primaryLayer.add(mesh1)
+//        registry.primaryLayer.add(mesh2)
+//        registry.primaryLayer.add(cube)
 
 
         val cam = FPSCamera().withBehaviourOf(BasicFPS(registry))
@@ -99,7 +100,7 @@ class MyTask1 : Task {
         cam.rotation.vertical.value = 0.2
 
 //        cam.position.x.value += 2
-//        cam.position.y.value += 4
+//        cam.position.y.value += 2
 //        cam.rotation.horizontal.value = -0.1
 //        cam.rotation.vertical.value = -0.6
 
@@ -108,5 +109,32 @@ class MyTask1 : Task {
         registry.environment.sunDirection.y.value = -1.0f
 
         registry.environment.ambientLight = CoordProperty(0.1f, 0.1f, 0.1f)
+
+
+        val cube2 = Shaders.decodeObj(registry.context, "models/basic_cube.obj")
+        cube2.position.z.value = -2.0f
+        cube2.position.y.value = -2.0f
+        cube2.position.x.value = 2.0f
+        registry.primaryLayer.add(cube2)
+
+//        registry.environment.ambientLight = CoordProperty(1f, 1f, 1f)
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                cube2.rotation.horizontal.value -= 0.01
+                cube2.rotation.vertical.value -= 0.01
+            }
+        }, 0, 16)
+
+        val sphere = Shaders.decodeObj(registry.context, "models/sphere.obj")
+        sphere.position.y.value = -2.0f
+        sphere.position.x.value = -2.0f
+        registry.primaryLayer.add(sphere)
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                sphere.rotation.vertical.value += 0.005
+            }
+        }, 0, 16)
     }
 }

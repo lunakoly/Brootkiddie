@@ -36,6 +36,6 @@ object MoreMatrix {
                 1f, 0f, 0f, 0f,
                 0f, 1f, 0f, 0f,
                 0f, 0f, 1f, 0f,
-                 x,  -y,  z, 1f
+                 x,  y,  z, 1f
         )
 }

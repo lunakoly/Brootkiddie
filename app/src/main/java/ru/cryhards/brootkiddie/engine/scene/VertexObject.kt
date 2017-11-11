@@ -27,78 +27,70 @@ class VertexObject(private val vertices: FloatArray, private val drawOrder: Shor
     private lateinit var normalsBuffer: FloatBuffer
 
     private val testColor = floatArrayOf(0.8f, 0.5f, 0.5f, 1.0f)
-    private var normals = FloatArray(drawOrder.size * 3)
+    private var normals = FloatArray(drawOrder.size * 2)
 
     init {
-//        for (i in 0 until drawOrder.size / 3) {
-//            var vert = floatArrayOf(
-//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 0],
-//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 1],
-//                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 2],
+        for (i in 0 until drawOrder.size / 3) {
+            var vert = floatArrayOf(
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 0].toInt() * 3 + 2],
+
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 2],
+
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 0],
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 1],
+                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 2]
+            )
+            vert = calcSurfaceNormal(vert)
+            normals[i * 6] = vert[0]
+            normals[i * 6 + 1] = vert[1]
+            normals[i * 6 + 2] = vert[2]
+
+            normals[i * 6 + 3] = vert[0]
+            normals[i * 6 + 4] = vert[1]
+            normals[i * 6 + 5] = vert[2]
+        }
+
+//        normals = floatArrayOf(
+//                // Front face
+//                0.0f, 0.0f, 1.0f,
+//                0.0f, 0.0f, 1.0f,
+//                0.0f, 0.0f, 1.0f,
+//                0.0f, 0.0f, 1.0f,
 //
-//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 0],
-//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 1],
-//                    vertices[drawOrder[i * 3 + 1].toInt() * 3 + 2],
+//                // Back face
+//                0.0f, 0.0f, -1.0f,
+//                0.0f, 0.0f, -1.0f,
+//                0.0f, 0.0f, -1.0f,
+//                0.0f, 0.0f, -1.0f,
 //
-//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 0],
-//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 1],
-//                    vertices[drawOrder[i * 3 + 2].toInt() * 3 + 2]
-//            )
-//            vert = calcSurfaceNormal(vert)
-//            normals[i * 9] = vert[0]
-//            normals[i * 9 + 1] = vert[1]
-//            normals[i * 9 + 2] = vert[2]
+//                // Top face
+//                0.0f, 1.0f, 0.0f,
+//                0.0f, 1.0f, 0.0f,
+//                0.0f, 1.0f, 0.0f,
+//                0.0f, 1.0f, 0.0f,
 //
-//            normals[i * 9 + 3] = vert[0]
-//            normals[i * 9 + 4] = vert[1]
-//            normals[i * 9 + 5] = vert[2]
+//                // Bottom face
+//                0.0f, -1.0f, 0.0f,
+//                0.0f, -1.0f, 0.0f,
+//                0.0f, -1.0f, 0.0f,
+//                0.0f, -1.0f, 0.0f,
 //
-//            normals[i * 9 + 6] = vert[0]
-//            normals[i * 9 + 7] = vert[1]
-//            normals[i * 9 + 8] = vert[2]
+//                // Right face
+//                1.0f, 0.0f, 0.0f,
+//                1.0f, 0.0f, 0.0f,
+//                1.0f, 0.0f, 0.0f,
+//                1.0f, 0.0f, 0.0f,
 //
-//            Log.d("NORMALS", vert.joinToString(separator = ", "))
-//        }
-
-        normals = floatArrayOf(
-                // Front face
-                0.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f,
-
-                // Back face
-                0.0f, 0.0f, -1.0f,
-                0.0f, 0.0f, -1.0f,
-                0.0f, 0.0f, -1.0f,
-                0.0f, 0.0f, -1.0f,
-
-                // Top face
-                0.0f, 1.0f, 0.0f,
-                0.0f, 1.0f, 0.0f,
-                0.0f, 1.0f, 0.0f,
-                0.0f, 1.0f, 0.0f,
-
-                // Bottom face
-                0.0f, -1.0f, 0.0f,
-                0.0f, -1.0f, 0.0f,
-                0.0f, -1.0f, 0.0f,
-                0.0f, -1.0f, 0.0f,
-
-                // Right face
-                1.0f, 0.0f, 0.0f,
-                1.0f, 0.0f, 0.0f,
-                1.0f, 0.0f, 0.0f,
-                1.0f, 0.0f, 0.0f,
-
-                // Left face
-                -1.0f, 0.0f, 0.0f,
-                -1.0f, 0.0f, 0.0f,
-                -1.0f, 0.0f, 0.0f,
-                -1.0f, 0.0f, 0.0f
-        )
-
-        Log.d("NORMALS_ARRAY", (normals.size / 3).toString())
+//                // Left face
+//                -1.0f, 0.0f, 0.0f,
+//                -1.0f, 0.0f, 0.0f,
+//                -1.0f, 0.0f, 0.0f,
+//                -1.0f, 0.0f, 0.0f
+//        )
     }
 
     private fun calcSurfaceNormal(vertices: FloatArray): FloatArray {

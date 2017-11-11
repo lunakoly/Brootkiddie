@@ -21,7 +21,7 @@ class FPSCamera: Viewable {
                 rotation.vertical.value)
         val camTransitionMatrix = MoreMatrix.getTranslationM(
                 position.x.value,
-                position.y.value,
+                -position.y.value,
                 position.z.value)
 
         Matrix.multiplyMM(viewMatrix, 0, camRotationMatrix, 0, camTransitionMatrix, 0)
