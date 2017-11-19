@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie.engine.util
 
+import android.graphics.Shader
 import android.opengl.GLES30
 import java.nio.Buffer
 
@@ -47,5 +48,13 @@ class ShaderProgram(private val program: Int) {
 
     fun disableAttribute(attribute: Int) {
         GLES30.glDisableVertexAttribArray(attribute)
+    }
+
+    fun setTexture(uName: String, unit: Int, glunit: Int, type: Int, id: Int): Int {
+        val uNameHandle = GLES30.glGetUniformLocation(program, uName)
+        GLES30.glActiveTexture(glunit)
+        GLES30.glBindTexture(type, id)
+        GLES30.glUniform1i(uNameHandle, unit)
+        return uNameHandle
     }
 }

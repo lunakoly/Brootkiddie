@@ -18,8 +18,12 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         registry.renderer = this
+
         GLES30.glClearColor(0f, 0f, 0f, 1.0f)
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
+        GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA)
+        GLES30.glEnable(GLES30.GL_BLEND)
+
         Shaders.init(context)
         registry.runTask()
     }
@@ -36,6 +40,11 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
         val viewMatrix = registry.environment.activeCamera.getMatrix()
         registry.environment.mvpMatrix = projectionMatrix.multiply(viewMatrix)
+
+        registry.environment.activeCameraPositionMatrix = Mat4.translate(
+                -registry.environment.activeCamera.position.x.value,
+                -registry.environment.activeCamera.position.y.value,
+                -registry.environment.activeCamera.position.z.value).invert()!!
 
         registry.primaryLayer
                 .forEach { it.draw(registry.environment) }

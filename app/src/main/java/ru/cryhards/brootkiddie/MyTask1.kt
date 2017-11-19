@@ -1,9 +1,9 @@
 package ru.cryhards.brootkiddie
 
-import android.util.Log
 import ru.cryhards.brootkiddie.engine.android.EngineRegistry
 import ru.cryhards.brootkiddie.engine.environment.MeshManager
 import ru.cryhards.brootkiddie.engine.environment.RectangleColoredObject
+import ru.cryhards.brootkiddie.engine.environment.RectangleTextureObject
 import ru.cryhards.brootkiddie.engine.environment.TriangleColoredObject
 import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.environment.cam.behaviour.BasicFPSBehaviour
@@ -88,5 +88,29 @@ class MyTask1 : Task {
         registry.environment.sunDirection.z.value = -0.3f
         registry.environment.sunDirection.x.value = -0.5f
         registry.environment.sunDirection.y.value = -1.0f
+
+        val map = MeshManager.genRectangleTextureObject(registry.context, "img/map.jpeg")
+        map.position.x.value = -5f
+        map.position.z.value = 3f
+        map.rotation.horizontal.value += 1.5
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                map.rotation.horizontal.value += 0.02
+            }
+        }, 0, 16)
+
+        map.v1.x.value = 2.5f
+        map.v2.x.value = -2.5f
+        map.v3.x.value = -2.5f
+        map.v4.x.value = 2.5f
+
+        map.v1.y.value = 2f
+        map.v2.y.value = 2f
+        map.v3.y.value = -2f
+        map.v4.y.value = -2f
+        map.genBuffers()
+
+        registry.primaryLayer.add(map)
     }
 }

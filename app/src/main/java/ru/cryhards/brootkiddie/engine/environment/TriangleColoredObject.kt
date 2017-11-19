@@ -142,6 +142,13 @@ class TriangleColoredObject(
                 environment.sunDirection.y.value,
                 environment.sunDirection.z.value)
 
+        shaderProgram.setUniform3f("uEyePosition",
+                environment.activeCamera.position.x.value,
+                environment.activeCamera.position.y.value,
+                environment.activeCamera.position.z.value)
+
+        shaderProgram.setUniformMatrix4fv("uEyePositionMatrix", environment.activeCameraPositionMatrix.m)
+
         shaderProgram.drawArrays(GLES30.GL_TRIANGLES, 0, 3)
         shaderProgram.disableAttribute(aPositionHandle)
         shaderProgram.disableAttribute(aSurfaceNormalHandle)

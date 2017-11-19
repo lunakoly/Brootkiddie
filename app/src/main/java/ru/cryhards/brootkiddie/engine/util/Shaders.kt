@@ -11,6 +11,7 @@ object Shaders {
     @Suppress("MemberVisibilityCanPrivate")
     lateinit var BASIC: ShaderProgram
     lateinit var COLOR_TRANSITION: ShaderProgram
+    lateinit var TEXTURE: ShaderProgram
     lateinit var OBJ: ShaderProgram
     lateinit var OBJ_COLOR: ShaderProgram
 
@@ -38,6 +39,12 @@ object Shaders {
                         "shaders/obj_color_vertex_shader.vsh")),
                 genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
                         "shaders/obj_color_fragment_shader.fsh"))
+        ))
+        TEXTURE = ShaderProgram(genShaderProgram(
+                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+                        "shaders/texture2_vertex_shader.vsh")),
+                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+                        "shaders/texture2_fragment_shader.fsh"))
         ))
     }
 

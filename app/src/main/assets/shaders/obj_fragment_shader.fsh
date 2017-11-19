@@ -1,6 +1,5 @@
 precision mediump float;
 uniform vec3 uAmbientLight;
-uniform vec3 uSunPosition;
 uniform vec3 uEyePosition;
 uniform vec3 uSunlight;
 uniform mat4 uMMatrix;
@@ -20,7 +19,7 @@ void main() {
     blink = pow(blink, 2.0);
 
     gl_FragColor = vec4(
-        angleCos * vec3(0.5, 0.5, 0.5).xyz +
-        blink * vec3(0.5, 0.5, 0.5).xyz +
-        vec3(0.5, 0.5, 0.5).xyz * uAmbientLight.xyz, 1.0);
+        angleCos * vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz +
+        blink * vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz +
+        vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz * uAmbientLight.xyz, 1.0);
 }

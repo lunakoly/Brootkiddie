@@ -66,10 +66,7 @@ class StaticObject(
                 environment.activeCamera.position.y.value,
                 environment.activeCamera.position.z.value)
 
-        shaderProgram.setUniformMatrix4fv("uEyePositionMatrix", Mat4.translate(
-                -environment.activeCamera.position.x.value,
-                -environment.activeCamera.position.y.value,
-                -environment.activeCamera.position.z.value).invert()!!.m)
+        shaderProgram.setUniformMatrix4fv("uEyePositionMatrix", environment.activeCameraPositionMatrix.m)
 
         shaderProgram.drawElements(GLES30.GL_TRIANGLES, vertexIndicesSize, GLES30.GL_UNSIGNED_SHORT, vertexIndicesBuffer)
         shaderProgram.disableAttribute(aPositionHandle)

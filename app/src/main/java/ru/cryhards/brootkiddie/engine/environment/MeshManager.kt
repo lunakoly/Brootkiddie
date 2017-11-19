@@ -1,7 +1,14 @@
 package ru.cryhards.brootkiddie.engine.environment
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.opengl.GLES30
+import android.opengl.GLUtils
+import ru.cryhards.brootkiddie.engine.util.TextureObject
+import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -244,5 +251,42 @@ object MeshManager {
                 theirIndices.toShortArray(),
                 paranormals.toFloatArray(),
                 theirColors.toFloatArray())
+    }
+
+    fun loadTexture(context: Context, path: String, framesCount: Int = 1, duration: Long = 0): TextureObject {
+        val options = BitmapFactory.Options()
+        options.inScaled = false
+        val bitmap = BitmapFactory.decodeStream(context.assets.open(path), null, options)
+        val width = bitmap.width / framesCount
+        val height = bitmap.height
+
+        val texts = IntArray(framesCount)
+
+        for (i in 0 until framesCount) {
+            GLES30.glGenTextures(1, texts, i)
+//            GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texts[i])
+            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR)
+            GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR)
+            GLUtils.texImage2D(
+                    GLES30.GL_TEXTURE_2D, 0,
+                    Bitmap.createBitmap(bitmap, i * width, 0, width, height),
+                    0)
+            bitmap.recycle()
+
+//            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
+        }
+
+        return TextureObject(texts, duration, width, height)
+    }
+
+    fun genRectangleTextureObject(context: Context, path: String, framesCount: Int = 1, duration: Long = 0): RectangleTextureObject {
+        val texture = loadTexture(context, path, framesCount, duration)
+        return RectangleTextureObject(texture,
+                CoordProperty(1.0f, 1.0f, 0.0f),
+                CoordProperty(-1.0f, 1.0f, 0.0f),
+                CoordProperty(-1.0f, -1.0f, 0.0f),
+                CoordProperty(1.0f, -1.0f, 0.0f)
+                )
     }
 }
