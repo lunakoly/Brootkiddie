@@ -26,7 +26,7 @@ class StaticColoredObject(
         set(value) {
             delegate.shaderProgram = value
         }
-    val position = delegate.position
+    override val position = delegate.position
     val rotation = delegate.rotation
 
     init {

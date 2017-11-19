@@ -10,7 +10,7 @@ import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
  * Created with love by luna_koly on 31.10.2017.
  */
 class FPSCamera: Viewable {
-    val position = CoordProperty()
+    override val position = CoordProperty()
     val rotation = RotationProperty()
 
     override fun getMatrix(): Mat4 {
@@ -18,9 +18,9 @@ class FPSCamera: Viewable {
                 rotation.horizontal.value,
                 rotation.vertical.value)
         val camTransitionMatrix = Mat4.translate(
-                position.x.value,
+                -position.x.value,
                 -position.y.value,
-                position.z.value)
+                -position.z.value)
         return camRotationMatrix.multiply(camTransitionMatrix)
     }
 

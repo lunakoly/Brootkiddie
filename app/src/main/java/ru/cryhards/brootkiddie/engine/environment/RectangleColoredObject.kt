@@ -35,7 +35,7 @@ class RectangleColoredObject(
 
     @Suppress("MemberVisibilityCanPrivate")
     val shaderProgram = Shaders.COLOR_TRANSITION
-    val position = CoordProperty()
+    override val position = CoordProperty()
     var rotation = RotationProperty()
     private var surfaceNormal = FloatArray(12)
 
@@ -46,10 +46,6 @@ class RectangleColoredObject(
             0.0f, 0.7f, 0.7f, 1.0f,
             1.0f, 1.0f, 1.0f, 1.0f)
 
-    init {
-        genNormal()
-    }
-
     private lateinit var vertexBuffer: FloatBuffer
     private lateinit var vertexIndicesBuffer: ShortBuffer
     private lateinit var vertexColorsBuffer: FloatBuffer
@@ -58,6 +54,8 @@ class RectangleColoredObject(
     private val vertexIndices = shortArrayOf(0, 1, 2, 0, 2, 3)
 
     override fun genBuffers(): Mesh {
+        genNormal()
+
         var bb = ByteBuffer.allocateDirect(48)  //  4 vertices * 3 coordinates * 4 bytes
         bb.order(ByteOrder.nativeOrder())
         vertexBuffer = bb.asFloatBuffer()

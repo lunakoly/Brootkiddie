@@ -1,3 +1,4 @@
+precision mediump float;
 attribute vec4 aPosition;
 attribute vec3 aSurfaceNormal;
 
@@ -7,11 +8,12 @@ uniform mat4 uMMatrix;
 
 varying vec4 vSurfaceNormal;
 varying vec4 vSunDirection;
+varying vec4 vPosition;
 
 
 void main() {
     gl_Position = uMVPMatrix * aPosition;
+    vPosition = aPosition;
     vSurfaceNormal = vec4(normalize(aSurfaceNormal).xyz, 0.0);
-    vSunDirection = normalize(uMMatrix * vec4(uSunDirection.xyz, 0.0));
-    vSunDirection.xyz *= -1.0;
+    vSunDirection = -normalize(uMMatrix * vec4(uSunDirection.xyz, 0.0));
 }

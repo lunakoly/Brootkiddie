@@ -1,9 +1,8 @@
 package ru.cryhards.brootkiddie.engine.android
 
 import android.content.Context
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
 import ru.cryhards.brootkiddie.engine.environment.Environment
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
 import ru.cryhards.brootkiddie.engine.util.Task
 
 /**
@@ -25,7 +24,5 @@ class EngineRegistry(var context: Context) {
     }
 
     val primaryLayer = ArrayList<Mesh>()
-    lateinit var activeCamera: Viewable
-
     var environment = Environment()
 }

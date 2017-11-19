@@ -19,7 +19,7 @@ class StaticObject(
         private val vertexNormalsBuffer: FloatBuffer) : Mesh {
 
     var shaderProgram = Shaders.OBJ
-    val position = CoordProperty()
+    override val position = CoordProperty()
     val rotation = RotationProperty()
 
     override fun getMatrix(): Mat4 {
@@ -60,6 +60,16 @@ class StaticObject(
                 environment.sunDirection.x.value,
                 environment.sunDirection.y.value,
                 environment.sunDirection.z.value)
+
+        shaderProgram.setUniform3f("uEyePosition",
+                environment.activeCamera.position.x.value,
+                environment.activeCamera.position.y.value,
+                environment.activeCamera.position.z.value)
+
+        shaderProgram.setUniformMatrix4fv("uEyePositionMatrix", Mat4.translate(
+                -environment.activeCamera.position.x.value,
+                -environment.activeCamera.position.y.value,
+                -environment.activeCamera.position.z.value).invert()!!.m)
 
         shaderProgram.drawElements(GLES30.GL_TRIANGLES, vertexIndicesSize, GLES30.GL_UNSIGNED_SHORT, vertexIndicesBuffer)
         shaderProgram.disableAttribute(aPositionHandle)

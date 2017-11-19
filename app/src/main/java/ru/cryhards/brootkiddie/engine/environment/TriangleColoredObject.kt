@@ -31,7 +31,7 @@ class TriangleColoredObject(
 
     @Suppress("MemberVisibilityCanPrivate")
     var shaderProgram = Shaders.COLOR_TRANSITION
-    val position = CoordProperty()
+    override val position = CoordProperty()
     val rotation = RotationProperty()
     private var surfaceNormal = FloatArray(9)
 
@@ -41,15 +41,13 @@ class TriangleColoredObject(
             0.5f, 0.7f, 0.5f, 1.0f,
             0.5f, 0.5f, 0.7f, 1.0f)
 
-    init {
-        genNormal()
-    }
-
     private lateinit var vertexBuffer: FloatBuffer
     private lateinit var vertexColorsBuffer: FloatBuffer
     private lateinit var vertexNormalsBuffer: FloatBuffer
 
     override fun genBuffers(): Mesh {
+        genNormal()
+
         var bb = ByteBuffer.allocateDirect(36)  //  3 vertices * 3 coordinates * 4 bites
         bb.order(ByteOrder.nativeOrder())
         vertexBuffer = bb.asFloatBuffer()

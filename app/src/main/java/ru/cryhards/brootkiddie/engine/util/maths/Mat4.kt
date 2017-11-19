@@ -120,9 +120,9 @@ class Mat4 {
         )
 
         fun rotateY(alpha: Double): Mat4 = Mat4(
-                cos(alpha).toFloat(), 0f, sin(alpha).toFloat(), 0f,
+                cos(alpha).toFloat(), 0f, -sin(alpha).toFloat(), 0f,
                 0f, 1f, 0f, 0f,
-                -sin(alpha).toFloat(), 0f, cos(alpha).toFloat(), 0f,
+                sin(alpha).toFloat(), 0f, cos(alpha).toFloat(), 0f,
                 0f, 0f, 0f, 1f
         )
 

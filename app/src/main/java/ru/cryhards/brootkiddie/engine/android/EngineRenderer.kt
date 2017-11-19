@@ -18,7 +18,6 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         registry.renderer = this
-        GLES30.glClearColor(0.7f, 1.0f, 0.7f, 1.0f)
         GLES30.glClearColor(0f, 0f, 0f, 1.0f)
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
         Shaders.init(context)
@@ -35,7 +34,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onDrawFrame(p0: GL10?) {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
 
-        val viewMatrix = registry.activeCamera.getMatrix()
+        val viewMatrix = registry.environment.activeCamera.getMatrix()
         registry.environment.mvpMatrix = projectionMatrix.multiply(viewMatrix)
 
         registry.primaryLayer

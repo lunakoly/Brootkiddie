@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie
 
+import android.util.Log
 import ru.cryhards.brootkiddie.engine.android.EngineRegistry
 import ru.cryhards.brootkiddie.engine.environment.MeshManager
 import ru.cryhards.brootkiddie.engine.environment.RectangleColoredObject
@@ -73,10 +74,16 @@ class MyTask1 : Task {
 
 
         val cam = FPSCamera().withBehaviourOf(BasicFPSBehaviour(registry))
-        registry.activeCamera = cam
-        cam.position.z.value = -4f
+        registry.environment.activeCamera = cam
+        cam.position.z.value = 4f
         cam.rotation.horizontal.value = 0.2
         cam.rotation.vertical.value = -0.2
+
+//        Timer().scheduleAtFixedRate(object : TimerTask() {
+//            override fun run() {
+//                cam.position.x.value -= 0.01f
+//            }
+//        }, 0, 16)
 
         registry.environment.sunDirection.z.value = -0.3f
         registry.environment.sunDirection.x.value = -0.5f
