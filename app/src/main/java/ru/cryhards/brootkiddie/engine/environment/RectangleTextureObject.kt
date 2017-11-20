@@ -1,7 +1,6 @@
 package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
-import android.util.Log
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.TextureObject
@@ -116,8 +115,8 @@ class RectangleTextureObject(
         surfaceNormal[2] = vec1[0] * vec2[1] - vec2[0] * vec1[1]
 
         surfaceNormal[0] = 0.0f
-        surfaceNormal[1] = 1.0f
-        surfaceNormal[2] = 0.0f
+        surfaceNormal[1] = 0.0f
+        surfaceNormal[2] = 1.0f
 
         surfaceNormal[3] = surfaceNormal[0]
         surfaceNormal[4] = surfaceNormal[1]
@@ -130,8 +129,6 @@ class RectangleTextureObject(
         surfaceNormal[9] = surfaceNormal[0]
         surfaceNormal[10] = surfaceNormal[1]
         surfaceNormal[11] = surfaceNormal[2]
-
-        println(surfaceNormal[0].toString() + " " + surfaceNormal[1] + " " + surfaceNormal[2])
         return this
     }
 
