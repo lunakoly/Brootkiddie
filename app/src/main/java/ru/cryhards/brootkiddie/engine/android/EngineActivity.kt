@@ -1,6 +1,5 @@
 package ru.cryhards.brootkiddie.engine.android
 
-import android.os.Bundle
 import android.view.MotionEvent
 import ru.cryhards.brootkiddie.engine.android.templates.FullScreenActivity
 
@@ -10,11 +9,14 @@ import ru.cryhards.brootkiddie.engine.android.templates.FullScreenActivity
 open class EngineActivity : FullScreenActivity() {
     lateinit var registry: EngineRegistry
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val surface = EngineSurface(this)
-        setContentView(surface)
+    fun initSurface(value: EngineSurface) {
+        registry = value.registry
+        registry.activity = this
+    }
 
+    fun initSurface() {
+        val surface = EngineSurface(this, null)
+        setContentView(surface)
         registry = surface.registry
         registry.activity = this
     }

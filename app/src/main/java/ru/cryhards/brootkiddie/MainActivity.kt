@@ -7,6 +7,9 @@ class MainActivity : EngineActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.test_layout)
+
+        initSurface(findViewById(R.id.main_surface))
         registry.setTask(MyTask1())
     }
 }
