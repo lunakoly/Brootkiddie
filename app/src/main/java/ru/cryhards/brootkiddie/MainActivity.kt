@@ -10,6 +10,7 @@ class MainActivity : EngineActivity() {
         setContentView(R.layout.test_layout)
 
         initSurface(findViewById(R.id.main_surface))
-        registry.setTask(MyTask1())
+//        registry.setTask(MyTask1())
+        registry.setTask(MyTask2())
     }
 }

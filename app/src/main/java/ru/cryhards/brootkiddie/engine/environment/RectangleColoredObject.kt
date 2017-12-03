@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Primitive
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
@@ -18,7 +19,7 @@ class RectangleColoredObject(
         @Suppress("MemberVisibilityCanPrivate") val v1: CoordProperty,
         @Suppress("MemberVisibilityCanPrivate")val v2: CoordProperty,
         @Suppress("MemberVisibilityCanPrivate")val v3: CoordProperty,
-        @Suppress("MemberVisibilityCanPrivate")val v4: CoordProperty) : Mesh {
+        @Suppress("MemberVisibilityCanPrivate")val v4: CoordProperty) : Primitive {
 
     constructor(src: FloatArray) : this(
             CoordProperty(src[0], src[1], src[2]),
@@ -53,7 +54,7 @@ class RectangleColoredObject(
 
     private val vertexIndices = shortArrayOf(0, 1, 2, 0, 2, 3)
 
-    override fun genBuffers(): Mesh {
+    override fun genBuffers(): Primitive {
         genNormal()
 
         var bb = ByteBuffer.allocateDirect(48)  //  4 vertices * 3 coordinates * 4 bytes
@@ -82,7 +83,7 @@ class RectangleColoredObject(
         return this
     }
 
-    override fun getMatrix(): Mat4 {
+    override fun getModelMatrix(): Mat4 {
         val rotationMatrix = Mat4.lookAroundRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
@@ -139,7 +140,7 @@ class RectangleColoredObject(
         val aSurfaceNormalHandle = shaderProgram.setAttribute("aSurfaceNormal", 3, GLES30.GL_FLOAT, vertexNormalsBuffer)
         val aColorHandle = shaderProgram.setAttribute("aColor", 4, GLES30.GL_FLOAT, vertexColorsBuffer)
 
-        var modelMatrix = getMatrix()
+        var modelMatrix = getModelMatrix()
         val inverted = modelMatrix.invert()!!
         shaderProgram.setUniformMatrix4fv("uMMatrix", inverted.m)
         shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)

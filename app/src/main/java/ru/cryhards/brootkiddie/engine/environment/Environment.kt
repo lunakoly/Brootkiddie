@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie.engine.environment
 
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Camera
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
@@ -9,7 +10,7 @@ import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
  */
 class Environment {
     lateinit var activeCameraPositionMatrix: Mat4
-    lateinit var activeCamera: Viewable
+    lateinit var activeCamera: Camera
 
     var ambientLight = CoordProperty(0.1f, 0.1f, 0.1f)
     var sunlight = CoordProperty(1.0f, 1.0f, 0.99f)

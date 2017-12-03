@@ -30,15 +30,13 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
         GLES30.glViewport(0, 0, width, height)
-
-        val aspect = width.toFloat() / height
-        projectionMatrix = Mat4.frustrum(-aspect, aspect, -1f, 1f, 3f, 1000f)
     }
 
     override fun onDrawFrame(p0: GL10?) {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
 
-        val viewMatrix = registry.environment.activeCamera.getMatrix()
+        projectionMatrix = registry.environment.activeCamera.getProjectionMatrix()
+        val viewMatrix = registry.environment.activeCamera.getModelMatrix()
         registry.environment.mvpMatrix = projectionMatrix.multiply(viewMatrix)
 
         registry.environment.activeCameraPositionMatrix = Mat4.translate(

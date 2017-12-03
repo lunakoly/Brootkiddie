@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Primitive
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
@@ -16,7 +17,7 @@ import java.nio.FloatBuffer
 class TriangleColoredObject(
         @Suppress("MemberVisibilityCanPrivate")val v1: CoordProperty,
         @Suppress("MemberVisibilityCanPrivate")val v2: CoordProperty,
-        @Suppress("MemberVisibilityCanPrivate")val v3: CoordProperty) : Mesh {
+        @Suppress("MemberVisibilityCanPrivate")val v3: CoordProperty) : Primitive {
 
     constructor(src: FloatArray) : this(
             CoordProperty(src[0], src[1], src[2]),
@@ -45,7 +46,7 @@ class TriangleColoredObject(
     private lateinit var vertexColorsBuffer: FloatBuffer
     private lateinit var vertexNormalsBuffer: FloatBuffer
 
-    override fun genBuffers(): Mesh {
+    override fun genBuffers(): Primitive {
         genNormal()
 
         var bb = ByteBuffer.allocateDirect(36)  //  3 vertices * 3 coordinates * 4 bites
@@ -68,7 +69,7 @@ class TriangleColoredObject(
         return this
     }
 
-    override fun getMatrix(): Mat4 {
+    override fun getModelMatrix(): Mat4 {
         val rotationMatrix = Mat4.lookAroundRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
@@ -120,7 +121,7 @@ class TriangleColoredObject(
         val aSurfaceNormalHandle = shaderProgram.setAttribute("aSurfaceNormal", 3, GLES30.GL_FLOAT, vertexNormalsBuffer)
         val aColorHandle = shaderProgram.setAttribute("aColor", 4, GLES30.GL_FLOAT, vertexColorsBuffer)
 
-        var modelMatrix = getMatrix()
+        var modelMatrix = getModelMatrix()
         val inverted = modelMatrix.invert()!!
         shaderProgram.setUniformMatrix4fv("uMMatrix", inverted.m)
         shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)

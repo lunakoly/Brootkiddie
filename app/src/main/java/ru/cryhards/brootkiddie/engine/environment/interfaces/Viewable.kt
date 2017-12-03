@@ -8,5 +8,5 @@ import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
  */
 interface Viewable {
     val position: CoordProperty
-    fun getMatrix(): Mat4
+    fun getModelMatrix(): Mat4
 }

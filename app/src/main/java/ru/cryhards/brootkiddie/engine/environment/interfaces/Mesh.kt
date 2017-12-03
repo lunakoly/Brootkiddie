@@ -7,5 +7,4 @@ import ru.cryhards.brootkiddie.engine.environment.Environment
  */
 interface Mesh : Viewable {
     fun draw(environment: Environment): Mesh
-    fun genBuffers(): Mesh { return this }
 }

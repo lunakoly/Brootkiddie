@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.engine.environment
 
 import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
+import ru.cryhards.brootkiddie.engine.environment.interfaces.Primitive
 import ru.cryhards.brootkiddie.engine.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.TextureObject
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
@@ -21,7 +22,7 @@ class RectangleTextureObject(
         @Suppress("MemberVisibilityCanPrivate") val v1: CoordProperty,
         @Suppress("MemberVisibilityCanPrivate")val v2: CoordProperty,
         @Suppress("MemberVisibilityCanPrivate")val v3: CoordProperty,
-        @Suppress("MemberVisibilityCanPrivate")val v4: CoordProperty) : Mesh {
+        @Suppress("MemberVisibilityCanPrivate")val v4: CoordProperty) : Primitive {
 
     @Suppress("unused")
     constructor(texture: TextureObject, src: FloatArray) : this(
@@ -58,7 +59,7 @@ class RectangleTextureObject(
 
     private val vertexIndices = shortArrayOf(0, 1, 2, 0, 2, 3)
 
-    override fun genBuffers(): Mesh {
+    override fun genBuffers(): Primitive {
         genNormal()
 
         var bb = ByteBuffer.allocateDirect(48)  //  4 vertices * 3 coordinates * 4 bytes
@@ -87,7 +88,7 @@ class RectangleTextureObject(
         return this
     }
 
-    override fun getMatrix(): Mat4 {
+    override fun getModelMatrix(): Mat4 {
         val rotationMatrix = Mat4.lookAroundRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
@@ -153,7 +154,7 @@ class RectangleTextureObject(
                 GLES30.GL_TEXTURE_2D,
                 texture.getFrame(0))
 
-        var modelMatrix = getMatrix()
+        var modelMatrix = getModelMatrix()
         val inverted = modelMatrix.invert()!!
         shaderProgram.setUniformMatrix4fv("uMMatrix", inverted.m)
         shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)

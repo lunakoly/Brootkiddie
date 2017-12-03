@@ -22,7 +22,7 @@ class StaticObject(
     override val position = CoordProperty()
     val rotation = RotationProperty()
 
-    override fun getMatrix(): Mat4 {
+    override fun getModelMatrix(): Mat4 {
         val rotationMatrix = Mat4.lookAroundRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
@@ -39,7 +39,7 @@ class StaticObject(
         val aPositionHandle = shaderProgram.setAttribute("aPosition", 3, GLES30.GL_FLOAT, vertexBuffer)
         val aSurfaceNormalHandle = shaderProgram.setAttribute("aSurfaceNormal", 3, GLES30.GL_FLOAT, vertexNormalsBuffer)
 
-        var modelMatrix = getMatrix()
+        var modelMatrix = getModelMatrix()
         val inverted = modelMatrix.invert()!!
         shaderProgram.setUniformMatrix4fv("uMMatrix", inverted.m)
         shaderProgram.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)

@@ -3,15 +3,14 @@ package ru.cryhards.brootkiddie.engine.environment.cam
 import ru.cryhards.brootkiddie.engine.android.EngineRegistry
 import ru.cryhards.brootkiddie.engine.environment.interfaces.Camera
 import ru.cryhards.brootkiddie.engine.environment.interfaces.CameraBehaviour
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
 import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
 
 /**
- * Created with love by luna_koly on 31.10.2017.
+ * Created with love by luna_koly on 03.12.2017.
  */
-class FPSCamera(registry: EngineRegistry): Camera {
+class FloatCamera(registry: EngineRegistry) : Camera {
     override val position = CoordProperty()
     val rotation = RotationProperty()
     private val projectionMatrix: Mat4

@@ -73,7 +73,7 @@ class MyTask1 : Task {
         }, 0, 16)
 
 
-        val cam = FPSCamera().withBehaviourOf(BasicFPSBehaviour(registry))
+        val cam = FPSCamera(registry).withBehaviourOf(BasicFPSBehaviour(registry)) as FPSCamera
         registry.environment.activeCamera = cam
         cam.position.z.value = 4f
         cam.rotation.horizontal.value = 0.2

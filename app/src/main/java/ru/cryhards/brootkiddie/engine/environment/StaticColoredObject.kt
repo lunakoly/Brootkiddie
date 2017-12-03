@@ -33,8 +33,8 @@ class StaticColoredObject(
         delegate.shaderProgram = shaderProgram
     }
 
-    override fun getMatrix(): Mat4 {
-        return delegate.getMatrix()
+    override fun getModelMatrix(): Mat4 {
+        return delegate.getModelMatrix()
     }
 
     override fun draw(environment: Environment): Mesh {
