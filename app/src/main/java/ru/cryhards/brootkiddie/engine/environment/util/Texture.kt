@@ -1,9 +1,9 @@
-package ru.cryhards.brootkiddie.engine.util
+package ru.cryhards.brootkiddie.engine.environment.util
 
 /**
  * Created with love by luna_koly on 19.11.2017.
  */
-class TextureObject(
+class Texture(
         private val frames: IntArray, var duration: Long,
         val frameWidth: Int, val frameHeight: Int) {
 

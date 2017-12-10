@@ -29,8 +29,8 @@ class Mat4 {
         return res
     }
 
-    fun multiply(vec: Vec4): Vec4 {
-        var res = Vec4()
+    fun multiply(vec: Vec4Arr): Vec4Arr {
+        var res = Vec4Arr()
         Matrix.multiplyMV(res.v, 0, m, 0, vec.v, 0)
         return res
     }

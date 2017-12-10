@@ -1,11 +1,14 @@
-package ru.cryhards.brootkiddie.engine.util.prop
+package ru.cryhards.brootkiddie.engine.util.components
+
+import ru.cryhards.brootkiddie.engine.util.components.prop.NotNullableProperty
+import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
 /**
  * Created with love by luna_koly on 29.10.2017.
  */
-class CoordProperty(val x: NotNullableProperty<Float> = NotNullableProperty(0.0f),
-                    val y: NotNullableProperty<Float> = NotNullableProperty(0.0f),
-                    val z: NotNullableProperty<Float> = NotNullableProperty(0.0f)) {
+class Transform(x: NotNullableProperty<Float>,
+                y: NotNullableProperty<Float>,
+                z: NotNullableProperty<Float>) : Vec3<Float>(x, y, z) {
 
     constructor(x: Float = 0.0f,
                 y: Float = 0.0f,

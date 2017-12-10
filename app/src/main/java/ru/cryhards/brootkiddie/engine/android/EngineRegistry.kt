@@ -1,9 +1,7 @@
 package ru.cryhards.brootkiddie.engine.android
 
 import android.content.Context
-import ru.cryhards.brootkiddie.engine.environment.Environment
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Mesh
-import ru.cryhards.brootkiddie.engine.util.Task
+import ru.cryhards.brootkiddie.engine.environment.Scene
 
 /**
  * Created with love by luna_koly on 29.10.2017.
@@ -13,16 +11,14 @@ class EngineRegistry(var context: Context) {
     lateinit var surface: EngineSurface
     lateinit var activity: EngineActivity
 
-    private var task: Task? = null
+    val scenes = HashMap<String, Scene>()
+    var activeScene: Scene? = null
 
-    fun setTask(task: Task) {
-        this.task = task
+    fun switchScene(name: String) {
+        activeScene = scenes[name]
     }
 
-    fun runTask() {
-        task?.execute(this)
+    fun startScene() {
+        activeScene?.start(this)
     }
-
-    val primaryLayer = ArrayList<Mesh>()
-    var environment = Environment()
 }

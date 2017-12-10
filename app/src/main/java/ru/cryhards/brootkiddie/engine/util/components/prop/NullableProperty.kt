@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.util.prop
+package ru.cryhards.brootkiddie.engine.util.components.prop
 
 /**
  * Created with love by luna_koly on 26.10.2017.

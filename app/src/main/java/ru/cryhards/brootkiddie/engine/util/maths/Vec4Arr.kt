@@ -1,6 +1,6 @@
 package ru.cryhards.brootkiddie.engine.util.maths
 
-class Vec4 {
+class Vec4Arr {
     open var v: FloatArray
 
     constructor() {

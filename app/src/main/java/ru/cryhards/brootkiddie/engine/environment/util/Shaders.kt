@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.util
+package ru.cryhards.brootkiddie.engine.environment.util
 
 import android.content.Context
 import android.opengl.GLES30

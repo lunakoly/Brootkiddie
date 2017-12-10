@@ -1,38 +1,35 @@
 package ru.cryhards.brootkiddie.engine.environment.cam
 
-import ru.cryhards.brootkiddie.engine.android.EngineRegistry
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Camera
-import ru.cryhards.brootkiddie.engine.environment.interfaces.CameraBehaviour
-import ru.cryhards.brootkiddie.engine.environment.interfaces.Viewable
-import ru.cryhards.brootkiddie.engine.util.maths.Mat4
-import ru.cryhards.brootkiddie.engine.util.prop.CoordProperty
-import ru.cryhards.brootkiddie.engine.util.prop.RotationProperty
+import android.view.MotionEvent
 
 /**
  * Created with love by luna_koly on 31.10.2017.
  */
-class FPSCamera(registry: EngineRegistry): Camera {
-    override val position = CoordProperty()
-    val rotation = RotationProperty()
-    private val projectionMatrix: Mat4
+class FPSCamera: FrustumCamera() {
+    private var dragStartX: Float = 0f
+    private var dragStartY: Float = 0f
+    private var oldHorizontal: Double = 0.0
+    private var oldVertical: Double = 0.0
 
-    init {
-        val aspect = registry.surface.width.toFloat() / registry.surface.height
-        projectionMatrix = Mat4.frustrum(-aspect, aspect, -1f, 1f, 3f, 1000f)
-    }
+    override fun onTouchEvent(event: MotionEvent): Camera {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            dragStartX = event.x
+            dragStartY = event.y
+            oldHorizontal = rotation.horizontal.value
+            oldVertical = rotation.vertical.value
+            return this
+        }
 
-    override fun getModelMatrix(): Mat4 {
-        val camRotationMatrix = Mat4.lookAroundRotation(
-                rotation.horizontal.value,
-                rotation.vertical.value)
-        val camTransitionMatrix = Mat4.translate(
-                -position.x.value,
-                -position.y.value,
-                -position.z.value)
-        return camRotationMatrix.multiply(camTransitionMatrix)
-    }
+        val dragEndX = event.x
+        val dragEndY = event.y
+        val dx = dragEndX - dragStartX
+        val dy = dragEndY - dragStartY
 
-    override fun getProjectionMatrix(): Mat4 {
-        return projectionMatrix
+        try {
+            rotation.horizontal.value = oldHorizontal + dx / 1000
+            rotation.vertical.value = oldVertical - dy / 1000
+        } catch (e: Exception) {}
+
+        return this
     }
 }
