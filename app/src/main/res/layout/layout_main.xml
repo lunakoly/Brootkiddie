@@ -3,23 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
-    android:onClick="hideMenu">
+    tools:context=".MainActivity">
 
     <ru.cryhards.brootkiddie.engine.android.EngineSurface
         android:id="@+id/main_surface"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <Button
-        android:id="@+id/button_menu"
+        android:id="@+id/menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Menu"
         android:layout_alignParentStart="true"
-        android:onClick="showMenu"/>
+        android:onClick="toggleMenu"
+        android:text="Menu" />
 
     <LinearLayout
         android:id="@+id/navigation_menu"
