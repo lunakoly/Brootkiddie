@@ -156,5 +156,13 @@ class Mat4 {
 
             return mat.multiply(rx).multiply(ry)
         }
+
+        fun scale(x: Float, y: Float, z: Float): Mat4 = Mat4(
+                x, 0f, 0f, 0f,
+                0f, y, 0f, 0f,
+                0f, 0f, z, 0f,
+                0f, 0f, 0f, 1f
+        )
+
     }
 }

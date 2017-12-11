@@ -38,7 +38,7 @@ open class EngineActivity : FullScreenActivity() {
 //    }
 
     fun startScene(name: String): EngineActivity {
-        registry.switchScene(name)
+        registry.activeScene = registry.scenes[name]
         return this
     }
 

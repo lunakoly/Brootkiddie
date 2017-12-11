@@ -11,6 +11,9 @@ abstract class Object {
     val transform = Transform()
     val components = ArrayList<Component>()
 
+    val objects = ArrayList<Object>()
+    var parent: Object? = null
+
     init {
         components.add(transform)
     }
@@ -22,9 +25,24 @@ abstract class Object {
         return null
     }
 
-    open fun draw(environment: Environment): Object {
-        // Ha-ha, nothing man, keep going
+    open fun draw(environment: Environment, parentModelMatrix: Mat4): Object {
+        objects
+                .forEach { it.draw(environment, parentModelMatrix.multiply(getModelMatrix())) }
         return this
+    }
+
+    fun <T> ArrayList<T>.add(element: Object): Boolean {
+        element.parent = this@Object
+        return this.add(element)
+    }
+
+    fun getFullModelMatrix(): Mat4 {
+        val parentModelMatrix = if (parent != null)
+            parent!!.getFullModelMatrix()
+        else
+            Mat4.identity()
+
+        return getModelMatrix().multiply(parentModelMatrix)
     }
 
     abstract fun getModelMatrix(): Mat4

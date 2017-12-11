@@ -1,17 +1,17 @@
 package ru.cryhards.brootkiddie.engine.environment
 
-import android.util.Log
+import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.android.EngineRegistry
 import ru.cryhards.brootkiddie.engine.environment.cam.Camera
+import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 
 /**
  * Created with love by luna_koly on 10.12.2017.
  */
-abstract class Scene {
+abstract class Scene: Container() {
     lateinit var registry: EngineRegistry
 
     val environment = Environment()
-    val objects = ArrayList<Object>()
     val ui = ArrayList<Object>()
 
     var activeCamera: Camera? = null
@@ -20,5 +20,16 @@ abstract class Scene {
             field = value
         }
 
-    abstract fun start(registry: EngineRegistry)
+    override fun draw(environment: Environment, parentModelMatrix: Mat4): Object {
+        objects
+                .forEach { it.draw(environment, parentModelMatrix.multiply(getModelMatrix())) }
+        GLES30.glClear(GLES30.GL_DEPTH_BUFFER_BIT)
+        ui
+                .forEach { it.draw(environment, parentModelMatrix.multiply(getModelMatrix())) }
+        return this
+    }
+
+    abstract fun init()
+    abstract fun load()
+    abstract fun unload()
 }

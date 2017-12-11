@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.engine.android
 
 import android.content.Context
+import android.util.Log
 import ru.cryhards.brootkiddie.engine.environment.Scene
 
 /**
@@ -15,10 +16,13 @@ class EngineRegistry(var context: Context) {
     var activeScene: Scene? = null
 
     fun switchScene(name: String) {
+        activeScene?.unload()
         activeScene = scenes[name]
+        activeScene?.load()
     }
 
     fun startScene() {
-        activeScene?.start(this)
+        activeScene?.init()
+        activeScene?.load()
     }
 }

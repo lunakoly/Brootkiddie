@@ -1,9 +1,11 @@
 package ru.cryhards.brootkiddie.engine.environment.meshes
 
 import android.opengl.GLES30
+import android.util.Log
 import ru.cryhards.brootkiddie.engine.environment.Environment
 import ru.cryhards.brootkiddie.engine.environment.Object
 import ru.cryhards.brootkiddie.engine.environment.util.Material
+import ru.cryhards.brootkiddie.engine.util.Logger
 import ru.cryhards.brootkiddie.engine.util.components.Rotation
 import ru.cryhards.brootkiddie.engine.util.maths.Mat4
 import java.nio.FloatBuffer
@@ -38,7 +40,7 @@ class StaticObject(
         return translationMatrix.multiply(rotationMatrix)
     }
 
-    override fun draw(environment: Environment): Object {
+    override fun draw(environment: Environment, parentModelMatrix: Mat4): Object {
         val prog = material.shaderProgram
         prog.use()
 
@@ -49,7 +51,7 @@ class StaticObject(
         if (material.texture != null)
             aTextureCoordHandle = prog.setAttribute("aTextureCoord", 2, GLES30.GL_FLOAT, textureUVsBuffer)
 
-        var modelMatrix = getModelMatrix()
+        var modelMatrix = parentModelMatrix.multiply(getModelMatrix())
         val inverted = modelMatrix.invert()!!
         prog.setUniformMatrix4fv("uMMatrix", inverted.m)
         prog.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)

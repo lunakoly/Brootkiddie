@@ -46,7 +46,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val env = scene.environment
 
         val projectionMatrix = cam.getProjectionMatrix()
-        val viewMatrix =       cam.getModelMatrix()
+        val viewMatrix =       cam.getFullModelMatrix()
 
         env.mvpMatrix = projectionMatrix.multiply(viewMatrix)
         env.activeCameraPositionMatrix = Mat4.translate(
@@ -60,13 +60,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
                 cam.transform.z
         )
 
-        scene.objects
-                .forEach { it.draw(env) }
-
-        GLES30.glClear(GLES30.GL_DEPTH_BUFFER_BIT)
-
-        scene.ui
-                .forEach { it.draw(env) }
+        scene.draw(env, Mat4.identity())
     }
 
 }
