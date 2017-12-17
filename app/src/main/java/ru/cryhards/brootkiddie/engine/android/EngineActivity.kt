@@ -42,8 +42,8 @@ open class EngineActivity : FullScreenActivity() {
         return this
     }
 
-    fun addScene(name: String, scene: Scene): EngineActivity {
-        registry.scenes.put(name, scene)
+    fun addScene(scene: Scene): EngineActivity {
+        registry.scenes.put(scene.sceneName, scene)
         scene.registry = registry
         return this
     }

@@ -27,6 +27,7 @@ class StaticObject(
     init {
         components.add(rotation)
         components.add(scale)
+        components.add(material)
     }
 
 
@@ -108,6 +109,6 @@ class StaticObject(
         if (aTextureCoordHandle != null)
             prog.disableAttribute(aTextureCoordHandle)
 
-        return this
+        return super.draw(environment, modelMatrix)
     }
 }

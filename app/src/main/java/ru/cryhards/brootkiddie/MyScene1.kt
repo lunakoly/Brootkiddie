@@ -1,18 +1,14 @@
 package ru.cryhards.brootkiddie
 
-import ru.cryhards.brootkiddie.engine.environment.Container
-import ru.cryhards.brootkiddie.engine.environment.MeshFactory
 import ru.cryhards.brootkiddie.engine.environment.Scene
 import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
-import ru.cryhards.brootkiddie.engine.util.Logger
-import ru.cryhards.brootkiddie.engine.util.Timing
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
 /**
  * Created with love by luna_koly on 10.12.2017.
  */
-class MyScene1 : Scene() {
+class MyScene1(name: String) : Scene(name) {
     private lateinit var sphere: StaticObject
     private lateinit var cube: StaticObject
     private lateinit var plain: StaticObject
@@ -51,12 +47,14 @@ class MyScene1 : Scene() {
         environment.sunDirection.y.value = -1.0f
     }
 
+    override fun update() {
+        sphere.rotation.vertical.value += 0.01
+        cube.rotation.vertical.value += 0.01
+        cube.rotation.horizontal.value -= 0.01
+    }
+
     override fun load() {
-        Timing.repeat(0, 16) {
-            sphere.rotation.vertical.value += 0.01
-            cube.rotation.vertical.value += 0.01
-            cube.rotation.horizontal.value -= 0.01
-        }
+
     }
 
     override fun unload() {

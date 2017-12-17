@@ -1,12 +1,13 @@
 package ru.cryhards.brootkiddie.engine.environment.util
 
+import ru.cryhards.brootkiddie.engine.util.components.Component
 import ru.cryhards.brootkiddie.engine.util.components.prop.NotNullableProperty
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
 /**
  * Created with love by luna_koly on 10.12.2017.
  */
-class Material(var shaderProgram: ShaderProgram) {
+class Material(var shaderProgram: ShaderProgram): Component() {
     var texture: Texture? = null
     var ambientLight = Vec3(1f, 1f, 1f)
     var diffuseLight = Vec3(1f, 1f, 1f)

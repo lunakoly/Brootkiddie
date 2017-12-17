@@ -56,7 +56,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
                 cam.transform.z
         )
 
-        scene.draw(env, Matrix4())
+        scene.preUpdate(env, Matrix4())
     }
 
 }

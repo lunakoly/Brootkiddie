@@ -16,7 +16,7 @@ class EngineRegistry(var context: Context) {
     var activeScene: Scene? = null
 
     fun switchScene(name: String) {
-        activeScene?.unload()
+        activeScene?.preUnload()
         activeScene = scenes[name]
 
         if (activeScene == null)
@@ -24,15 +24,13 @@ class EngineRegistry(var context: Context) {
 
         if (!activeScene!!.isInitialized) {
             activeScene!!.preInit()
-            activeScene!!.init()
         }
 
-        activeScene!!.load()
+        activeScene!!.preLoad()
     }
 
     fun startScene() {
         activeScene?.preInit()
-        activeScene?.init()
-        activeScene?.load()
+        activeScene?.preLoad()
     }
 }
