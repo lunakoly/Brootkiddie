@@ -11,6 +11,8 @@ import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
 /**
+ * Main way to represent meshes
+ *
  * Created with love by luna_koly on 10.11.2017.
  */
 class StaticObject(
@@ -21,16 +23,26 @@ class StaticObject(
         private val textureUVsBuffer: FloatBuffer,
         var material: Material) : Object() {
 
+    /**
+     * Rotation component
+     */
     val rotation = Rotation()
+    /**
+     * Scale component
+     */
     val scale = Scale(1f, 1f, 1f)
 
     init {
+        // register components
         components.add(rotation)
         components.add(scale)
         components.add(material)
     }
 
 
+    /**
+     * Returns model matrix according to local parent
+     */
     override fun getModelMatrix(): Matrix4 {
         val camScaleMatrix = Matrix4.getScale(
                 scale.x.value,
@@ -48,6 +60,9 @@ class StaticObject(
                 .x(camScaleMatrix)
     }
 
+    /**
+     * Draws the object on the surface
+     */
     override fun draw(environment: Environment, parentModelMatrix: Matrix4): Object {
         val prog = material.shaderProgram
         prog.use()
@@ -56,8 +71,13 @@ class StaticObject(
         val aSurfaceNormalHandle = prog.setAttribute("aSurfaceNormal", 3, GLES30.GL_FLOAT, vertexNormalsBuffer)
 
         var aTextureCoordHandle: Int? = null
-        if (material.texture != null)
+        if (material.texture != null) {
             aTextureCoordHandle = prog.setAttribute("aTextureCoord", 2, GLES30.GL_FLOAT, textureUVsBuffer)
+            prog.setTexture("uTexture", 0, GLES30.GL_TEXTURE0, GLES30.GL_TEXTURE_2D, material.texture?.getFrame(environment.globalTime)!!)
+            prog.setUniform1i("uUseTexture", 1)
+        } else {
+            prog.setUniform1i("uUseTexture", 0)
+        }
 
         val modelMatrix = parentModelMatrix.x(getModelMatrix())
         prog.setUniformMatrix4fv("uMMatrix", modelMatrix.convert())
@@ -77,6 +97,8 @@ class StaticObject(
                 environment.eyePosition.y.value,
                 environment.eyePosition.z.value,
                 1f) // POINT
+
+        prog.setUniform1f("uScene.time", environment.globalTime.toFloat())
 
         prog.setUniform4f("uSunDirection",
                 environment.sunDirection.x.value,

@@ -1,6 +1,8 @@
 package ru.cryhards.brootkiddie.engine.util.components.prop
 
 /**
+ * Wrapper for listening not-nullable values
+ *
  * Created with love by luna_koly on 26.10.2017.
  */
 open class NotNullableProperty<T>(value: T,

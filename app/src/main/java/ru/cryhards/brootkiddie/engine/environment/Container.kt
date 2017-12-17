@@ -5,17 +5,31 @@ import ru.cryhards.brootkiddie.engine.util.components.Scale
 import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 
 /**
+ * Object that can hold other objects
+ *
  * Created with love by luna_koly on 12/11/17.
  */
 open class Container: Object() {
+    /**
+     * Rotation component
+     */
+    @Suppress("MemberVisibilityCanPrivate")
     val rotation = Rotation()
+    /**
+     * Scale component
+     */
+    @Suppress("MemberVisibilityCanPrivate")
     val scale = Scale(1.0f, 1.0f, 1.0f)
 
     init {
+        // register components
         components.add(rotation)
         components.add(scale)
     }
 
+    /**
+     * Returns model matrix according to local parent
+     */
     override fun getModelMatrix(): Matrix4 {
         val camScaleMatrix = Matrix4.getScale(
                 scale.x.value,

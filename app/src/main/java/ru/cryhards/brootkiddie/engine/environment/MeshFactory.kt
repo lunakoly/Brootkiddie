@@ -15,9 +15,14 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 /**
+ * Manager for building meshes
+ *
  * Created with love by luna_koly on 11.11.2017.
  */
 object MeshFactory {
+    /**
+     * Generates StaticObject with the specified data
+     */
     private fun genObject(
             vertices: FloatArray,
             vertexIndices: ShortArray,
@@ -58,6 +63,10 @@ object MeshFactory {
                 material)
     }
 
+    /**
+     * Returns StaticObject generated according
+     * to the given obj file
+     */
     fun loadObj(context: Context, path: String): StaticObject {
         val br = BufferedReader(InputStreamReader(context.assets.open(path)))
         var line = br.readLine()
@@ -125,13 +134,13 @@ object MeshFactory {
                 }
 
                 line.startsWith("usemtl") -> {
-                    val texpath = line.split(" ")
-                    texture = loadTexture(context, texpath.drop(1).joinToString(""))
+                    val texturePath = line.split(" ")
+                    texture = loadTexture(context, texturePath.drop(1).joinToString(""))
                 }
 
                 line.startsWith("mtllib") -> {
-                    val matpath = line.split(" ")
-                    material = loadMaterial(context, matpath.drop(1).joinToString(""))
+                    val materialPath = line.split(" ")
+                    material = loadMaterial(context, materialPath.drop(1).joinToString(""))
                 }
             }
             line = br.readLine()
@@ -151,7 +160,10 @@ object MeshFactory {
                 material)
     }
 
-    @Suppress("MemberVisibilityCanPrivate")
+    /**
+     * Returns Texture object according to
+     * the given obj file
+     */
     fun loadTexture(context: Context, path: String, framesCount: Int = 1, duration: Long = 0): Texture {
         val options = BitmapFactory.Options()
         options.inScaled = false
@@ -170,12 +182,16 @@ object MeshFactory {
                     GLES30.GL_TEXTURE_2D, 0,
                     Bitmap.createBitmap(bitmap, i * width, 0, width, height),
                     0)
-            bitmap.recycle()
         }
 
+        bitmap.recycle()
         return Texture(texts, duration, width, height)
     }
 
+    /**
+     * Returns Material object according to
+     * the given obj file
+     */
     @Suppress("MemberVisibilityCanPrivate")
     fun loadMaterial(context: Context, path: String): Material {
         val br = BufferedReader(InputStreamReader(context.assets.open(path)))
@@ -222,10 +238,10 @@ object MeshFactory {
                 }
 
                 line.startsWith("illum") -> {
-                    // TODO
+                    // something else
                 }
 
-                // TODO
+                // something else
             }
 
             line = br.readLine()

@@ -3,9 +3,12 @@ package ru.cryhards.brootkiddie.engine.environment.cam
 import android.view.MotionEvent
 
 /**
+ * Camera with 'observing' controls
+ *
  * Created with love by luna_koly on 03.12.2017.
  */
 class FloatCamera: PerspectiveCamera() {
+    // saving values
     private var dragStartX: Float = 0f
     private var dragStartY: Float = 0f
     private var oldHorizontal: Float = 0f

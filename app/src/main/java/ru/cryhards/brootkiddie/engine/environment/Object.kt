@@ -7,23 +7,51 @@ import ru.cryhards.brootkiddie.engine.util.components.Transform
 import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 
 /**
+ * Represents common scene object behaviour
+ *
  * Created with love by luna_koly on 10.12.2017.
  */
 abstract class Object {
+    /**
+     * Transform component
+     */
     val transform = Transform()
+    /**
+     * Holds references to all object's components
+     */
     val components = ArrayList<Component>()
+    /**
+     * Object behaviour controller
+     */
     var controller: ObjectController? = null
 
+
+    /**
+     * Holds references to child objects
+     */
     val objects = ObservableCollection<Object>()
+    /**
+     * Holds references to object's parent object
+     */
+    @Suppress("MemberVisibilityCanPrivate")
     var parent: Object? = null
+    // is that a bug that Intellij wants to make it private?
+
 
     init {
+        // register components
         components.add(transform)
+
+        // if a new child has been added, set his parent to this
+        // the listener is required only for this
         objects.listener = { it ->
             it.parent = this
         }
     }
 
+    /**
+     * Returns the component of the specified type
+     */
     inline fun <reified T> getComponent(): T? {
         for (comp in components)
             if (comp is T)
@@ -31,6 +59,9 @@ abstract class Object {
         return null
     }
 
+    /**
+     * Draws the object on the surface
+     */
     open fun draw(environment: Environment, parentModelMatrix: Matrix4): Object {
         objects.forEach {
             it.draw(environment, parentModelMatrix.x(getModelMatrix()))
@@ -38,31 +69,46 @@ abstract class Object {
         return this
     }
 
+    /**
+     * Runs controller's init() for self and all child objects
+     */
     open fun preInit(): Object {
         controller?.init()
         objects.forEach { it.preInit() }
         return this
     }
 
+    /**
+     * Runs controller's load() for self and all child objects
+     */
     open fun preLoad(): Object {
         controller?.load()
         objects.forEach { it.preLoad() }
         return this
     }
 
+    /**
+     * Runs controller's unload() for self and all child objects
+     */
     open fun preUnload(): Object {
         controller?.unload()
         objects.forEach { it.preUnload() }
         return this
     }
 
-    open fun preUpdate(environment: Environment, parentModelMatrix: Matrix4): Object {
-        controller?.update()
+    /**
+     * Runs controller's update() for self and all child objects
+     */
+    open fun preUpdate(environment: Environment, parentModelMatrix: Matrix4, dt: Long): Object {
+        controller?.update(dt)
         draw(environment, parentModelMatrix)
-        objects.forEach { it.preUpdate(environment, parentModelMatrix) }
+        objects.forEach { it.preUpdate(environment, parentModelMatrix, dt) }
         return this
     }
 
+    /**
+     * Returns model matrix multiplied by all of the parent ones
+     */
     fun getAbsoluteModelMatrix(): Matrix4 {
         val parentModelMatrix = if (parent != null)
             parent!!.getAbsoluteModelMatrix()
@@ -72,5 +118,8 @@ abstract class Object {
         return parentModelMatrix.x(getModelMatrix())
     }
 
+    /**
+     * Returns model matrix according to local parent
+     */
     abstract fun getModelMatrix(): Matrix4
 }

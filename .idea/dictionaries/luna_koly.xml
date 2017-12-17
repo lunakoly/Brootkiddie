@@ -4,8 +4,13 @@
       <w>brootkiddie</w>
       <w>coord</w>
       <w>cryhards</w>
+      <w>fovy</w>
+      <w>glunit</w>
+      <w>illum</w>
       <w>koly</w>
+      <w>mtllib</w>
       <w>shaders</w>
+      <w>usemtl</w>
     </words>
   </dictionary>
 </component>

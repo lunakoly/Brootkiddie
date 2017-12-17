@@ -7,6 +7,9 @@ varying vec4 vNormalPosition;
 attribute vec4 aSurfaceNormal;
 varying vec4 vSurfaceNormal;
 
+attribute vec2 aTextureCoord;
+varying vec2 vTextureCoord;
+
 uniform vec4 uSunDirection;
 varying vec4 vSunDirection;
 
@@ -27,4 +30,6 @@ void main() {
     vSurfaceNormal.w = 0.0;
     vSurfaceNormal = mvMat * vSurfaceNormal;
     vSunDirection = uVMatrix * normalize(uSunDirection);
+
+    vTextureCoord = aTextureCoord;
 }

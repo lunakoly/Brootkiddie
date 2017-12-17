@@ -3,7 +3,6 @@ package ru.cryhards.brootkiddie
 import android.os.Bundle
 import android.widget.Button
 import ru.cryhards.brootkiddie.engine.android.EngineActivity
-import ru.cryhards.brootkiddie.engine.util.MyScene2
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 import java.lang.Math.random
 

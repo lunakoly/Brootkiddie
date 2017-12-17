@@ -1,18 +1,26 @@
 package ru.cryhards.brootkiddie.engine.util.components.prop
 
 /**
+ * Template for listening property changes
+ *
  * Created with love by luna_koly on 27.10.2017.
  */
 class PropertyHandler<T> {
     private var onChangeListeners = ArrayList<(T?, T?) -> Unit>()
     private var onUseListeners = ArrayList<(T?) -> Unit>()
 
+    /**
+     * Called when value is changed
+     */
     fun onChange(old: T?, new: T?): PropertyHandler<T> {
         onChangeListeners
                 .forEach { it.invoke(old, new) }
         return this
     }
 
+    /**
+     * Called when value is used
+     */
     fun onUse(old: T?): PropertyHandler<T> {
         onUseListeners
                 .forEach { it.invoke(old) }

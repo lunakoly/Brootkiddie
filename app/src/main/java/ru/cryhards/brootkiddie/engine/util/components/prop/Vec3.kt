@@ -3,6 +3,8 @@ package ru.cryhards.brootkiddie.engine.util.components.prop
 import ru.cryhards.brootkiddie.engine.util.components.Component
 
 /**
+ * Container for 3 values
+ *
  * Created with love by luna_koly on 10.12.2017.
  */
 open class Vec3<T>(

@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.util
+package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.SphereController1
 import ru.cryhards.brootkiddie.engine.environment.Scene
@@ -36,7 +36,7 @@ class MyScene2(name: String): Scene(name) {
 
     }
 
-    override fun update() {
+    override fun update(dt: Long) {
         sphere.rotation.horizontal.value -= 0.01
     }
 }

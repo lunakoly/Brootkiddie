@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie
 
+import ru.cryhards.brootkiddie.engine.environment.MeshFactory
 import ru.cryhards.brootkiddie.engine.environment.Scene
 import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
@@ -38,6 +39,8 @@ class MyScene1(name: String) : Scene(name) {
         plain.material.diffuseLight = Vec3(0.5f, 0.8f, 0.5f)
         objects.add(plain)
 
+        cube.material.texture = MeshFactory.loadTexture(registry.context, "img/map2.jpeg", 2, 4000)
+
         val cam = FPSCamera()
         activeCamera = cam
         objects.add(cam)
@@ -47,7 +50,7 @@ class MyScene1(name: String) : Scene(name) {
         environment.sunDirection.y.value = -1.0f
     }
 
-    override fun update() {
+    override fun update(dt: Long) {
         sphere.rotation.vertical.value += 0.01
         cube.rotation.vertical.value += 0.01
         cube.rotation.horizontal.value -= 0.01

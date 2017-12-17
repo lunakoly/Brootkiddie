@@ -1,5 +1,9 @@
 package ru.cryhards.brootkiddie.engine.util.maths
 
+
+/**
+ * Vector4 objects with encapsulated calculations
+ */
 class Vector4(x: Float, y: Float, z: Float, w: Float) {
     private val v = floatArrayOf(x, y, z, w)
 
@@ -24,6 +28,9 @@ class Vector4(x: Float, y: Float, z: Float, w: Float) {
             this[3] = value
         }
 
+    /**
+     * Creates [0, 0, 0, 0]
+     */
     constructor() : this(0f, 0f, 0f, 0f)
 
     operator fun get(i: Int): Float = v[i]

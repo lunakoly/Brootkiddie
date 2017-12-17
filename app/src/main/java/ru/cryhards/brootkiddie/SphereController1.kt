@@ -23,7 +23,7 @@ class SphereController1(private val obj: Object): ObjectController {
 
     }
 
-    override fun update() {
+    override fun update(dt: Long) {
         material?.diffuseLight = Vec3(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat())
     }
 }

@@ -4,6 +4,8 @@ import android.opengl.GLES30
 import java.nio.Buffer
 
 /**
+ * Wrapper for OpenGl calls needed before rendering
+ *
  * Created with love by luna_koly on 11.11.2017.
  */
 class ShaderProgram(private val program: Int) {
@@ -49,8 +51,10 @@ class ShaderProgram(private val program: Int) {
         return uNameHandle
     }
 
-    fun drawArrays(mode: Int, first: Int, count: Int) {
-        GLES30.glDrawArrays(mode, first, count)
+    fun setUniform1i(uName: String, i: Int): Int {
+        val uNameHandle = GLES30.glGetUniformLocation(program, uName)
+        GLES30.glUniform1i(uNameHandle, i)
+        return uNameHandle
     }
 
     fun drawElements(mode: Int, count: Int, type: Int, indicesBuffer: Buffer) {
@@ -59,5 +63,13 @@ class ShaderProgram(private val program: Int) {
 
     fun disableAttribute(attribute: Int) {
         GLES30.glDisableVertexAttribArray(attribute)
+    }
+
+    fun setTexture(uName: String, unit: Int, glunit: Int, type: Int, id: Int): Int {
+        val uNameHandle = GLES30.glGetUniformLocation(program, uName)
+        GLES30.glActiveTexture(glunit)
+        GLES30.glBindTexture(type, id)
+        GLES30.glUniform1i(uNameHandle, unit)
+        return uNameHandle
     }
 }

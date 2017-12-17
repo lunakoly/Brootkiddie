@@ -4,6 +4,9 @@ import ru.cryhards.brootkiddie.engine.util.components.prop.NotNullableProperty
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec2
 
 /**
+ * Rotation component
+ * Represents object rotation
+ *
  * Created with love by luna_koly on 31.10.2017.
  */
 class Rotation(
@@ -21,12 +24,17 @@ class Rotation(
             y = value
         }
 
-
+    /**
+     * Creates (horizontal, vertical)
+     */
     constructor(horizontal: Double = 0.0,
                 vertical: Double = 0.0) : this(
             NotNullableProperty(horizontal),
             NotNullableProperty(vertical))
 
+    /**
+     * Creates (0, 0)
+     */
     constructor() : this(
             NotNullableProperty(0.0),
             NotNullableProperty(0.0))
