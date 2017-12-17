@@ -1,13 +1,12 @@
 package ru.cryhards.brootkiddie.engine.environment.meshes
 
 import android.opengl.GLES30
-import android.util.Log
 import ru.cryhards.brootkiddie.engine.environment.Environment
 import ru.cryhards.brootkiddie.engine.environment.Object
 import ru.cryhards.brootkiddie.engine.environment.util.Material
-import ru.cryhards.brootkiddie.engine.util.Logger
 import ru.cryhards.brootkiddie.engine.util.components.Rotation
-import ru.cryhards.brootkiddie.engine.util.maths.Mat4
+import ru.cryhards.brootkiddie.engine.util.components.Scale
+import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
@@ -23,24 +22,32 @@ class StaticObject(
         var material: Material) : Object() {
 
     val rotation = Rotation()
+    val scale = Scale(1f, 1f, 1f)
 
     init {
         components.add(rotation)
+        components.add(scale)
     }
 
 
-    override fun getModelMatrix(): Mat4 {
-        val rotationMatrix = Mat4.lookAroundRotation(
+    override fun getModelMatrix(): Matrix4 {
+        val camScaleMatrix = Matrix4.getScale(
+                scale.x.value,
+                scale.y.value,
+                scale.z.value)
+        val camRotationMatrix = Matrix4.getFPSRotation(
                 rotation.horizontal.value,
                 rotation.vertical.value)
-        val translationMatrix = Mat4.translate(
+        val camTransitionMatrix = Matrix4.getTranslation(
                 transform.x.value,
                 transform.y.value,
                 transform.z.value)
-        return translationMatrix.multiply(rotationMatrix)
+        return camTransitionMatrix
+                .x(camRotationMatrix)
+                .x(camScaleMatrix)
     }
 
-    override fun draw(environment: Environment, parentModelMatrix: Mat4): Object {
+    override fun draw(environment: Environment, parentModelMatrix: Matrix4): Object {
         val prog = material.shaderProgram
         prog.use()
 
@@ -51,34 +58,48 @@ class StaticObject(
         if (material.texture != null)
             aTextureCoordHandle = prog.setAttribute("aTextureCoord", 2, GLES30.GL_FLOAT, textureUVsBuffer)
 
-        var modelMatrix = parentModelMatrix.multiply(getModelMatrix())
-        val inverted = modelMatrix.invert()!!
-        prog.setUniformMatrix4fv("uMMatrix", inverted.m)
-        prog.setUniformMatrix4fv("uMVMatrix", environment.mvpMatrix.m)
-        modelMatrix = environment.mvpMatrix.multiply(modelMatrix)
-        prog.setUniformMatrix4fv("uMVPMatrix", modelMatrix.m)
+        val modelMatrix = parentModelMatrix.x(getModelMatrix())
+        prog.setUniformMatrix4fv("uMMatrix", modelMatrix.convert())
+        prog.setUniformMatrix4fv("uVMatrix", environment.vMatrix.convert())
+        prog.setUniformMatrix4fv("uPMatrix", environment.pMatrix.convert())
 
-        prog.setUniform3f("uAmbientLight",
-                environment.ambientLight.x.value,
-                environment.ambientLight.y.value,
-                environment.ambientLight.z.value)
+        prog.setUniform1f("uScene.ambientCoefficient",
+                environment.ambientCoefficient.value)
 
-        prog.setUniform3f("uSunlight",
+        prog.setUniform3f("uScene.sunlight",
                 environment.sunlight.x.value,
                 environment.sunlight.y.value,
                 environment.sunlight.z.value)
 
-        prog.setUniform3f("uSunDirection",
-                environment.sunDirection.x.value,
-                environment.sunDirection.y.value,
-                environment.sunDirection.z.value)
-
-        prog.setUniform3f("uEyePosition",
+        prog.setUniform4f("uScene.eyePosition",
                 environment.eyePosition.x.value,
                 environment.eyePosition.y.value,
-                environment.eyePosition.z.value)
+                environment.eyePosition.z.value,
+                1f) // POINT
 
-        prog.setUniformMatrix4fv("uEyePositionMatrix", environment.activeCameraPositionMatrix.m)
+        prog.setUniform4f("uSunDirection",
+                environment.sunDirection.x.value,
+                environment.sunDirection.y.value,
+                environment.sunDirection.z.value,
+                0f) // VECTOR
+
+        prog.setUniform3f("uMaterial.ambientLight",
+                material.ambientLight.x.value,
+                material.ambientLight.y.value,
+                material.ambientLight.z.value)
+
+        prog.setUniform3f("uMaterial.diffuseLight",
+                material.diffuseLight.x.value,
+                material.diffuseLight.y.value,
+                material.diffuseLight.z.value)
+
+        prog.setUniform3f("uMaterial.specularLight",
+                material.specularLight.x.value,
+                material.specularLight.y.value,
+                material.specularLight.z.value)
+
+        prog.setUniform1f("uMaterial.shininess", material.shininess.value)
+        prog.setUniform1f("uMaterial.opacity", material.opacity.value)
 
         prog.drawElements(GLES30.GL_TRIANGLES, vertexIndicesSize, GLES30.GL_UNSIGNED_SHORT, vertexIndicesBuffer)
         prog.disableAttribute(aPositionHandle)

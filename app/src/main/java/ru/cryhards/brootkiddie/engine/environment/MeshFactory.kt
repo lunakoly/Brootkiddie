@@ -213,12 +213,12 @@ object MeshFactory {
 
                 line[0].toString() + line[1] == "Tr" -> {
                     val values = line.split(" ")
-                    material.transparency.value = 1 - values[1].toFloat()
+                    material.opacity.value = 1 - values[1].toFloat()
                 }
 
                 line[0] == 'd' -> {
                     val values = line.split(" ")
-                    material.transparency.value = values[1].toFloat()
+                    material.opacity.value = values[1].toFloat()
                 }
 
                 line.startsWith("illum") -> {

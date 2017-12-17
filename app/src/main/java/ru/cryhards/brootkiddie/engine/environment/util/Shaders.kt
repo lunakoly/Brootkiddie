@@ -16,36 +16,36 @@ object Shaders {
     lateinit var OBJ_COLOR: ShaderProgram
 
     fun init(context: Context) {
-        BASIC = ShaderProgram(genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
-                        "shaders/basic_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
-                        "shaders/basic_fragment_shader.fsh"))
-        ))
-        COLOR_TRANSITION = ShaderProgram(genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
-                        "shaders/color_transition_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
-                        "shaders/color_transition_fragment_shader.fsh"))
-        ))
+//        BASIC = ShaderProgram(genShaderProgram(
+//                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+//                        "shaders/basic_vertex_shader.vsh")),
+//                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+//                        "shaders/basic_fragment_shader.fsh"))
+//        ))
+//        COLOR_TRANSITION = ShaderProgram(genShaderProgram(
+//                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+//                        "shaders/color_transition_vertex_shader.vsh")),
+//                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+//                        "shaders/color_transition_fragment_shader.fsh"))
+//        ))
         OBJ = ShaderProgram(genShaderProgram(
                 genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
                         "shaders/obj_vertex_shader.vsh")),
                 genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
                         "shaders/obj_fragment_shader.fsh"))
         ))
-        OBJ_COLOR = ShaderProgram(genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
-                        "shaders/obj_color_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
-                        "shaders/obj_color_fragment_shader.fsh"))
-        ))
-        TEXTURE = ShaderProgram(genShaderProgram(
-                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
-                        "shaders/texture2_vertex_shader.vsh")),
-                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
-                        "shaders/texture2_fragment_shader.fsh"))
-        ))
+//        OBJ_COLOR = ShaderProgram(genShaderProgram(
+//                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+//                        "shaders/obj_color_vertex_shader.vsh")),
+//                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+//                        "shaders/obj_color_fragment_shader.fsh"))
+//        ))
+//        TEXTURE = ShaderProgram(genShaderProgram(
+//                genShader(GLES30.GL_VERTEX_SHADER, loadFile(context,
+//                        "shaders/texture2_vertex_shader.vsh")),
+//                genShader(GLES30.GL_FRAGMENT_SHADER, loadFile(context,
+//                        "shaders/texture2_fragment_shader.fsh"))
+//        ))
     }
 
     private fun loadFile(context: Context, path: String): String {

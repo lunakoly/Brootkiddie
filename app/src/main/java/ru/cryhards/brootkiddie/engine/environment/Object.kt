@@ -1,8 +1,9 @@
 package ru.cryhards.brootkiddie.engine.environment
 
+import ru.cryhards.brootkiddie.engine.environment.util.ObservableCollection
 import ru.cryhards.brootkiddie.engine.util.components.Component
 import ru.cryhards.brootkiddie.engine.util.components.Transform
-import ru.cryhards.brootkiddie.engine.util.maths.Mat4
+import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 
 /**
  * Created with love by luna_koly on 10.12.2017.
@@ -11,11 +12,14 @@ abstract class Object {
     val transform = Transform()
     val components = ArrayList<Component>()
 
-    val objects = ArrayList<Object>()
+    val objects = ObservableCollection<Object>()
     var parent: Object? = null
 
     init {
         components.add(transform)
+        objects.listener = { it ->
+            it.parent = this
+        }
     }
 
     inline fun <reified T> getComponent(): T? {
@@ -25,25 +29,21 @@ abstract class Object {
         return null
     }
 
-    open fun draw(environment: Environment, parentModelMatrix: Mat4): Object {
-        objects
-                .forEach { it.draw(environment, parentModelMatrix.multiply(getModelMatrix())) }
+    open fun draw(environment: Environment, parentModelMatrix: Matrix4): Object {
+        objects.forEach {
+            it.draw(environment, parentModelMatrix.x(getModelMatrix()))
+        }
         return this
     }
 
-    fun <T> ArrayList<T>.add(element: Object): Boolean {
-        element.parent = this@Object
-        return this.add(element)
-    }
-
-    fun getFullModelMatrix(): Mat4 {
+    fun getAbsoluteModelMatrix(): Matrix4 {
         val parentModelMatrix = if (parent != null)
-            parent!!.getFullModelMatrix()
+            parent!!.getAbsoluteModelMatrix()
         else
-            Mat4.identity()
+            Matrix4()
 
-        return getModelMatrix().multiply(parentModelMatrix)
+        return parentModelMatrix.x(getModelMatrix())
     }
 
-    abstract fun getModelMatrix(): Mat4
+    abstract fun getModelMatrix(): Matrix4
 }

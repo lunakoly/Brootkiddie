@@ -1,6 +1,5 @@
 package ru.cryhards.brootkiddie.engine.environment.util
 
-import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.util.components.prop.NotNullableProperty
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
@@ -9,9 +8,9 @@ import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
  */
 class Material(var shaderProgram: ShaderProgram) {
     var texture: Texture? = null
-    var ambientLight = Vec3(0f, 0f, 0f)
-    var diffuseLight = Vec3(0f, 0f, 0f)
-    var specularLight = Vec3(0f, 0f, 0f)
-    var shininess = NotNullableProperty(0.0f)
-    var transparency = NotNullableProperty(0.0f)
+    var ambientLight = Vec3(1f, 1f, 1f)
+    var diffuseLight = Vec3(1f, 1f, 1f)
+    var specularLight = Vec3(1f, 1f, 1f)
+    var shininess = NotNullableProperty(8.0f)
+    var opacity = NotNullableProperty(1.0f)
 }

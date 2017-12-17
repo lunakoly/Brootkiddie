@@ -8,7 +8,7 @@ import ru.cryhards.brootkiddie.engine.environment.Scene
  * Created with love by luna_koly on 29.10.2017.
  */
 open class EngineActivity : FullScreenActivity() {
-    private lateinit var registry: EngineRegistry
+    protected lateinit var registry: EngineRegistry
 
     fun initSurface(value: EngineSurface): EngineActivity {
         registry = value.registry

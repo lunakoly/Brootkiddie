@@ -37,6 +37,18 @@ class ShaderProgram(private val program: Int) {
         return uNameHandle
     }
 
+    fun setUniform4f(uName: String, x: Float, y: Float, z: Float, w: Float): Int {
+        val uNameHandle = GLES30.glGetUniformLocation(program, uName)
+        GLES30.glUniform4f(uNameHandle, x, y, z, w)
+        return uNameHandle
+    }
+
+    fun setUniform1f(uName: String, f: Float): Int {
+        val uNameHandle = GLES30.glGetUniformLocation(program, uName)
+        GLES30.glUniform1f(uNameHandle, f)
+        return uNameHandle
+    }
+
     fun drawArrays(mode: Int, first: Int, count: Int) {
         GLES30.glDrawArrays(mode, first, count)
     }

@@ -3,10 +3,10 @@ package ru.cryhards.brootkiddie.engine.android
 import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
-import android.util.Log
 import ru.cryhards.brootkiddie.engine.environment.util.Shaders
+import ru.cryhards.brootkiddie.engine.util.Logger
 import ru.cryhards.brootkiddie.engine.util.components.Transform
-import ru.cryhards.brootkiddie.engine.util.maths.Mat4
+import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
@@ -23,6 +23,8 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
         GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA)
         GLES30.glEnable(GLES30.GL_BLEND)
+        GLES30.glEnable(GLES30.GL_CULL_FACE)
+        GLES30.glCullFace(GLES30.GL_FRONT)
 
         Shaders.init(context)
         registry.startScene()
@@ -45,14 +47,8 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
         val cam = scene.activeCamera!!
         val env = scene.environment
 
-        val projectionMatrix = cam.getProjectionMatrix()
-        val viewMatrix =       cam.getFullModelMatrix()
-
-        env.mvpMatrix = projectionMatrix.multiply(viewMatrix)
-        env.activeCameraPositionMatrix = Mat4.translate(
-                -cam.transform.x.value,
-                -cam.transform.y.value,
-                -cam.transform.z.value).invert()!!
+        env.vMatrix = cam.getAbsoluteModelMatrix().invert()
+        env.pMatrix = cam.getProjectionMatrix()
 
         env.eyePosition = Transform(
                 cam.transform.x,
@@ -60,7 +56,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
                 cam.transform.z
         )
 
-        scene.draw(env, Mat4.identity())
+        scene.draw(env, Matrix4())
     }
 
 }

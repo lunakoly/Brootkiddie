@@ -5,7 +5,7 @@ import android.view.MotionEvent
 /**
  * Created with love by luna_koly on 31.10.2017.
  */
-class FPSCamera: FrustumCamera() {
+class FPSCamera: PerspectiveCamera() {
     private var dragStartX: Float = 0f
     private var dragStartY: Float = 0f
     private var oldHorizontal: Double = 0.0
