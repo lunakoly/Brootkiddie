@@ -2,17 +2,14 @@ package ru.cryhards.brootkiddie
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import ru.cryhards.brootkiddie.engine.android.EngineActivity
-import android.widget.ArrayAdapter
-import android.support.v4.widget.DrawerLayout
-import android.R.array
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Intent
+import android.provider.Browser
 import android.util.Log
 import android.view.MotionEvent
-import android.widget.ListView
-import kotlinx.android.synthetic.main.layout_main.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 import java.lang.Math.random
@@ -23,7 +20,7 @@ class MainActivity : EngineActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_main)
+        setContentView(R.layout.activity_main)
 
         initSurface(findViewById(R.id.main_surface))
         addScene(MyScene1("intro"))
@@ -50,6 +47,7 @@ class MainActivity : EngineActivity() {
 
     fun launchBrowserActivity(v : View) {
         Log.i("Click", "Browser")
+        startActivity(Intent(this, BrowserActivity::class.java))
     }
 
     fun launchTingActivity(v : View) {
