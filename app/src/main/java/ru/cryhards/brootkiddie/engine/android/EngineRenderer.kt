@@ -3,8 +3,10 @@ package ru.cryhards.brootkiddie.engine.android
 import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
-import ru.cryhards.brootkiddie.engine.util.Shaders
-import ru.cryhards.brootkiddie.engine.util.maths.Mat4
+import ru.cryhards.brootkiddie.engine.environment.util.Shaders
+import ru.cryhards.brootkiddie.engine.util.Logger
+import ru.cryhards.brootkiddie.engine.util.components.Transform
+import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
@@ -14,8 +16,6 @@ import javax.microedition.khronos.opengles.GL10
 class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
     var registry = EngineRegistry(context)
 
-    private var projectionMatrix = Mat4()
-
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
         registry.renderer = this
 
@@ -23,9 +23,11 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
         GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA)
         GLES30.glEnable(GLES30.GL_BLEND)
+        GLES30.glEnable(GLES30.GL_CULL_FACE)
+        GLES30.glCullFace(GLES30.GL_FRONT)
 
         Shaders.init(context)
-        registry.runTask()
+        registry.startScene()
     }
 
     override fun onSurfaceChanged(p0: GL10?, width: Int, height: Int) {
@@ -35,17 +37,26 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onDrawFrame(p0: GL10?) {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
 
-        projectionMatrix = registry.environment.activeCamera.getProjectionMatrix()
-        val viewMatrix = registry.environment.activeCamera.getModelMatrix()
-        registry.environment.mvpMatrix = projectionMatrix.multiply(viewMatrix)
+        if (registry.activeScene == null)
+            return
 
-        registry.environment.activeCameraPositionMatrix = Mat4.translate(
-                -registry.environment.activeCamera.position.x.value,
-                -registry.environment.activeCamera.position.y.value,
-                -registry.environment.activeCamera.position.z.value).invert()!!
+        if (registry.activeScene?.activeCamera == null)
+            return
 
-        registry.primaryLayer
-                .forEach { it.draw(registry.environment) }
+        val scene = registry.activeScene!!
+        val cam = scene.activeCamera!!
+        val env = scene.environment
+
+        env.vMatrix = cam.getAbsoluteModelMatrix().invert()
+        env.pMatrix = cam.getProjectionMatrix()
+
+        env.eyePosition = Transform(
+                cam.transform.x,
+                cam.transform.y,
+                cam.transform.z
+        )
+
+        scene.draw(env, Matrix4())
     }
 
 }

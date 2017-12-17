@@ -1,25 +1,39 @@
 precision mediump float;
-uniform vec3 uAmbientLight;
-uniform vec3 uEyePosition;
-uniform vec3 uSunlight;
-uniform mat4 uMMatrix;
-uniform mat4 uEyePositionMatrix;
 
+uniform struct sScene {
+    float ambientCoefficient;
+    vec3 sunlight;
+    vec4 eyePosition;
+} uScene;
+
+uniform struct sMaterial {
+    vec3 ambientLight;
+    vec3 diffuseLight;
+    vec3 specularLight;
+    float shininess;
+    float opacity;
+} uMaterial;
+
+
+varying vec4 vPosition;
+varying vec4 vNormalPosition;
 varying vec4 vSurfaceNormal;
 varying vec4 vSunDirection;
-varying vec4 vPosition;
+
 
 void main() {
-    float angleCos = max(0.0, dot(vSurfaceNormal, vSunDirection));
+    vec3 ambient = uScene.sunlight * uMaterial.ambientLight * uScene.ambientCoefficient;
 
-    vec4 reflection = reflect(-vSunDirection, vSurfaceNormal);
-    vec4 eyeDirection = uMMatrix * uEyePositionMatrix * normalize(vec4(uEyePosition.xyz - vPosition.xyz, 0.0));
+    float diffuseCoefficient = max(0.0, dot(vSurfaceNormal, -vSunDirection));
+    vec3 diffuse = diffuseCoefficient * uScene.sunlight * uMaterial.diffuseLight;
 
-    float blink = max(0.0, dot(reflection, eyeDirection));
-    blink = pow(blink, 2.0);
+    vec4 directionToCam = normalize(uScene.eyePosition - vPosition);
+    float specularCoefficient = pow(max(0.0, dot(directionToCam, reflect(vSunDirection, vSurfaceNormal))), uMaterial.shininess);
+    vec3 specular = specularCoefficient * uScene.sunlight * uMaterial.specularLight;
 
-    gl_FragColor = vec4(
-        angleCos * vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz +
-        blink * vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz +
-        vec3(0.5, 0.5, 0.5).xyz * uSunlight.xyz * uAmbientLight.xyz, 1.0);
+    float distanceToLight = 0.0; // SUN
+    float attenuation = 1.0 / (1.0 + distanceToLight * distanceToLight);
+
+    vec3 linearColor = ambient + attenuation * (diffuse + specular);
+    gl_FragColor = vec4(linearColor, uMaterial.opacity);
 }

@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import ru.cryhards.brootkiddie.engine.android.EngineActivity
 import android.widget.ArrayAdapter
 import android.support.v4.widget.DrawerLayout
@@ -11,6 +12,8 @@ import android.util.Log
 import android.widget.ListView
 import kotlinx.android.synthetic.main.layout_main.*
 
+import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
+import java.lang.Math.random
 
 class MainActivity : EngineActivity() {
 
@@ -21,8 +24,14 @@ class MainActivity : EngineActivity() {
         setContentView(R.layout.layout_main)
 
         initSurface(findViewById(R.id.main_surface))
-//        registry.setTask(MyTask1())
-        registry.setTask(MyTask2())
+        addScene("intro", MyScene1())
+        startScene("intro")
+
+        val btn = findViewById<Button>(R.id.lolkek)
+        btn.setOnClickListener {
+            val env = registry.activeScene?.environment
+            env?.sunlight = Vec3(random().toFloat(), random().toFloat(), random().toFloat())
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

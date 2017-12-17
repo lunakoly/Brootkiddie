@@ -1,19 +1,30 @@
 precision mediump float;
+
 attribute vec4 aPosition;
-attribute vec3 aSurfaceNormal;
-
-uniform vec3 uSunDirection;
-uniform mat4 uMVPMatrix;
-uniform mat4 uMMatrix;
-
-varying vec4 vSurfaceNormal;
-varying vec4 vSunDirection;
 varying vec4 vPosition;
+varying vec4 vNormalPosition;
+
+attribute vec4 aSurfaceNormal;
+varying vec4 vSurfaceNormal;
+
+uniform vec4 uSunDirection;
+varying vec4 vSunDirection;
+
+uniform mat4 uMMatrix;
+uniform mat4 uVMatrix;
+uniform mat4 uPMatrix;
 
 
 void main() {
-    gl_Position = uMVPMatrix * aPosition;
-    vPosition = aPosition;
-    vSurfaceNormal = vec4(normalize(aSurfaceNormal).xyz, 0.0);
-    vSunDirection = -normalize(uMMatrix * vec4(uSunDirection.xyz, 0.0));
+    mat4 mvMat = uVMatrix * uMMatrix;
+    mat4 mvpMat = uPMatrix * uVMatrix * uMMatrix;
+
+    vNormalPosition = aPosition;
+    gl_Position = mvpMat * aPosition;
+    vPosition = gl_Position;
+
+    vSurfaceNormal = aSurfaceNormal;
+    vSurfaceNormal.w = 0.0;
+    vSurfaceNormal = mvMat * vSurfaceNormal;
+    vSunDirection = uVMatrix * normalize(uSunDirection);
 }
