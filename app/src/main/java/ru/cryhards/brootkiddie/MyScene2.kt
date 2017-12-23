@@ -25,6 +25,16 @@ class MyScene2(name: String): Scene(name) {
 
         val cam = FloatCamera()
         activeCamera = cam
+        cam.transform.y.value = -2.0f
+        cam.transform.x.value = -2.0f
+
+        cam.maxX.value = -1.5f
+        cam.minX.value = -2.5f
+        cam.maxY.value = -1.5f
+        cam.minY.value = -2.5f
+
+        cam.transform.x.value = -2.0f
+
         objects.add(cam)
     }
 
