@@ -1,16 +1,14 @@
 package ru.cryhards.brootkiddie
 
-import android.os.Bundle
-import android.view.View
-import ru.cryhards.brootkiddie.engine.android.EngineActivity
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.provider.Browser
+import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-
+import ru.cryhards.brootkiddie.engine.android.EngineActivity
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 import java.lang.Math.random
 
@@ -23,18 +21,12 @@ class MainActivity : EngineActivity() {
         setContentView(R.layout.activity_main)
 
         initSurface(findViewById(R.id.main_surface))
-        addScene(MyScene1("intro"))
-        addScene(MyScene2("test"))
-        startScene("intro")
+        addScene(SceneContinent("continent"))
+        startScene("continent")
 
         val btn = button_darknet
         btn.setOnClickListener {
-            if (registry.activeScene?.sceneName == "intro")
-                registry.switchScene("test")
-            else {
-                registry.switchScene("intro")
-                registry.activeScene?.environment?.sunlight = Vec3(random().toFloat(), random().toFloat(), random().toFloat())
-            }
+            registry.activeScene?.environment?.sunlight = Vec3(random().toFloat(), random().toFloat(), random().toFloat())
         }
 
         main_surface.setOnTouchListener{v, event ->  if (event.action == MotionEvent.ACTION_DOWN && menuVisible) toggleMenu(v); false}

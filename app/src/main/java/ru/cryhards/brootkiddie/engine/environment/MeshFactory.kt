@@ -7,6 +7,7 @@ import android.opengl.GLES30
 import android.opengl.GLUtils
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
 import ru.cryhards.brootkiddie.engine.environment.util.Material
+import ru.cryhards.brootkiddie.engine.environment.util.MaterialLibrary
 import ru.cryhards.brootkiddie.engine.environment.util.Shaders
 import ru.cryhards.brootkiddie.engine.environment.util.Texture
 import java.io.BufferedReader
@@ -68,7 +69,7 @@ object MeshFactory {
      * to the given obj file
      */
     fun loadObj(context: Context, path: String): StaticObject {
-        val br = BufferedReader(InputStreamReader(context.assets.open(path)))
+        val br = BufferedReader(InputStreamReader(context.assets.open("models/" + path)))
         var line = br.readLine()
 
         val verticesData = ArrayList<Float>()
@@ -83,14 +84,14 @@ object MeshFactory {
         var texture: Texture? = null
 
         while (line != null) {
-            when {
-                line[0].toString() + line[1] == "vt" -> {
+            if (line.isNotEmpty()) when {
+                line.startsWith("vt") -> {
                     val values = line.split(" ")
                     texturesData.add(values[1].toFloat())
                     texturesData.add(values[2].toFloat())
                 }
 
-                line[0].toString() + line[1] == "vn" -> {
+                line.startsWith("vn") -> {
                     val values = line.split(" ")
                     normalsData.add(values[1].toFloat())
                     normalsData.add(values[2].toFloat())
@@ -167,7 +168,7 @@ object MeshFactory {
     fun loadTexture(context: Context, path: String, framesCount: Int = 1, duration: Long = 0): Texture {
         val options = BitmapFactory.Options()
         options.inScaled = false
-        val bitmap = BitmapFactory.decodeStream(context.assets.open(path), null, options)
+        val bitmap = BitmapFactory.decodeStream(context.assets.open("texture/" + path), null, options)
         val width = bitmap.width / framesCount
         val height = bitmap.height
 
@@ -193,41 +194,107 @@ object MeshFactory {
      * the given obj file
      */
     @Suppress("MemberVisibilityCanPrivate")
+    fun loadMaterialLibrary(context: Context, path: String): MaterialLibrary {
+        val br = BufferedReader(InputStreamReader(context.assets.open("materials/" + path)))
+        var line = br.readLine()
+
+        val mtllib = MaterialLibrary(Shaders.OBJ)
+
+        var currentName: String? = null
+        var currentMaterial: Material? = null
+
+        while (line != null) {
+            if (line.isNotEmpty()) when {
+                line.startsWith("newmtl") -> {
+                    val values = line.split(" ")
+                    currentName = values[1]
+                    currentMaterial = Material(Shaders.OBJ)
+                    mtllib.materials.put(currentName, currentMaterial)
+                }
+
+                line.startsWith("Kd") -> {
+                    val values = line.split(" ")
+
+                    currentMaterial!!.diffuseLight.r.value = values[1].toFloat()
+                    currentMaterial.diffuseLight.g.value = values[2].toFloat()
+                    currentMaterial.diffuseLight.b.value = values[3].toFloat()
+                }
+
+                line.startsWith("Ks") -> {
+                    val values = line.split(" ")
+                    currentMaterial!!.specularLight.r.value = values[1].toFloat()
+                    currentMaterial.specularLight.g.value = values[2].toFloat()
+                    currentMaterial.specularLight.b.value = values[3].toFloat()
+                }
+
+                line.startsWith("Ns") -> {
+                    val values = line.split(" ")
+                    currentMaterial!!.shininess.value = values[1].toFloat()
+                }
+
+                line.startsWith("Tr") -> {
+                    val values = line.split(" ")
+                    currentMaterial!!.opacity.value = 1 - values[1].toFloat()
+                }
+
+                line[0] == 'd' -> {
+                    val values = line.split(" ")
+                    currentMaterial!!.opacity.value = values[1].toFloat()
+                }
+
+                line.startsWith("illum") -> {
+                    // something else
+                }
+
+            // something else
+            }
+
+            line = br.readLine()
+        }
+
+        return mtllib
+    }
+
+    /**
+     * Returns Material object according to
+     * the given obj file
+     */
+    @Suppress("MemberVisibilityCanPrivate")
     fun loadMaterial(context: Context, path: String): Material {
-        val br = BufferedReader(InputStreamReader(context.assets.open(path)))
+        val br = BufferedReader(InputStreamReader(context.assets.open("materials/" + path)))
         var line = br.readLine()
 
         val material = Material(Shaders.OBJ)
 
         while (line != null) {
-            when {
-                line[0].toString() + line[1] == "Ka" -> {
+            if (line.isNotEmpty()) when {
+                line.startsWith("Ka") -> {
                     val values = line.split(" ")
                     material.ambientLight.r.value = values[1].toFloat()
                     material.ambientLight.g.value = values[2].toFloat()
                     material.ambientLight.b.value = values[3].toFloat()
                 }
 
-                line[0].toString() + line[1] == "Kd" -> {
+                line.startsWith("Kd") -> {
                     val values = line.split(" ")
                     material.diffuseLight.r.value = values[1].toFloat()
                     material.diffuseLight.g.value = values[2].toFloat()
                     material.diffuseLight.b.value = values[3].toFloat()
                 }
 
-                line[0].toString() + line[1] == "Ks" -> {
+                line.startsWith("Ks") -> {
                     val values = line.split(" ")
                     material.specularLight.r.value = values[1].toFloat()
                     material.specularLight.g.value = values[2].toFloat()
                     material.specularLight.b.value = values[3].toFloat()
                 }
 
-                line[0].toString() + line[1] == "Ns" -> {
+                line.startsWith("Ns") -> {
                     val values = line.split(" ")
                     material.shininess.value = values[1].toFloat()
                 }
 
-                line[0].toString() + line[1] == "Tr" -> {
+                line.startsWith("Tr") -> {
                     val values = line.split(" ")
                     material.opacity.value = 1 - values[1].toFloat()
                 }
@@ -241,7 +308,7 @@ object MeshFactory {
                     // something else
                 }
 
-                // something else
+            // something else
             }
 
             line = br.readLine()
