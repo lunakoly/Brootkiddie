@@ -119,6 +119,16 @@ abstract class Object {
     }
 
     /**
+     * Returns the root of the hierarchy
+     */
+    fun getAbsoluteParent(): Object {
+        return if (parent != null)
+            parent!!
+        else
+            this
+    }
+
+    /**
      * Returns model matrix according to local parent
      */
     abstract fun getModelMatrix(): Matrix4

@@ -13,6 +13,8 @@ open class OrthographicCamera: Camera() {
     private lateinit var orthographicMatrix: Matrix4
     private var lastAspect = 0.0f
 
+    protected lateinit var surface: EngineSurface
+
     /**
      * Rotation component
      */
@@ -28,6 +30,7 @@ open class OrthographicCamera: Camera() {
      * Invalidate projection dimensions
      */
     override fun onActivatedEvent(surface: EngineSurface): Camera {
+        this.surface = surface
         lastAspect = surface.width.toFloat() / surface.height
         orthographicMatrix = Matrix4.getScale(1 / lastAspect, 1f, 0.001f)
         return this

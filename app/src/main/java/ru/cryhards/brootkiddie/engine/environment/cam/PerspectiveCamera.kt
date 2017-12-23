@@ -13,6 +13,8 @@ open class PerspectiveCamera : Camera() {
     private lateinit var projectionMatrix: Matrix4
     private var lastAspect = 0.0f
 
+    protected lateinit var surface: EngineSurface
+
     /**
      * Rotation component
      */
@@ -28,6 +30,7 @@ open class PerspectiveCamera : Camera() {
      * Invalidate projection dimensions
      */
     override fun onActivatedEvent(surface: EngineSurface): Camera {
+        this.surface = surface
         lastAspect = surface.width.toFloat() / surface.height
         projectionMatrix = Matrix4.getPerspective(0.785f, lastAspect, 0.1f, 1000f)
         return this

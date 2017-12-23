@@ -45,7 +45,7 @@ class MyScene1(name: String) : Scene(name) {
 //        cube.material.texture = MeshFactory.loadTexture(registry.context, "img/diamond.png")
 //        cube.material.type.value = Materials.SKIN
 
-        val cam = FPSCamera()
+        val cam = PickingFPSCam()
         activeCamera = cam
         objects.add(cam)
 
