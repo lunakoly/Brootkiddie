@@ -13,6 +13,7 @@ uniform struct sMaterial {
     vec3 specularLight;
     float shininess;
     float opacity;
+    int type;
 } uMaterial;
 
 uniform sampler2D uTexture;
@@ -23,6 +24,11 @@ varying vec4 vNormalPosition;
 varying vec4 vSurfaceNormal;
 varying vec4 vSunDirection;
 varying vec2 vTextureCoord;
+
+
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
 
 void main() {
@@ -46,5 +52,11 @@ void main() {
     float attenuation = 1.0 / (1.0 + distanceToLight * distanceToLight);
 
     vec3 linearColor = ambient + attenuation * (diffuse + specular);
-    gl_FragColor = vec4(linearColor * tex.rgb, uMaterial.opacity);
+
+    if (tex.a != 0.0)
+        gl_FragColor = vec4(linearColor * tex.rgb, uMaterial.opacity);
+    else if (uMaterial.type == 0)
+        gl_FragColor = vec4(linearColor, uMaterial.opacity);
+    else
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 }

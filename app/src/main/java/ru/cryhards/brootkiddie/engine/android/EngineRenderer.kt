@@ -76,6 +76,7 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
         env.globalTime = System.currentTimeMillis()
         val dt = env.globalTime - oldTime
+        oldTime = env.globalTime
         env.globalTime %= 1000000          // shaders value size(
 
         // do the job

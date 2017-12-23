@@ -139,6 +139,6 @@ abstract class Scene(val sceneName: String): Container(), ObjectController {
         /**
          * Returns basic plain
          */
-        fun Plain(): StaticObject = MeshFactory.loadObj(context, "models/plain.obj")
+        fun Plane(): StaticObject = MeshFactory.loadObj(context, "models/plane.obj")
     }
 }

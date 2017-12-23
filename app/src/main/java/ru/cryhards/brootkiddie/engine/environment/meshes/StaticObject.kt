@@ -4,6 +4,7 @@ import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.environment.Environment
 import ru.cryhards.brootkiddie.engine.environment.Object
 import ru.cryhards.brootkiddie.engine.environment.util.Material
+import ru.cryhards.brootkiddie.engine.environment.util.Materials
 import ru.cryhards.brootkiddie.engine.util.components.Rotation
 import ru.cryhards.brootkiddie.engine.util.components.Scale
 import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
@@ -123,6 +124,11 @@ class StaticObject(
 
         prog.setUniform1f("uMaterial.shininess", material.shininess.value)
         prog.setUniform1f("uMaterial.opacity", material.opacity.value)
+
+        prog.setUniform1i("uMaterial.type", when (material.type.value) {
+            Materials.STICKER -> 0
+            Materials.SKIN -> 1
+        })
 
         prog.drawElements(GLES30.GL_TRIANGLES, vertexIndicesSize, GLES30.GL_UNSIGNED_SHORT, vertexIndicesBuffer)
         prog.disableAttribute(aPositionHandle)

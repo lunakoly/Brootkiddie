@@ -47,6 +47,6 @@ class MyScene2(name: String): Scene(name) {
     }
 
     override fun update(dt: Long) {
-        sphere.rotation.horizontal.value -= 0.01
+        sphere.rotation.horizontal.value -= 0.01 * dt / 16.0
     }
 }

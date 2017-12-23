@@ -34,4 +34,8 @@ class Material(var shaderProgram: ShaderProgram): Component() {
      * If 1.0 than object tends to be fully opaque
      */
     var opacity = NotNullableProperty(1.0f)
+    /**
+     * If 1.0 than object tends to be fully opaque
+     */
+    var type = NotNullableProperty(Materials.STICKER)
 }
