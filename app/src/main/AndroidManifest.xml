@@ -19,15 +19,19 @@
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".BrowserActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_browser"/>
+            android:label="@string/title_activity_browser"
+            android:screenOrientation="landscape" />
+        <activity android:name=".CodeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie.engine.environment.cam
 
+import android.util.Log
 import android.view.MotionEvent
 import ru.cryhards.brootkiddie.engine.util.components.prop.NullableProperty
 
@@ -67,7 +68,8 @@ open class FloatCamera: OrthographicCamera() {
 
             transform.x.value = newX
             transform.y.value = newY
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+        }
 
         return this
     }

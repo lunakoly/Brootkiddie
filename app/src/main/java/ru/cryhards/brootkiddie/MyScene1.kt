@@ -3,6 +3,7 @@ package ru.cryhards.brootkiddie
 import ru.cryhards.brootkiddie.engine.environment.MeshFactory
 import ru.cryhards.brootkiddie.engine.environment.Scene
 import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
+import ru.cryhards.brootkiddie.engine.environment.cam.ScalableFPSCamera
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
@@ -45,9 +46,11 @@ class MyScene1(name: String) : Scene(name) {
 //        cube.material.texture = MeshFactory.loadTexture(registry.context, "img/diamond.png")
 //        cube.material.type.value = Materials.SKIN
 
-        val cam = FPSCamera()
+        val cam = ScalableFPSCamera()
         activeCamera = cam
         objects.add(cam)
+
+        cam.transform.z.value = -1f
 
         environment.sunDirection.z.value = -0.3f
         environment.sunDirection.x.value = -0.5f

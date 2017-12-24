@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,48 +9,111 @@
     <ru.cryhards.brootkiddie.engine.android.EngineSurface
         android:id="@+id/main_surface"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/menu_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="bottom|right|end"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bitcoin"
+            android:tint="@android:color/background_light" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/moneyView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/gradient_horizontal_dark"
+            android:fontFamily="@font/font_family_main_menu"
+            android:text="12312"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/background_light"
+            android:gravity="end" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/malwareCountView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/gradient_horizontal_dark"
+            android:fontFamily="@font/font_family_main_menu"
+            android:text="12312"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/background_light"
+            android:gravity="end" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/timeView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/gradient_horizontal_dark"
+            android:fontFamily="@font/font_family_main_menu"
+            android:gravity="end"
+            android:text="Day 0"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/background_light" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:scaleType="fitStart"
+            android:src="@drawable/button_settings"
+            android:tint="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/menu_button"
+        style="@style/MainMenuButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="@null"
         android:onClick="toggleMenu"
-        android:text="Menu" />
+        android:text="@string/menu" />
 
     <LinearLayout
         android:id="@+id/navigation_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@drawable/gradient_vertical"
         android:gravity="end"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.AppCompatButton
+            style="@style/MainMenuButton"
             android:onClick="launchBrowserActivity"
             android:text="@string/str_button_browser" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.AppCompatButton
+            style="@style/MainMenuButton"
             android:onClick="launchTingActivity"
             android:text="@string/str_button_ting" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.AppCompatButton
+            style="@style/MainMenuButton"
             android:onClick="launchCodeActivity"
             android:text="@string/str_button_code" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/button_darknet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MainMenuButton"
             android:onClick="launchDarkNetActivity"
             android:text="@string/str_button_darknet" />
 

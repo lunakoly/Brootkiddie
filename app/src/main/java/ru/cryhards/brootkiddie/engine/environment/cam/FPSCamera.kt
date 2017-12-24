@@ -9,17 +9,17 @@ import android.view.MotionEvent
  */
 open class FPSCamera: PerspectiveCamera() {
     // saving values
-    private var dragStartX: Float = 0f
-    private var dragStartY: Float = 0f
-    private var oldHorizontal: Double = 0.0
-    private var oldVertical: Double = 0.0
+    var dragStartX: Float = 0f
+    var dragStartY: Float = 0f
+    var oldHorizontalR: Double = 0.0
+    var oldVerticalR: Double = 0.0
 
     override fun onTouchEvent(event: MotionEvent): Camera {
         if (event.action == MotionEvent.ACTION_DOWN) {
             dragStartX = event.x
             dragStartY = event.y
-            oldHorizontal = rotation.horizontal.value
-            oldVertical = rotation.vertical.value
+            oldHorizontalR = rotation.horizontal.value
+            oldVerticalR = rotation.vertical.value
             return this
         }
 
@@ -29,8 +29,8 @@ open class FPSCamera: PerspectiveCamera() {
         val dy = dragEndY - dragStartY
 
         try {
-            rotation.horizontal.value = oldHorizontal + dx / 1000
-            rotation.vertical.value = oldVertical - dy / 1000
+            rotation.horizontal.value = oldHorizontalR + dx / 1000
+            rotation.vertical.value = oldVerticalR - dy / 1000
         } catch (e: Exception) {}
 
         return this
