@@ -2,7 +2,7 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.engine.environment.Object
 import ru.cryhards.brootkiddie.engine.environment.util.Material
-import ru.cryhards.brootkiddie.engine.environment.util.ObjectController
+import ru.cryhards.brootkiddie.engine.environment.meshes.ObjectController
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
 /**

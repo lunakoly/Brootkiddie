@@ -3,6 +3,7 @@ package ru.cryhards.brootkiddie.engine.android
 import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
+import android.view.MotionEvent
 import ru.cryhards.brootkiddie.engine.environment.util.Shaders
 import ru.cryhards.brootkiddie.engine.util.components.Transform
 import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
@@ -24,6 +25,11 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
      * Used to calculate dt
      */
     private var oldTime: Long = 0
+
+    /**
+     * List of jobs to be done before rendering
+     */
+    private val sideJob = ArrayList<() -> Unit>()
 
 
     override fun onSurfaceCreated(p0: GL10?, p1: EGLConfig?) {
@@ -60,6 +66,12 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
         if (registry.activeScene?.activeCamera == null)
             return
 
+        // "I've never asked for this"
+        synchronized(sideJob) {
+            sideJob.forEach { it.invoke() }
+            sideJob.clear()
+        }
+
         val scene = registry.activeScene!!
         val cam = scene.activeCamera!!
         val env = scene.environment
@@ -81,6 +93,15 @@ class EngineRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
         // do the job
         scene.preUpdate(env, Matrix4(), dt)
+    }
+
+    /**
+     * Tells Renderer that there is a job need
+     * to be done synchronously with rendering
+     * process
+     */
+    fun addJob(job: () -> Unit) {
+        sideJob.add(job)
     }
 
 }

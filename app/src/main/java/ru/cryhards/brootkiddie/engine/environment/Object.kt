@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.engine.environment
 
-import ru.cryhards.brootkiddie.engine.environment.util.ObjectController
+import ru.cryhards.brootkiddie.engine.environment.meshes.ObjectController
+import ru.cryhards.brootkiddie.engine.environment.meshes.colliders.ObjectCollider
 import ru.cryhards.brootkiddie.engine.environment.util.ObservableCollection
 import ru.cryhards.brootkiddie.engine.util.components.Component
 import ru.cryhards.brootkiddie.engine.util.components.Transform
@@ -24,6 +25,10 @@ abstract class Object {
      * Object behaviour controller
      */
     var controller: ObjectController? = null
+    /**
+     * Object collisions calculations helper
+     */
+    var collider: ObjectCollider? = null
 
 
     /**

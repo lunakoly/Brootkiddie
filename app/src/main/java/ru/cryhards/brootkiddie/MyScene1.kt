@@ -2,8 +2,8 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.engine.environment.MeshFactory
 import ru.cryhards.brootkiddie.engine.environment.Scene
-import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
+import ru.cryhards.brootkiddie.engine.environment.meshes.colliders.PlaneCollider
 import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 
 /**
@@ -12,7 +12,7 @@ import ru.cryhards.brootkiddie.engine.util.components.prop.Vec3
 class MyScene1(name: String) : Scene(name) {
     private lateinit var sphere: StaticObject
     private lateinit var cube: StaticObject
-    private lateinit var plain: StaticObject
+    private lateinit var plane: StaticObject
 
     override fun init() {
         sphere = new.Sphere()
@@ -23,15 +23,15 @@ class MyScene1(name: String) : Scene(name) {
         sphere.material.specularLight = Vec3(1f, 0.8f, 0.5f)
         objects.add(sphere)
 
-        plain = new.Plane()
-        plain.transform.z.value = 3f
-        plain.transform.y.value = -5f
-        plain.scale.x.value = 10f
-        plain.scale.y.value = 10f
-        plain.rotation.vertical.value = 3.14 / 2
-        plain.material.shininess.value = 256f
-        plain.material.diffuseLight = Vec3(0.5f, 0.8f, 0.5f)
-        objects.add(plain)
+        plane = new.Plane()
+        plane.transform.z.value = 3f
+        plane.transform.y.value = -5f
+        plane.scale.x.value = 10f
+        plane.scale.y.value = 10f
+        plane.rotation.vertical.value = 3.14 / 2
+        plane.material.shininess.value = 256f
+        plane.material.diffuseLight = Vec3(0.5f, 0.8f, 0.5f)
+        objects.add(plane)
 
         cube = new.Cube()
         cube.transform.y.value = -2.0f
@@ -48,6 +48,10 @@ class MyScene1(name: String) : Scene(name) {
         val cam = PickingFPSCam()
         activeCamera = cam
         objects.add(cam)
+
+
+        plane.collider = PlaneCollider(plane)
+
 
         environment.sunDirection.z.value = -0.3f
         environment.sunDirection.x.value = -0.5f

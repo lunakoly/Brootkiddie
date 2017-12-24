@@ -1,38 +1,44 @@
 package ru.cryhards.brootkiddie
 
 import android.view.MotionEvent
+import ru.cryhards.brootkiddie.engine.environment.MeshFactory
+import ru.cryhards.brootkiddie.engine.environment.Object
 import ru.cryhards.brootkiddie.engine.environment.cam.Camera
 import ru.cryhards.brootkiddie.engine.environment.cam.FPSCamera
-import ru.cryhards.brootkiddie.engine.util.Logger
-import ru.cryhards.brootkiddie.engine.util.maths.Vector4
 
 /**
  * Created with love by luna_koly on 23.12.2017.
  */
 class PickingFPSCam: FPSCamera() {
     override fun onTouchEvent(event: MotionEvent): Camera {
-        if (event.action == MotionEvent.ACTION_DOWN) {
+        if (event.action == MotionEvent.ACTION_UP) {
+            val worldRay = getDirectionRay(event.x, event.y)
+            val camOrigin = getGlobalPosition()
+            val scene = getAbsoluteParent()
 
-            val srcRay = Vector4(
-                    2 * (event.x) / surface.width - 1.0f,
-                    -2 * (event.y) / surface.height + 1.0f,
-                    1f, 0f)
+            val objs = scene.objects
+            val adding = ArrayList<Object>()
 
-            val eyeRay = getProjectionMatrix().invert().x(srcRay)
-            eyeRay.z = 1f
-            eyeRay.w = 0f
-
-            val worldRay = getAbsoluteModelMatrix().x(srcRay).normalize()
-
-
-            val objs = getAbsoluteParent().objects
             for (o in objs) {
-//            val objectMat = o.getAbsoluteModelMatrix().invert()
+                if (o.collider != null) {
+                    val p = o.collider!!.intersect(camOrigin, worldRay)
+
+                    if (p.w == 1f) {
+                        val s = MeshFactory.loadObj(surface.context, "models/sphere.obj")
+                        s.scale.x.value = 0.3f
+                        s.scale.y.value = 0.3f
+                        s.scale.z.value = 0.3f
+                        s.transform.x.value = p.x
+                        s.transform.y.value = p.y
+                        s.transform.z.value = p.z
+                        adding.add(s)
+                    }
+                }
             }
 
-//        env.pMatrix = getProjectionMatrix()
-
-//        println(event.x)
+            surface.registry.renderer.addJob {
+                adding.forEach { scene.objects.add(it) }
+            }
         }
 
         return super.onTouchEvent(event)

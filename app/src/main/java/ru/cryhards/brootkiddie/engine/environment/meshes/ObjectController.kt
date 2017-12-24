@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.engine.environment.util
+package ru.cryhards.brootkiddie.engine.environment.meshes
 
 /**
  * Controls object behaviour

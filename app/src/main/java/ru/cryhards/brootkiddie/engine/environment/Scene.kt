@@ -5,7 +5,7 @@ import android.opengl.GLES30
 import ru.cryhards.brootkiddie.engine.android.EngineRegistry
 import ru.cryhards.brootkiddie.engine.environment.cam.Camera
 import ru.cryhards.brootkiddie.engine.environment.meshes.StaticObject
-import ru.cryhards.brootkiddie.engine.environment.util.ObjectController
+import ru.cryhards.brootkiddie.engine.environment.meshes.ObjectController
 import ru.cryhards.brootkiddie.engine.util.maths.Matrix4
 
 /**
