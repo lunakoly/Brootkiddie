@@ -8,6 +8,7 @@ open class Player {
 
     val totalNodes = Int.MAX_VALUE
     var infectedNodes = 1
+    var crypto = 0f
     var days = 0
     lateinit var distribution : Distribution
 
@@ -19,6 +20,7 @@ open class Player {
         {
             m.recalcStats()
             infectedNodes += m.infected
+            crypto += m.minedcrypto
         }
     }
 }
