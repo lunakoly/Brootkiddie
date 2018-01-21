@@ -33,9 +33,9 @@ open class GlobalMapScreen(game: Game, batch: SpriteBatch) : BaseScreen(game, ba
 
         val ftfg = FreeTypeFontGenerator(Gdx.files.internal("fonts/roboto.ttf"))
         val par = FreeTypeFontGenerator.FreeTypeFontParameter()
-        par.size = 100
+        par.size = 50
 
-        infectedLabel = Label("INFECTED : ${player.infectedNodes} DAY : ${player.days}", Label.LabelStyle(ftfg.generateFont(par), Color(0f, 0f, 0f, 1f)))
+        infectedLabel = Label("DAY: ${player.days} INFECTED: ${player.infectedNodes} CRYPTO: ${player.crypto}", Label.LabelStyle(ftfg.generateFont(par), Color(0f, 0f, 0f, 1f)))
         infectedLabel.x = 0f
         infectedLabel.y = 0f
 
@@ -67,7 +67,7 @@ open class GlobalMapScreen(game: Game, batch: SpriteBatch) : BaseScreen(game, ba
     }
 
     private fun updateUi(){
-        infectedLabel.setText("INFECTED : ${player.infectedNodes} DAY : ${player.days}")
+        infectedLabel.setText("DAY: ${player.days} INFECTED: ${player.infectedNodes} CRYPTO: ${player.crypto}")
     }
 
 }
