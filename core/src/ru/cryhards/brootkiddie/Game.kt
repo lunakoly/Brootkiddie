@@ -9,12 +9,14 @@ import ru.cryhards.brootkiddie.screens.GlobalMapScreen
 import java.util.*
 
 class Game : ApplicationAdapter() {
-    lateinit internal var batch: SpriteBatch
-    internal var screenStack: Stack<BaseScreen> = Stack()
+    lateinit var batch: SpriteBatch
+    var screenStack: Stack<BaseScreen> = Stack()
+    var player = Player()
 
     override fun create() {
         batch = SpriteBatch()
         screenStack.push(GlobalMapScreen(this, batch))
+        player.loadProfile()
     }
 
     override fun render() {
