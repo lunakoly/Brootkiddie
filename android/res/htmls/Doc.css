@@ -1,0 +1,39 @@
+﻿*{
+	box-sizing: border-box
+}
+#main{
+	width: 820px;
+	margin: 0 auto;
+	border: 5px solid black;
+	
+}
+#header{
+	height: 120px;
+	border-bottom: 5px solid black;
+	background: url(logo.png) no-repeat 0% center
+}
+
+}
+#content{
+	height: 300px;
+	text-align: center;
+}
+#footer{
+	height: 150px;
+	clear: both;
+	border-top: 5px solid black;
+	text-align: center
+}
+#title{
+	font-size: 36px;
+	float: left;
+	margin-left: 180px;
+	font-family: tahoma;
+	color: red;
+	padding-top: 30px;
+	text-shadow: 0 0 5px black;
+}
+.menu{
+	list-style: none;
+}
+	
