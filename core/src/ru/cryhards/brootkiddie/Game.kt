@@ -13,6 +13,11 @@ class Game : ApplicationAdapter() {
     var screenStack: Stack<BaseScreen> = Stack()
     var player = Player()
 
+    val FPS = 45f
+    private val SPF = 1f / FPS
+    private var prevRenderTime = 0f
+    private var curTime = 0f
+
     override fun create() {
         batch = SpriteBatch()
         screenStack.push(GlobalMapScreen(this, batch))
@@ -28,8 +33,13 @@ class Game : ApplicationAdapter() {
             return
         }
 
-        screenStack.peek().update(Gdx.graphics.deltaTime)
-        screenStack.peek().render()
+        screenStack.peek().act(Gdx.graphics.deltaTime)
+
+        curTime += Gdx.graphics.deltaTime
+        if (curTime - prevRenderTime > SPF) {
+            screenStack.peek().draw()
+            prevRenderTime = curTime
+        }
     }
 
     override fun dispose() {
