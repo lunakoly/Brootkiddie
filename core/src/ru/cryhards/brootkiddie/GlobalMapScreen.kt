@@ -28,8 +28,8 @@ class GlobalMapScreen : Screen {
 
     var ticksToNextDay = ticksInDay
 
-    lateinit var infectedLabel : Label
-
+    val infectedLabel : Label
+    val cryptoLabel : Label
 
     private val cam = OrthographicCamera()  // width & height are not important due to FitViewport
     private val stage = Stage(FitViewport(
@@ -57,6 +57,13 @@ class GlobalMapScreen : Screen {
         infectedLabel.y = 0f
 
         stage.addActor(infectedLabel)
+
+        cryptoLabel = Label("CRYPTO : ${player.crypto}", Label.LabelStyle(ftfg.generateFont(par), Color(0f, 0f, 0f, 1f)))
+        infectedLabel.x = 0f
+        infectedLabel.y = 100f
+
+        stage.addActor(infectedLabel)
+        stage.addActor(cryptoLabel)
 
         val stageAspect = stage.width / stage.height
         val mapAspect = map.width / map.height
@@ -126,5 +133,6 @@ class GlobalMapScreen : Screen {
 
     private fun updateUi(){
         infectedLabel.setText("INFECTED : ${player.infectedNodes} DAY : ${player.days}")
+        cryptoLabel.setText("CRYPTO : ${player.infectedNodes}")
     }
 }
