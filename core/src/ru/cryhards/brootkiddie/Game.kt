@@ -25,9 +25,6 @@ class Game : ApplicationAdapter() {
     }
 
     override fun render() {
-        Gdx.gl.glClearColor(173f / 256f, 216f / 256f, 230f / 256f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
         if (screenStack.empty()) {
             this.dispose()
             return
@@ -37,6 +34,9 @@ class Game : ApplicationAdapter() {
 
         curTime += Gdx.graphics.deltaTime
         if (curTime - prevRenderTime > SPF) {
+            Gdx.gl.glClearColor(173f / 256f, 216f / 256f, 230f / 256f, 1f)
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+            
             screenStack.peek().draw()
             prevRenderTime = curTime
         }
