@@ -22,9 +22,8 @@ import ru.cryhards.brootkiddie.utils.AssetManager
 class GlobalMapScreen : Screen {
     val player = Player()
 
-    val ticksInDay = 20
-
-    var ticksToNextDay = ticksInDay
+    val realSecondsPerDay = 0.5f
+    var currentDayTime = 0f
 
     val infectedLabel : Label
     val cryptoLabel : Label
@@ -38,9 +37,7 @@ class GlobalMapScreen : Screen {
             Gdx.graphics.height.toFloat(),
             cam))
 
-
     private val map = ImageActor("map.jpg")
-
 
     init {
         AssetManager.loadFont("fonts/roboto.ttf", "roboto")
@@ -116,16 +113,16 @@ class GlobalMapScreen : Screen {
     }
 
     fun act(deltaT: Float) {
-        ticksToNextDay-=1
-        if (ticksToNextDay == 0) {
+        currentDayTime += deltaT
+        while (currentDayTime > realSecondsPerDay) {
             player.days += 1
             player.doDay()
-            updateUi()
-            ticksToNextDay = ticksInDay
+            updateUI()
+            currentDayTime -= realSecondsPerDay
         }
     }
 
-    private fun updateUi(){
+    private fun updateUI() {
         infectedLabel.setText("INFECTED : ${player.infectedNodes} DAY : ${player.days}")
         cryptoLabel.setText("CRYPTO : ${player.crypto}")
     }
