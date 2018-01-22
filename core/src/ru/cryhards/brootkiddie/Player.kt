@@ -12,12 +12,15 @@ open class Player {
     var days = 0
     lateinit var distribution : Distribution
 
+    fun addMalware(malware: Malware) {
+        malwareList += malware
+    }
+
     fun loadProfile() {}
 
     fun doDay() {
         infectedNodes = 0
-        for (m in malwareList)
-        {
+        for (m in malwareList) {
             m.recalcStats()
             infectedNodes += m.infected
             crypto += m.minedcrypto

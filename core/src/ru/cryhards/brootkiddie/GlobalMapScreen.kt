@@ -2,26 +2,24 @@ package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.malware.Distribution
 import ru.cryhards.brootkiddie.malware.MalwareExample
+import ru.cryhards.brootkiddie.utils.AssetManager
 
 
 /**
  * Created with love by luna_koly on 21.01.2018.
  */
 class GlobalMapScreen : Screen {
-
     val player = Player()
 
     val ticksInDay = 20
@@ -30,6 +28,9 @@ class GlobalMapScreen : Screen {
 
     val infectedLabel : Label
     val cryptoLabel : Label
+
+    val labelFont: BitmapFont
+    val labelStyle: Label.LabelStyle
 
     private val cam = OrthographicCamera()  // width & height are not important due to FitViewport
     private val stage = Stage(FitViewport(
@@ -42,27 +43,26 @@ class GlobalMapScreen : Screen {
 
 
     init {
+        AssetManager.loadFont("fonts/roboto.ttf", "roboto")
+        val fontParameter = FreeTypeFontGenerator.FreeTypeFontParameter()
+        fontParameter.size = 70
+        labelFont = AssetManager.makeFont("roboto", fontParameter)
+
+        labelStyle = Label.LabelStyle(labelFont, Color(0f, 0f, 0f, 1f))
+
         Gdx.input.inputProcessor = stage
 
         stage.addListener(FloatingCameraControls(cam, stage))
         stage.addActor(map)
 
-
-        val ftfg = FreeTypeFontGenerator(Gdx.files.internal("fonts/roboto.ttf"))
-        val par = FreeTypeFontGenerator.FreeTypeFontParameter()
-        par.size = 70
-
-        infectedLabel = Label("INFECTED : ${player.infectedNodes} DAY : ${player.days}", Label.LabelStyle(ftfg.generateFont(par), Color(0f, 0f, 0f, 1f)))
+        infectedLabel = Label("INFECTED : ${player.infectedNodes} DAY : ${player.days}", labelStyle)
         infectedLabel.x = 0f
         infectedLabel.y = 0f
-
         stage.addActor(infectedLabel)
 
-        cryptoLabel = Label("CRYPTO : ${player.crypto}", Label.LabelStyle(ftfg.generateFont(par), Color(0f, 0f, 0f, 1f)))
+        cryptoLabel = Label("CRYPTO : ${player.crypto}", labelStyle)
         infectedLabel.x = 0f
         infectedLabel.y = 100f
-
-        stage.addActor(infectedLabel)
         stage.addActor(cryptoLabel)
 
         val stageAspect = stage.width / stage.height
@@ -78,8 +78,7 @@ class GlobalMapScreen : Screen {
 
         player.distribution = Distribution(player)
         val malware = MalwareExample(player)
-        player.malwareList+=malware
-
+        player.addMalware(malware)
     }
 
 
@@ -116,7 +115,6 @@ class GlobalMapScreen : Screen {
         map.texture.dispose()
     }
 
-
     fun act(deltaT: Float) {
         ticksToNextDay-=1
         if (ticksToNextDay == 0) {
@@ -127,12 +125,8 @@ class GlobalMapScreen : Screen {
         }
     }
 
-    fun calcInfectionSpeed(): Int {
-        return 1
-    }
-
     private fun updateUi(){
         infectedLabel.setText("INFECTED : ${player.infectedNodes} DAY : ${player.days}")
-        cryptoLabel.setText("CRYPTO : ${player.infectedNodes}")
+        cryptoLabel.setText("CRYPTO : ${player.crypto}")
     }
 }
