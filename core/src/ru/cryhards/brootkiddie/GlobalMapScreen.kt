@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
-import ru.cryhards.brootkiddie.malware.Distribution
-import ru.cryhards.brootkiddie.malware.MalwareExample
+import ru.cryhards.brootkiddie.levels.GlobalMapLevel
 import ru.cryhards.brootkiddie.utils.AssetManager
 
 
@@ -21,13 +20,10 @@ import ru.cryhards.brootkiddie.utils.AssetManager
  */
 class GlobalMapScreen : Screen {
     val player = Player()
-
-    val realSecondsPerDay = 0.5f
-    var currentDayTime = 0f
+    val level = GlobalMapLevel(player)
 
     val infectedLabel : Label
     val cryptoLabel : Label
-
     val labelFont: BitmapFont
     val labelStyle: Label.LabelStyle
 
@@ -52,7 +48,7 @@ class GlobalMapScreen : Screen {
         stage.addListener(FloatingCameraControls(cam, stage))
         stage.addActor(map)
 
-        infectedLabel = Label("INFECTED : ${player.infectedNodes} DAY : ${player.days}", labelStyle)
+        infectedLabel = Label("INFECTED : ${level.infectedNodes} DAY : ${level.days}", labelStyle)
         infectedLabel.x = 0f
         infectedLabel.y = 0f
         stage.addActor(infectedLabel)
@@ -72,10 +68,6 @@ class GlobalMapScreen : Screen {
         }
 
         map.setPosition(stage.width / 2, stage.height / 2, Align.center)
-
-        player.distribution = Distribution(player)
-        val malware = MalwareExample(player)
-        player.addMalware(malware)
     }
 
 
@@ -113,17 +105,12 @@ class GlobalMapScreen : Screen {
     }
 
     fun act(deltaT: Float) {
-        currentDayTime += deltaT
-        while (currentDayTime > realSecondsPerDay) {
-            player.days += 1
-            player.doDay()
-            updateUI()
-            currentDayTime -= realSecondsPerDay
-        }
+        level.act(deltaT)
+        updateUI()
     }
 
     private fun updateUI() {
-        infectedLabel.setText("INFECTED : ${player.infectedNodes} DAY : ${player.days}")
+        infectedLabel.setText("INFECTED : ${level.infectedNodes} DAY : ${level.days}")
         cryptoLabel.setText("CRYPTO : ${player.crypto}")
     }
 }
