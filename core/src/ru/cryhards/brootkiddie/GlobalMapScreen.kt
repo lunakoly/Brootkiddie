@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
+import ru.cryhards.RegionEditorCameraControls
 import ru.cryhards.brootkiddie.levels.GlobalMapLevel
 import ru.cryhards.brootkiddie.utils.AssetManager
 import ru.cryhards.brootkiddie.utils.fixed
@@ -36,8 +37,6 @@ class GlobalMapScreen : Screen {
             Gdx.graphics.height.toFloat(),
             cam))
 
-    private val map = ImageActor("map.jpg")
-
     init {
         AssetManager.loadFont("fonts/roboto.ttf", "roboto")
         val fontParameter = FreeTypeFontGenerator.FreeTypeFontParameter()
@@ -48,8 +47,28 @@ class GlobalMapScreen : Screen {
 
         Gdx.input.inputProcessor = stage
 
+
+
+        // IMPORTANT ORDER
+
+        stage.addActor(GlobalMap.map)
+
+        val stageAspect = stage.width / stage.height
+        val mapAspect = GlobalMap.map.width / GlobalMap.map.height
+
+        if (mapAspect >= stageAspect) {
+            GlobalMap.map.setSize(stage.height * mapAspect, stage.height)
+        } else {
+            GlobalMap.map.setSize(stage.width, stage.width / mapAspect)
+        }
+
+        GlobalMap.map.setPosition(stage.width / 2, stage.height / 2, Align.center)
+
+
+        // IMPORTANT ORDER
         stage.addListener(FloatingCameraControls(cam, stage))
-        stage.addActor(map)
+//        stage.addListener(RegionEditorCameraControls(cam, stage))
+
 
         infectedLabel = Label("INFECTED", labelStyle)
         infectedLabel.x = 0f
@@ -65,17 +84,6 @@ class GlobalMapScreen : Screen {
         infectedLabel.x = 0f
         infectedLabel.y = 100f
         stage.addActor(cryptoLabel)
-
-        val stageAspect = stage.width / stage.height
-        val mapAspect = map.width / map.height
-
-        if (mapAspect >= stageAspect) {
-            map.setSize(stage.height * mapAspect, stage.height)
-        } else {
-            map.setSize(stage.width, stage.width / mapAspect)
-        }
-
-        map.setPosition(stage.width / 2, stage.height / 2, Align.center)
 
         updateUI()
     }
@@ -107,11 +115,11 @@ class GlobalMapScreen : Screen {
     }
 
     override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
+        stage.viewport.update(width, height, false)
     }
 
     override fun dispose() {
-        map.texture.dispose()
+        GlobalMap.map.dispose()
     }
 
     fun act(deltaT: Float) {

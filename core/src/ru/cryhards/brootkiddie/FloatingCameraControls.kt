@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.*
 
 /**
