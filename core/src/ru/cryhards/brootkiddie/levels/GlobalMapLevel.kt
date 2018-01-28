@@ -8,16 +8,17 @@ import java.lang.Math.max
 
 open class GlobalMapLevel(player: Player) : Level(player) {
     var days = 0
-    var realSecondsPerDay = 0.5f
+    var realSecondsPerDay = 0.75f
     var currentDayTime = 0f
 
-    val totalNodes = Int.MAX_VALUE
-    var infectedNodes = 1
+    // val totalNodes : Long = Int.MAX_VALUE.toLong()
+    val totalNodes: Long = 1.3e9.toLong()
+    var totalInfectedNodes: Long = 1
 
-    var infected = mutableMapOf<Malware, Int>()
-    var awareLevel = mutableMapOf<Malware, Float>()
+    var infectedByMalware = mutableMapOf<Malware, Long>()
+    var awareLevelByMalware = mutableMapOf<Malware, Float>()
+    var isSpottedByMalware = mutableSetOf<Malware>()
     val criticalAwareLevel = 1f
-    var spotted = mutableSetOf<Malware>()
 
     init {
         val malware = MalwareExample(player) // TODO
@@ -28,8 +29,8 @@ open class GlobalMapLevel(player: Player) : Level(player) {
 
     fun addMalware(malware: Malware) {
         malwareList += malware
-        awareLevel[malware] = 0f
-        infected[malware] = 1
+        awareLevelByMalware[malware] = 0f
+        infectedByMalware[malware] = 1
     }
 
     override fun act(deltaT: Float) {
@@ -38,36 +39,51 @@ open class GlobalMapLevel(player: Player) : Level(player) {
             currentDayTime -= realSecondsPerDay
 
             doDay()
-            days++
         }
     }
 
     fun doDay() {
-        infectedNodes = 0
+        days++
+        Gdx.app.log("DAY", "day: ${days} totalInfected: ${totalInfectedNodes}")
+
+        totalInfectedNodes = 0
         for (m in malwareList) {
-            if (!spotted.contains(m)) awareLevel[m] = awareLevel[m]!! + m.irriration / 100f
+            awareLevelByMalware[m] = awareLevelByMalware[m]!! + deltaAware(m)
+            infectedByMalware[m] = infectedByMalware[m]!! + deltaInfected(m)
 
-            Gdx.app.log("Aware", awareLevel.toString())
-
-            if (awareLevel[m]!! >= criticalAwareLevel && infected[m]!! > 0) {
-                spotted.add(m)
-                infected[m] = infected[m]!! - maxOf((0.15 * infected[m]!!).toInt(), 1)
+            if (awareLevelByMalware[m]!! > criticalAwareLevel) {
+                isSpottedByMalware.add(m)
             }
 
-            val max = getLimit(m.infectiousness)
-            var delta = minOf((max * m.speed * (1f + infected[m]!! / max) / 100000f).toInt(), max - infected[m]!!)
-            if (spotted.contains(m)) delta = (delta * 0.001f).toInt()
-            if (infected[m]!! > 0 && infected[m]!! != max) {
-                infected[m] = infected[m]!! + delta
-            }
-
-            player.crypto += m.minedcrypto * infected[m]!!
-
-            infectedNodes = max(infectedNodes, infected[m]!!)
+            player.crypto += m.cryptoMiningSpeed * infectedByMalware[m]!!
+            totalInfectedNodes = max(totalInfectedNodes, infectedByMalware[m]!!)
+            Gdx.app.log("MALWARE", "name: ${m.name} awareLevel: ${awareLevelByMalware[m]!!} infected: ${infectedByMalware[m]!!}")
         }
     }
 
-    fun getLimit(infectiousness: Float): Int {
-        return maxOf(0, ((totalNodes - days * 3) * infectiousness / 10000f).toInt())
+    fun deltaAware(m: Malware): Float { // Ln( infected ) * irritation
+        return sigmoid(infectedByMalware[m]!!.toFloat() / totalNodes + if (isSpotted(m)) 0.1f else 0f) * m.irritation * (1f / 8f)
+    }
+
+    fun deltaInfected(m: Malware): Long {
+        val aware = awareLevelByMalware[m]!! / criticalAwareLevel
+
+        val shouldBeInfected = (totalNodes * sigmoid(1.0001f - aware)).toLong()
+
+        var delta = shouldBeInfected - infectedByMalware[m]!!
+        delta = (delta * m.speed).toLong()
+
+        if (delta > infectedByMalware[m]!!)
+            delta = max(1, (infectedByMalware[m]!! * 0.25f).toLong())
+
+        return delta
+    }
+
+    fun sigmoid(x: Float): Float {
+        return 1f / (1f + Math.exp(-10.0 * x + 5.0)).toFloat()
+    }
+
+    fun isSpotted(m: Malware): Boolean {
+        return isSpottedByMalware.contains(m)
     }
 }

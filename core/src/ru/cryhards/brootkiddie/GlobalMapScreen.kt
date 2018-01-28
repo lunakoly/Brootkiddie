@@ -14,7 +14,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.RegionEditorCameraControls
 import ru.cryhards.brootkiddie.levels.GlobalMapLevel
 import ru.cryhards.brootkiddie.utils.AssetManager
-
+import ru.cryhards.brootkiddie.utils.fixed
+import ru.cryhards.brootkiddie.utils.humanReadable
 
 /**
  * Created with love by luna_koly on 21.01.2018.
@@ -25,6 +26,8 @@ class GlobalMapScreen : Screen {
 
     val infectedLabel : Label
     val cryptoLabel : Label
+    val dayLabel: Label
+
     val labelFont: BitmapFont
     val labelStyle: Label.LabelStyle
 
@@ -40,7 +43,7 @@ class GlobalMapScreen : Screen {
         fontParameter.size = 70
         labelFont = AssetManager.makeFont("roboto", fontParameter)
 
-        labelStyle = Label.LabelStyle(labelFont, Color(0f, 0f, 0f, 1f))
+        labelStyle = Label.LabelStyle(labelFont, Color(224 / 255f, 35f / 255f, 45f / 255f, 1f))
 
         Gdx.input.inputProcessor = stage
 
@@ -67,15 +70,22 @@ class GlobalMapScreen : Screen {
 //        stage.addListener(RegionEditorCameraControls(cam, stage))
 
 
-        infectedLabel = Label("INFECTED : ${level.infectedNodes} DAY : ${level.days}", labelStyle)
+        infectedLabel = Label("INFECTED", labelStyle)
         infectedLabel.x = 0f
         infectedLabel.y = 0f
         stage.addActor(infectedLabel)
 
-        cryptoLabel = Label("CRYPTO : ${player.crypto}", labelStyle)
+        dayLabel = Label("DAY", labelStyle)
+        dayLabel.x = 0f
+        dayLabel.y = 200f
+        stage.addActor(dayLabel)
+
+        cryptoLabel = Label("CRYPTO", labelStyle) // update UI will be called later to set up right label texts
         infectedLabel.x = 0f
         infectedLabel.y = 100f
         stage.addActor(cryptoLabel)
+
+        updateUI()
     }
 
 
@@ -118,7 +128,8 @@ class GlobalMapScreen : Screen {
     }
 
     private fun updateUI() {
-        infectedLabel.setText("INFECTED : ${level.infectedNodes} DAY : ${level.days}")
-        cryptoLabel.setText("CRYPTO : ${player.crypto}")
+        infectedLabel.setText("INFECTED : (${(level.totalInfectedNodes * 100f / level.totalNodes).fixed(2)}%) ${level.totalInfectedNodes.humanReadable()}")
+        cryptoLabel.setText("CRYPTO : ${player.crypto.humanReadable()}")
+        dayLabel.setText("DAY : ${level.days}")
     }
 }
