@@ -12,14 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
  */
 object Spawner {
 
-    fun spawnIcon(stage: Stage): ImageActor {
+    fun spawnIcon(stage: Stage, color: Color): ImageActor {
         val icon = getSomeDeviceIcon()
         val region = GlobalMap.Regions.values()[ random(GlobalMap.Regions.values().size - 1) ]
         val rand = randomXY(region)
 
         println(region)
 
+        icon.setScale(5f)
         icon.setPosition(rand.first, rand.second)
+        icon.zIndex = 10
         icon.addAction(Actions.sequence(
                 Actions.fadeOut(0f),
                 Actions.parallel(
@@ -27,7 +29,8 @@ object Spawner {
                 )
         ))
 
-        icon.color = Color(random(), random(), random(), 1f)
+        icon.color = color
+        //Gdx.app.log("Spawner", "spawned")
         return icon
     }
 
@@ -41,7 +44,7 @@ object Spawner {
 
     fun randomXY(minX: Float, minY: Float, maxX: Float, maxY: Float) = Pair(random(minX, maxX), random(minY, maxY))
 
-    fun getSomeDeviceIcon() = ImageActor("game-console.png")
+    fun getSomeDeviceIcon() = ImageActor("1.png")
 
     fun getRegionOverlappingSquare(): ImageActor {
         val d = ImageActor("square.png")

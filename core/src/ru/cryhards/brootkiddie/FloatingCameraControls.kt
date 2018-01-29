@@ -1,8 +1,9 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.graphics.Camera
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.*
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.Stage
 
 /**
  * Created with love by luna_koly on 21.01.2018.
@@ -22,7 +23,7 @@ class FloatingCameraControls(private val cam: Camera, private val stage: Stage) 
         val newTouchTime = System.currentTimeMillis()
 
         if (newTouchTime - touchTime < 500) {
-            stage.addActor(Spawner.spawnIcon(stage))
+            //stage.addActor(Spawner.spawnIcon(stage))
         }
 
         touchTime = newTouchTime

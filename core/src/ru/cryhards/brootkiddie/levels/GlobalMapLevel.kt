@@ -18,6 +18,7 @@ open class GlobalMapLevel(player: Player) : Level(player) {
     var totalInfectedNodes: Long = 1
 
     var infectedByMalware = mutableMapOf<Malware, Long>()
+    var deltaInfectedByMalware = mutableMapOf<Malware, Long>()
     var awareLevelByMalware = mutableMapOf<Malware, Float>()
     var isSpottedByMalware = mutableSetOf<Malware>()
     val criticalAwareLevel = 1f
@@ -42,6 +43,7 @@ open class GlobalMapLevel(player: Player) : Level(player) {
         malwareList += malware
         awareLevelByMalware[malware] = 0f
         infectedByMalware[malware] = 1
+        deltaInfectedByMalware[malware] = 0
     }
 
     override fun act(deltaT: Float) {
@@ -60,7 +62,8 @@ open class GlobalMapLevel(player: Player) : Level(player) {
         totalInfectedNodes = 0
         for (m in malwareList) {
             awareLevelByMalware[m] = awareLevelByMalware[m]!! + deltaAware(m)
-            infectedByMalware[m] = infectedByMalware[m]!! + deltaInfected(m)
+            deltaInfectedByMalware[m] = deltaInfected(m)
+            infectedByMalware[m] = infectedByMalware[m]!! + deltaInfectedByMalware[m]!!
 
             if (awareLevelByMalware[m]!! > criticalAwareLevel) {
                 isSpottedByMalware.add(m)
