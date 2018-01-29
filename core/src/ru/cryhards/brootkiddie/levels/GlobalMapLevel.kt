@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.malware.Malware
 import ru.cryhards.brootkiddie.malware.MalwareExample
+import ru.cryhards.brootkiddie.malware.scripts.ExampleBaseScript
+import ru.cryhards.brootkiddie.malware.scripts.SpreadingScript
 import java.lang.Math.max
 
 open class GlobalMapLevel(player: Player) : Level(player) {
@@ -23,6 +25,15 @@ open class GlobalMapLevel(player: Player) : Level(player) {
     init {
         val malware = MalwareExample(player) // TODO
         player.addMalware(malware)
+
+        player.baseList += ExampleBaseScript(1, "Exampler")
+        player.baseList += ExampleBaseScript(2, "SUPERExampler")
+        player.baseList += ExampleBaseScript(3, "SUPERMEGAExampler")
+        player.baseList += ExampleBaseScript(3, "SUPERMEGADUPERExampler")
+        player.scriptList += SpreadingScript(1, "Spreader")
+        player.scriptList += SpreadingScript(2, "Spreader EVOLVED")
+        player.scriptList += SpreadingScript(3, "Infinity and beyond")
+        player.scriptList+= SpreadingScript(4, "Can't stop this")
 
         addMalware(malware)
     }

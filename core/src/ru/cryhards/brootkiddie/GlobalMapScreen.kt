@@ -1,12 +1,15 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
@@ -20,8 +23,8 @@ import ru.cryhards.brootkiddie.utils.humanReadable
 /**
  * Created with love by luna_koly on 21.01.2018.
  */
-class GlobalMapScreen : Screen {
-    val player = Player()
+class GlobalMapScreen(val player: Player, val game : ReallyGame) : Screen {
+
     val level = GlobalMapLevel(player)
 
     val infectedLabel : Label
@@ -85,6 +88,18 @@ class GlobalMapScreen : Screen {
         infectedLabel.y = 100f
         stage.addActor(cryptoLabel)
 
+        val editorButton = Label("EDITOR", labelStyle)
+        editorButton.y = 300f
+
+        editorButton.addListener(object : InputListener(){
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                game.openEditor()
+                return super.touchDown(event, x, y, pointer, button)
+            }
+        })
+
+        stage.addActor(editorButton)
+
         updateUI()
     }
 
@@ -94,7 +109,7 @@ class GlobalMapScreen : Screen {
     }
 
     override fun show() {
-
+        Gdx.input.inputProcessor = stage
     }
 
     override fun render(delta: Float) {
@@ -111,7 +126,6 @@ class GlobalMapScreen : Screen {
     }
 
     override fun resume() {
-
     }
 
     override fun resize(width: Int, height: Int) {
