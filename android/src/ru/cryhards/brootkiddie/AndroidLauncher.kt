@@ -7,6 +7,7 @@ import android.view.View
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
+import ru.cryhards.brootkiddie.cleanup.Core
 
 class AndroidLauncher : AndroidApplication() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,9 @@ class AndroidLauncher : AndroidApplication() {
 
         config.hideStatusBar = true
         config.useImmersiveMode = true
-        initialize(ReallyGame(), config)
+//        initialize(ru.cryhards.brootkiddie.ReallyGame(), config)
+        initialize(Core(), config)
+
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

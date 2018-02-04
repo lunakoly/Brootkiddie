@@ -62,5 +62,7 @@ class Tests {
         spreading.suspiciousness += 0.1f
         spreading.spreadingSpeed += 0.1f
         spreading.infectiousness += 0.1f
+
+        (s + s).update()
     }
 }
