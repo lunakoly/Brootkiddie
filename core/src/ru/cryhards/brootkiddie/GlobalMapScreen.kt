@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.levels.GlobalMapLevel
+import ru.cryhards.brootkiddie.ui.EventWidget
 import ru.cryhards.brootkiddie.utils.AssetManager
 import ru.cryhards.brootkiddie.utils.fixed
 import ru.cryhards.brootkiddie.utils.humanReadable
@@ -32,6 +33,9 @@ class GlobalMapScreen(val player: Player, val game : ReallyGame) : Screen {
 
     val labelFont: BitmapFont
     val labelStyle: Label.LabelStyle
+
+
+    lateinit var currentEventWidget : EventWidget
 
     private val cam = OrthographicCamera()  // width & height are not important due to FitViewport
     private val stage = Stage(FitViewport(
@@ -79,6 +83,7 @@ class GlobalMapScreen(val player: Player, val game : ReallyGame) : Screen {
 
         // IMPORTANT ORDER
         stage.addListener(FloatingCameraControls(cam, stage))
+
 //        stage.addListener(RegionEditorCameraControls(cam, stage))
 
 
@@ -166,6 +171,12 @@ class GlobalMapScreen(val player: Player, val game : ReallyGame) : Screen {
             Gdx.app.log("KEK", infectedNodes.size.toString())
         }
 
+        if (level.days%10 == 0)
+        {
+            val e = getEvent()
+            showEvent(e)
+        }
+
         updateUI()
     }
 
@@ -173,5 +184,38 @@ class GlobalMapScreen(val player: Player, val game : ReallyGame) : Screen {
         infectedLabel.setText("INFECTED : (${(level.totalInfectedNodes * 100f / level.totalNodes).fixed(2)}%) ${level.totalInfectedNodes.humanReadable()}")
         cryptoLabel.setText("CRYPTO : ${player.crypto.humanReadable()}")
         dayLabel.setText("DAY : ${level.days}")
+    }
+
+    private fun showEvent(e : Event){
+        val widget = EventWidget.createWidget(e)
+        widget.addListener(object : InputListener(){
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                closeEvent(widget)
+                Gdx.app.log("event", "closed")
+                return super.touchDown(event, x, y, pointer, button)
+            }
+        })
+        widget.x = Gdx.graphics.width*0.5f
+        widget.y = Gdx.graphics.height*0.5f
+
+        uiGroup.addActor(widget)
+        e.act()
+        currentEventWidget = widget
+    }
+
+    private fun getEvent() : Event{
+
+        return object : Event(level) {
+            override val name = "Hacked"
+            override val description = "You were hack'd and lost money"
+
+            override fun act() {
+                player.crypto*=0.7f
+                updateUI()
+            }
+        }
+    }
+    private fun closeEvent(widget : EventWidget){
+        uiGroup.removeActor(widget)
     }
 }
