@@ -1,0 +1,9 @@
+package _old.levels
+
+import ru.cryhards.brootkiddie.malware.Malware
+
+abstract class Level(val player: Player) {
+    val malwareList = mutableListOf<Malware>()
+
+    abstract fun act(deltaT: Float)
+}
