@@ -1,5 +1,8 @@
 package ru.cryhards.brootkiddie.screens
 
+import com.badlogic.gdx.math.MathUtils.random
+
+@Suppress("MemberVisibilityCanBePrivate")
 /**
  * Utility object that has methods for aligning content
  */
@@ -35,5 +38,16 @@ object Cropper {
             bounds
         }
     }
+
+
+    /**
+     * Returns random point from sector with center [x y]
+     */
+    fun randomXYNear(x: Float, dx: Float, y: Float, dy: Float) = randomXY(x - dx, y - dy, x + dx, y + dy)
+
+    /**
+     * Returns random point from the given ranges
+     */
+    fun randomXY(minX: Float, minY: Float, maxX: Float, maxY: Float) = Pair(random(minX, maxX), random(minY, maxY))
 
 }

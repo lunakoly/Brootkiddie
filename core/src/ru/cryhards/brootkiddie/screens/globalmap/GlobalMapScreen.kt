@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.screens
+package ru.cryhards.brootkiddie.screens.globalmap
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
@@ -10,9 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
-import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.screens.Cropper
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -20,10 +21,7 @@ import ru.cryhards.brootkiddie.ui.UI
  * Just Global Map
  */
 class GlobalMapScreen : ScreenAdapter() {
-    var day = 0
-
-
-    private val background = ImageActor("img/bg/map.jpg")
+    private val background = GlobalMap()
     private val camera = OrthographicCamera()
 
     /**
@@ -37,7 +35,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
 
     private val openBrowserButton = UI.GlitchImageButton("img/icons/bench.png")
-    private val console = UI.Console("=== MEGA SHELL V8000 ===")
+    private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
     private val openBenchButton = UI.GlitchImageButton("img/icons/bench.png")
     private val crypto = UI.GlitchLabel("  $100  ")
 
@@ -87,7 +85,7 @@ class GlobalMapScreen : ScreenAdapter() {
         uiStage.addActor(console)
 
         var i = 1
-        Core.instance.tasks.add(Core.Task(3, 1000) {
+        Core.instance.addTask(Core.Task(3, 1000) {
             console.log("HI $i this is long text with important data here")
 //            console.log("HI $i")
             i++
@@ -95,9 +93,9 @@ class GlobalMapScreen : ScreenAdapter() {
 
 
         // run day updator
-        Core.instance.tasks.add(Core.Task(-1, 3000, {
-            day++
-            console.log("Day $day")
+        Core.instance.addTask(Core.Task(-1, 3000, {
+            Player.day++
+            console.log("Day ${Player.day}")
         }))
 
         // TODO: console, handlers for ui

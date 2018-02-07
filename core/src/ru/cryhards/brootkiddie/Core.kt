@@ -1,13 +1,11 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.Game
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import ru.cryhards.brootkiddie.screens.BenchScreen
-import ru.cryhards.brootkiddie.screens.GlobalMapScreen
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
 import java.lang.System.currentTimeMillis
@@ -24,17 +22,9 @@ class Core : Game() {
     lateinit var batch: SpriteBatch
 
     /**
-     * Holds tasks to be invoked
+     * Reference to currently plaing bg music
      */
-    val tasks = ArrayList<Task>()
-
-    /**
-     * Sound of noize used when user clicks anything
-     */
-    lateinit var noize: Sound
-
-
-    private lateinit var currentMusic: Music
+    private var currentBackgroundMusic: Music? = null
 
 
     override fun create() {
@@ -47,39 +37,24 @@ class Core : Game() {
         Assets.initialize()
 
         setScreen(MainMenuScreen())
-        currentMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/gurdonark_autumn_s_dream_lullaby_1.mp3"))
-        currentMusic.isLooping = true
-        currentMusic.play()
-
-        noize = Gdx.audio.newSound(Gdx.files.internal("sounds/noise.mp3"))
+        switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
     }
+
+
+    /**
+     * Starts plaing music
+     */
+    fun switchBackgroundMusic(music: Music) {
+        currentBackgroundMusic?.stop()
+        currentBackgroundMusic = music
+        music.play()
+    }
+
 
     override fun render() {
         Assets.update()
         invokeTasks()
         super.render()
-    }
-
-
-    /**
-     * Executes tasks and removes redutant if needed
-     */
-    private fun invokeTasks() {
-        val newTime = currentTimeMillis()
-        var i = 0
-
-        while (i < tasks.size) {
-            if (newTime - tasks[i].lastStartTime >= tasks[i].period) {
-                tasks[i].invoke()
-
-                if (!tasks[i].mustRepeat()) {
-                    tasks.removeAt(i)
-                    i--
-                }
-            }
-
-            i++
-        }
     }
 
 
@@ -92,7 +67,7 @@ class Core : Game() {
     /**
      * Disposes old screen and opens the target one
      */
-    private fun switchScreen(target: Screen): Core {
+    fun switchScreen(target: Screen): Core {
         getScreen().dispose()
         setScreen(target)
         return this
@@ -118,6 +93,40 @@ class Core : Game() {
          * Holds last created instance of Core
          */
         lateinit var instance: Core
+    }
+
+
+    /**
+     * Holds tasks to be invoked
+     */
+    private val tasks = ArrayList<Task>()
+
+    /**
+     * Requests task execution
+     */
+    fun addTask(task: Task) {
+        tasks.add(task)
+    }
+
+    /**
+     * Executes tasks and removes redutant if needed
+     */
+    private fun invokeTasks() {
+        val newTime = currentTimeMillis()
+        var i = 0
+
+        while (i < tasks.size) {
+            if (newTime - tasks[i].lastStartTime >= tasks[i].period) {
+                tasks[i].invoke()
+
+                if (!tasks[i].mustRepeat()) {
+                    tasks.removeAt(i)
+                    i--
+                }
+            }
+
+            i++
+        }
     }
 
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 /**
  * Represents Image with dispose method
  */
-class ImageActor(private val texture: Texture) : Image(texture) {
+open class ImageActor(private val texture: Texture) : Image(texture) {
     constructor(path: String) : this(Texture(path))
     fun dispose() = texture.dispose()
 }

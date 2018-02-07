@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.Core
 
 
 @Suppress("FunctionName")
@@ -37,13 +36,13 @@ object UI {
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 butt.shader = Assets.shaders.GLITCH
-                Core.instance.noize.loop()
+                Assets.sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Core.instance.noize.stop()
+                Assets.sounds.NOIZE.stop()
             }
         })
 
@@ -70,13 +69,13 @@ object UI {
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 butt.shader = Assets.shaders.GLITCH
-                Core.instance.noize.loop()
+                Assets.sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Core.instance.noize.stop()
+                Assets.sounds.NOIZE.stop()
             }
         })
 
@@ -103,13 +102,13 @@ object UI {
         lbl.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 lbl.shader = Assets.shaders.GLITCH
-                Core.instance.noize.loop()
+                Assets.sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 lbl.shader = null
-                Core.instance.noize.stop()
+                Assets.sounds.NOIZE.stop()
             }
         })
 
@@ -120,7 +119,7 @@ object UI {
     /**
      * Returns console with glitch effect on touchDown
      */
-    fun Console(text: String): ShaderableConsole {
+    fun GlitchConsole(text: String): ShaderableConsole {
         val style = TextField.TextFieldStyle()
         style.font = Assets.fonts.ROBOTO
         val con = ShaderableConsole(text, style)
@@ -141,13 +140,13 @@ object UI {
         con.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 con.shader = Assets.shaders.GLITCH
-                Core.instance.noize.loop()
+                Assets.sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 con.shader = null
-                Core.instance.noize.stop()
+                Assets.sounds.NOIZE.stop()
             }
         })
 

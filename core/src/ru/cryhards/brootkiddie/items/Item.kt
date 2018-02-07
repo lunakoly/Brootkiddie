@@ -30,9 +30,9 @@ open class Item(var name: String, var info: String, val type: Type) {
      */
     open class Effect(val name: String, val info: String) {
         /**
-         * Affects he given malware stats
+         * Affects he given target according to the given dependencies
          */
-        open fun affect(malware: Malware): Effect {
+        open fun affect(target: Any?, vararg dependencies: Any?): Effect {
             return this
         }
     }

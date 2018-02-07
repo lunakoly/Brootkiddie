@@ -12,9 +12,10 @@ class MiningEffect(var miningSpeed: Float = 0.5f) : Item.Effect(
         "Mining Effect",
         "Increases malware mining speed") {
 
-    override fun affect(malware: Malware): Item.Effect {
-        malware.stats.miningSpeed += miningSpeed
-        return super.affect(malware)
+    override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
+        // TODO: make dependencies[0] (script level) affect the affection)))
+        (target as Malware.Stats).miningSpeed += miningSpeed
+        return super.affect(target)
     }
 
     override fun toString(): String {

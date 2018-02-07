@@ -6,6 +6,27 @@ package ru.cryhards.brootkiddie.items
 class Script(name: String, info: String, var size: Float) : Item(name, info, Item.Type.SCRIPT) {
 
     /**
+     * The script level affets effects stats
+     * Initial value = 1
+     */
+    var level = 1
+
+
+    /**
+     * Returns the result of affecting the empty
+     * malware stats. Use it to modulate
+     * the target malware by
+     */
+    fun affection(): Malware.Stats {
+        // script effects are applied to virtual stats first
+
+        val affected = Malware.Stats()
+        effects.forEach { it.affect(affected, level) }
+        return affected
+    }
+
+
+    /**
      * Returns malware that is a combination of the 2 scripts
      */
     fun combine(script: Script) = Malware(
@@ -23,12 +44,5 @@ class Script(name: String, info: String, var size: Float) : Item(name, info, Ite
     operator fun plus(script: Script) = combine(script)
 
     operator fun plus(malware: Malware) = combine(malware)
-
-
-    val dependencies = Array<Dependency?>(4) { _ -> null }
-
-    class Dependency {
-        // TODO: Dependency luna_koly
-    }
 
 }

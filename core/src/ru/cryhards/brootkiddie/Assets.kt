@@ -1,6 +1,8 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -19,6 +21,7 @@ object Assets {
      */
     fun initialize() {
         fonts.initialize()
+        sounds.initialize()
         shaders.initialize()
     }
 
@@ -115,6 +118,33 @@ object Assets {
             WAVE.begin()
             WAVE.setUniformf("u_time", time)
             WAVE.end()
+        }
+    }
+
+
+    /**
+     * Contains shaders resources
+     */
+    val sounds = Sounds()
+
+    /**
+     * Contains shaders resources
+     */
+    class Sounds {
+        // SOUNDS
+        lateinit var NOIZE: Sound
+
+        // MUSIC
+        lateinit var AUTUMNS_DREAM_LULLABY: Music
+
+        /**
+         * Loads sounds. Call on startup
+         */
+        fun initialize() {
+            NOIZE = Gdx.audio.newSound(Gdx.files.internal("sounds/noise.mp3"))
+
+            AUTUMNS_DREAM_LULLABY = Gdx.audio.newMusic(Gdx.files.internal("sounds/gurdonark_autumn_s_dream_lullaby_1.mp3"))
+            AUTUMNS_DREAM_LULLABY.isLooping = true
         }
     }
 
