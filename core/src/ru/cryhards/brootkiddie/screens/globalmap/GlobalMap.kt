@@ -6,7 +6,7 @@ import ru.cryhards.brootkiddie.ui.ImageActor
 /**
  * Incapsulates global map object logic
  */
-class GlobalMap : ImageActor("img/bg/jpg") {
+class GlobalMap : ImageActor("img/bg/map.jpg") {
 
     /**
      * Returns a rair of random coordinates within

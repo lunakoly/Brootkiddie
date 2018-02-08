@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 
 
@@ -56,15 +57,13 @@ object UI {
     fun GlitchImageButton(path: String): ShaderableImageButton {
         val style = com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle()
         val icon = TextureRegionDrawable( TextureRegion(Texture(path)) )
-        style.imageUp = icon
-
+        style.up = icon
         val butt = ShaderableImageButton(style)
+        butt.image.setFillParent(true)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGBA8888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
+        butt.width *= 1.3f
+        butt.height *= 1.3f
 
-        butt.background = Image(Texture(pix)).drawable
 
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {

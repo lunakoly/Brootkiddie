@@ -34,9 +34,9 @@ class GlobalMapScreen : ScreenAdapter() {
     private val uiStage = Stage()
 
 
-    private val openBrowserButton = UI.GlitchImageButton("img/icons/bench.png")
+    private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
+    private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
     private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
-    private val openBenchButton = UI.GlitchImageButton("img/icons/bench.png")
     private val crypto = UI.GlitchLabel("  $100  ")
 
 
@@ -67,7 +67,7 @@ class GlobalMapScreen : ScreenAdapter() {
         })
 
         // browser
-        openBrowserButton.setPosition(uiStage.width - 50f, 50f, Align.bottomRight)
+        openBrowserButton.setPosition(Gdx.graphics.width - 50f, 50f, Align.bottomRight)
         uiStage.addActor(openBrowserButton)
 
         openBrowserButton.addListener(object : ClickListener() {
@@ -77,11 +77,11 @@ class GlobalMapScreen : ScreenAdapter() {
         })
 
         // crypto
-        crypto.setPosition(uiStage.width - 50f, uiStage.height - 50f, Align.topRight)
+        crypto.setPosition(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f, Align.topRight)
         uiStage.addActor(crypto)
 
         // console
-        console.setPosition(50f, uiStage.height - 50, Align.topLeft)
+        console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         uiStage.addActor(console)
 
         var i = 1
