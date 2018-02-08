@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 
 
@@ -148,6 +147,50 @@ object UI {
             }
         })
 
+        return con
+    }
+
+
+
+    /**
+     * Returns label with common style
+     */
+    fun StaticLabel(text: String): ShaderableLabel {
+        val style = Label.LabelStyle()
+        style.font = Assets.fonts.ROBOTOx2
+        val lbl = ShaderableLabel(text, style)
+
+        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pix.setColor(Color.BLACK)
+        pix.fill()
+
+        lbl.style.background = Image(Texture(pix)).drawable
+        lbl.width *= 1.2f
+        lbl.height *= 1.2f
+        return lbl
+    }
+
+
+    /**
+     * Returns label with common style
+     */
+    fun StaticTextArea(text: String): TextArea {
+        val style = TextField.TextFieldStyle()
+        style.font = Assets.fonts.ROBOTOx2
+        val con = TextArea(text, style)
+
+        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pix.setColor(Color.BLACK)
+        pix.fill()
+
+        con.style.background = Image(Texture(pix)).drawable
+
+        con.width = 500f
+        con.height = 230f
+
+        // ! IMPORTANT
+        con.style.fontColor = Color.WHITE
+        con.isDisabled = true
         return con
     }
 

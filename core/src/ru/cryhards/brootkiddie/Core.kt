@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.screens.BenchScreen
+import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
@@ -73,19 +73,32 @@ class Core : Game() {
         return this
     }
 
+    private lateinit var globalMapScreen: GlobalMapScreen
+    private lateinit var benchScreen: BenchScreen
+
     /**
-     * Switches to map screen
+     * Initializes map screen and switches to it
      */
     fun openMap() {
-        switchScreen(GlobalMapScreen())
+        globalMapScreen = GlobalMapScreen()
+        switchScreen(globalMapScreen)
+        benchScreen = BenchScreen()
     }
 
     /**
-     * Switches to bench screen
+     * Shows map screen
      */
-    fun openBench() {
-        switchScreen(BenchScreen())
+    fun toGlobalMap() {
+        setScreen(globalMapScreen)
     }
+
+    /**
+     * Shows bench screen
+     */
+    fun toBench() {
+        setScreen(benchScreen)
+    }
+
 
 
     companion object {

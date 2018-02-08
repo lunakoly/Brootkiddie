@@ -41,8 +41,6 @@ class GlobalMapScreen : ScreenAdapter() {
 
 
     init {
-        Gdx.input.inputProcessor = InputMultiplexer(uiStage, mapStage)
-
         // map
         val bounds = Cropper.fitCenter(
                 mapStage.width, mapStage.height,
@@ -62,7 +60,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         openBenchButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.openBench()
+                Core.instance.toBench()
             }
         })
 
@@ -112,5 +110,10 @@ class GlobalMapScreen : ScreenAdapter() {
         uiStage.draw()
 
         super.render(delta)
+    }
+
+    override fun show() {
+        Gdx.input.inputProcessor = InputMultiplexer(uiStage, mapStage)
+        super.show()
     }
 }
