@@ -1,8 +1,9 @@
 package ru.cryhards.brootkiddie.screens.globalmap
 
-import ru.cryhards.brootkiddie.screens.Cropper
+import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
 
+@Suppress("unused")
 /**
  * Incapsulates global map object logic
  */
@@ -22,7 +23,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
     /**
      * Transforms region coordinates from map space to absolute
      */
-    private fun unmapCoordinates(region: Regions): Pair<Float, Float> {
+    fun unmapCoordinates(region: Regions): Pair<Float, Float> {
         return Pair(
                 x + width/2 + region.x * width/2,
                 y + height/2 + region.y * height/2
@@ -32,7 +33,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
     /**
      * Transforms region size from map space to absolute
      */
-    private fun unmapSize(region: Regions): Pair<Float, Float> {
+    fun unmapSize(region: Regions): Pair<Float, Float> {
         return Pair(
                 region.width * width,
                 region.height * height

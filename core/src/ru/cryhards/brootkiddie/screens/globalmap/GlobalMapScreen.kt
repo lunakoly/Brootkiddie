@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.screens.Cropper
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
+import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.UI
 
 /**

@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.screens
+package ru.cryhards.brootkiddie.ui
 
 import com.badlogic.gdx.math.MathUtils.random
 

@@ -1,14 +1,14 @@
 package ru.cryhards.brootkiddie.screens.cameras
 
 import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import ru.cryhards.brootkiddie.ui.ImageActor
 
 /**
  * Restricts camera movement to [ x y ] axises
  */
-class FloatingCameraControls(private val cam: Camera, private val restriction: ImageActor? = null) : InputListener() {
+class FloatingCameraControls(private val cam: Camera, private val restriction: Actor? = null) : InputListener() {
     private val decr = 10f
     private var oldX = 0f
     private var oldY = 0f

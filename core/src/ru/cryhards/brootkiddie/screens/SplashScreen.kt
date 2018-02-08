@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.ui.Cropper
 
 
 /**

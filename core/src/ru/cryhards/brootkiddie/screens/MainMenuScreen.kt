@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.UI
 
 /**

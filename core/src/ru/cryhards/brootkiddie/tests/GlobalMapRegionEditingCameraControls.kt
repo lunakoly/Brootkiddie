@@ -1,16 +1,15 @@
-package _old
+package ru.cryhards.brootkiddie.tests
 
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.Stage
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 
 /**
- * Created with love by luna_koly on 23.01.2018.
+ * Used to manually edit regions
  */
-class RegionEditorCameraControls(private val cam: Camera, private val stage: Stage) : InputListener() {
+class GlobalMapRegionEditingCameraControls(map: GlobalMap) : InputListener() {
 
-    private val DECR = 10f
+    private val decr = 10f
     private var oldX = 0f
     private var oldY = 0f
     private var oldW = 0f
@@ -19,25 +18,26 @@ class RegionEditorCameraControls(private val cam: Camera, private val stage: Sta
     private var touchTime = 0L
     private var inMoveMode = true
 
-    private val region = GlobalMap.highlightRegion(GlobalMap.Regions.AUSTRALIA)
+    private val regionsTest = GlobalMapRegionTests(map)
+    val region = regionsTest.highlightRegion(GlobalMap.Regions.AUSTRALIA)
+
 
     init {
-        stage.addActor(region)
-
-        var m = GlobalMap.mapCoordinates(region)
+        var m = regionsTest.mapCoordinates(region)
         println("xy: ${m.first} ${m.second}")
 
-        m = GlobalMap.mapSize(region)
+        m = regionsTest.mapSize(region)
         println("wh: ${m.first} ${m.second}")
     }
+
 
     override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
 
         println("!!!!!")
-        var m = GlobalMap.mapCoordinates(region)
+        var m = regionsTest.mapCoordinates(region)
         println("xy: ${m.first} ${m.second}")
 
-        m = GlobalMap.mapSize(region)
+        m = regionsTest.mapSize(region)
         println("wh: ${m.first} ${m.second}")
 
 
@@ -49,10 +49,10 @@ class RegionEditorCameraControls(private val cam: Camera, private val stage: Sta
 
         touchTime = newTouchTime
 
-        oldX = region.x - x /DECR
-        oldY = region.y - y /DECR
-        oldW = region.width - x /DECR
-        oldH = region.height - y /DECR
+        oldX = region.x - x / decr
+        oldY = region.y - y / decr
+        oldW = region.width - x / decr
+        oldH = region.height - y / decr
 
         return true
     }
@@ -60,19 +60,19 @@ class RegionEditorCameraControls(private val cam: Camera, private val stage: Sta
     override fun touchDragged(event: InputEvent?, x: Float, y: Float, pointer: Int) {
         if (inMoveMode) {
             region.setPosition(
-                    oldX + x /DECR,
-                    oldY + y /DECR
+                    oldX + x / decr,
+                    oldY + y / decr
             )
 
-            val m = GlobalMap.mapCoordinates(region)
+            val m = regionsTest.mapCoordinates(region)
             println("xy: ${m.first} ${m.second}")
         } else {
             region.setSize(
-                    oldW + x /DECR,
-                    oldH + y /DECR
+                    oldW + x / decr,
+                    oldH + y / decr
             )
 
-            val m = GlobalMap.mapSize(region)
+            val m = regionsTest.mapSize(region)
             println("wh: ${m.first} ${m.second}")
         }
     }

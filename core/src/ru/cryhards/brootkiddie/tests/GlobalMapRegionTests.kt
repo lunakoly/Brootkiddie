@@ -8,26 +8,26 @@ import ru.cryhards.brootkiddie.ui.ImageActor
 /**
  * Created with love by luna_koly on 07.02.2018.
  */
-class GlobalMapTest(private val map: ImageActor) {
+class GlobalMapRegionTests(private val map: GlobalMap) {
 
-//    ---< DEBUG >---
-//
-//    /**
-//     * Puts debug square on the map to show
-//     * region location
-//     */
-//    fun highlightRegion(map: GlobalMap, region: GlobalMap.Regions): ImageActor {
-//        val reg = ImageActor("img/debug_square.png")
-//        val pos = map.unmapCoordinates(region)
-//        val size = map.unmapSize(region)
-//
-//        reg.setSize(size.first, size.second)
-//        reg.setPosition(pos.first, pos.second, Align.center)
-//        return reg
-//    }
+    /**
+     * ---< DEBUG >---
+     * Puts debug square on the map to show
+     * region location
+     */
+    fun highlightRegion(region: GlobalMap.Regions): ImageActor {
+        val reg = ImageActor("img/debug_square.png")
+        val pos = map.unmapCoordinates(region)
+        val size = map.unmapSize(region)
+
+        reg.setSize(size.first, size.second)
+        reg.setPosition(pos.first, pos.second, Align.center)
+        return reg
+    }
 
 
     /**
+     * ---< DEBUG >---
      * Transforms target coordinates from absolute to map space
      */
     fun mapCoordinates(target: Actor): Pair<Float, Float> {
@@ -38,6 +38,7 @@ class GlobalMapTest(private val map: ImageActor) {
     }
 
     /**
+     * ---< DEBUG >---
      * Transforms target size from absolute to map space
      */
     fun mapSize(target: Actor): Pair<Float, Float> {
