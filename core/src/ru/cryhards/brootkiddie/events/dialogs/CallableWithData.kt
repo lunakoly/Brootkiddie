@@ -4,7 +4,7 @@ package ru.cryhards.brootkiddie.events.dialogs
  * Created by remmargorp on 11.02.18.
  */
 
-class CallableWithData(val callable: Callable, val data: Any) {
+class CallableWithData(private val callable: Callable, private val data: Any) {
     fun act(): Any? {
         return callable.act(data)
     }

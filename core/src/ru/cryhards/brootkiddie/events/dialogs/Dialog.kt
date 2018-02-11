@@ -11,42 +11,74 @@ import com.google.gson.Gson
 class Dialog(config: Map<String, Any>) {
 
     val id: String
-    val states = mutableMapOf<String, State>()
-    val transitions = mutableMapOf<String, MutableList<Transition>>()
-    var currentState: State? = null
+    private val states = mutableMapOf<String, State>()
+    private val transitions = mutableMapOf<String, MutableList<Transition>>()
+    private var currentState: State? = null
 
     init {
         Gdx.app.log("Dialog", "Parsing config...")
 
         id = config["id"] as String
 
-        for (state in (config["states"] as ArrayList<Any>)) {
-            val parsed = State(state as Map<String, Any>)
-            Gdx.app.log("Dialog", parsed.toString())
-            states.put(parsed.id, parsed)
+        for (rawState in (config["states"] as ArrayList<Any>)) {
+            val state = State(rawState as Map<String, Any>)
+            Gdx.app.log("Dialog", state.toString())
+            states.put(state.id, state)
 
-            if (parsed.start) {
+            if (state.start) {
                 if (currentState != null) throw Exception("More than 1 start state in Dialog")
-                currentState = parsed
+                currentState = state
             }
         }
 
         if (currentState == null) throw Exception("No start state in Dialog")
 
-        for (transition in (config["transitions"] as ArrayList<Any>)) {
-            val parsed = Transition(transition as Map<String, Any>)
-            Gdx.app.log("Dialog", parsed.toString())
+        for (rawTransition in (config["transitions"] as ArrayList<Any>)) {
+            val transition = Transition(rawTransition as Map<String, Any>)
+            Gdx.app.log("Dialog", transition.toString())
 
-            if (transitions.containsKey(parsed.from)) {
-                transitions[parsed.from]!!.add(parsed)
+            if (transitions.containsKey(transition.from)) {
+                transitions[transition.from]!!.add(transition)
             } else {
-                transitions[parsed.from] = mutableListOf(parsed)
+                transitions[transition.from] = mutableListOf(transition)
             }
         }
 
         Gdx.app.log("Dialog", "Parsing is completed")
         Gdx.app.log("Dialog", "states: $states")
         Gdx.app.log("Dialog", "transitions: $transitions")
+        Gdx.app.log("Dialog", "start state: $currentState")
+
+        currentState!!.trigger()
+    }
+
+    fun getStateById(id: String): State? {
+        return states.get(id)
+    }
+
+    fun getTransitions(id: String): List<Transition> {
+        if (transitions.containsKey(id))
+            return transitions[id] as List<Transition>
+        return emptyList()
+    }
+
+    fun getTransitions(): List<Transition> {
+        if (transitions.containsKey(currentState!!.id))
+            return transitions[currentState!!.id] as List<Transition>
+        return emptyList()
+    }
+
+    fun getCurrentState(): State? {
+        return currentState
+    }
+
+    fun go(transition: Transition): Boolean {
+        if (transition.isAvailable()) {
+            currentState = getStateById(transition.to)
+            currentState!!.trigger()
+            return true
+        }
+        return false
     }
 
     class State(config: Map<String, Any>) {
@@ -56,15 +88,21 @@ class Dialog(config: Map<String, Any>) {
         } else {
             false
         }
-        val triggers = ArrayList<CallableWithData>()
-
+        private val info = CallableWithData.parseFromConfig(config["info"] as Map<String, Any>)
+        private val triggers = ArrayList<CallableWithData>()
         init {
-            for (rawtrigger in config["triggers"] as ArrayList<Any>) {
-                triggers.add(CallableWithData.parseFromConfig(rawtrigger as Map<String, Any>))
+            for (rawTrigger in config["triggers"] as ArrayList<Any>) {
+                triggers.add(CallableWithData.parseFromConfig(rawTrigger as Map<String, Any>))
             }
         }
 
-        val info = CallableWithData.parseFromConfig(config["info"] as Map<String, Any>)
+        fun getInfo(): String {
+            return info.act() as String
+        }
+
+        fun trigger() {
+            triggers.forEach { it.act() }
+        }
 
         override fun toString(): String {
             return "STATE id=$id start=$start triggers=$triggers info=$info"
@@ -74,14 +112,21 @@ class Dialog(config: Map<String, Any>) {
     class Transition(config: Map<String, Any>) {
         val from = config["from"] as String
         val to = config["to"] as String
-        val info = CallableWithData.parseFromConfig(config["info"] as Map<String, Any>)
-        val availability = CallableWithData.parseFromConfig(config["availability"] as Map<String, Any>)
+        private val info = CallableWithData.parseFromConfig(config["info"] as Map<String, Any>)
+        private val availability = CallableWithData.parseFromConfig(config["availability"] as Map<String, Any>)
 
         override fun toString(): String {
             return "TRANSITION $from-->$to info:$info availability:$availability"
         }
-    }
 
+        fun isAvailable(): Boolean {
+            return availability.act() as Boolean
+        }
+
+        fun getInfo(): String {
+            return info.act() as String
+        }
+    }
 
     companion object {
         fun readFromFile(jsonConfigPath: String): Dialog {

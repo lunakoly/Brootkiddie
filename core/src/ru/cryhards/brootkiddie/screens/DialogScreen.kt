@@ -29,6 +29,10 @@ class DialogScreen : ScreenAdapter() {
                 background.height.toFloat())
         Core.instance.batch.draw(background, bounds[0], bounds[1], bounds[2], bounds[3])
         Core.instance.batch.end()
+
+        if (dialog.getTransitions().isNotEmpty()) {
+            dialog.go(dialog.getTransitions()[0])
+        }
     }
 
     override fun dispose() {
