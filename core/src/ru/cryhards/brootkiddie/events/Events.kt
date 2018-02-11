@@ -12,7 +12,6 @@ class Events {
     companion object {
         val eventsById = listOf<GameEvent>(
                 object : GameEvent("Free script", "Some anonymous gifted you a script."){
-                    override val id = 0
                     override fun act() {
                         val script = Script("Miner", "Mines crypto", 5f)
                         script.effects.add(MiningEffect())
@@ -21,7 +20,6 @@ class Events {
                 },
 
                 object : GameEvent("FBI inspection", "FBI found one of your bank accounts and blocked it. You've lost some of your money."){
-                    override val id = 1
                     override fun act() {
                         Player.money*=0.6 + 0.4*Random().nextDouble()
                     }

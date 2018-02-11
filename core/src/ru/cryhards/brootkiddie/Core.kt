@@ -4,11 +4,11 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.screens.bench.BenchScreen
-import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
-import ru.cryhards.brootkiddie.screens.MainMenuScreen
+import ru.cryhards.brootkiddie.screens.DialogScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
+import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -37,7 +37,9 @@ class Core : Game() {
         // start loading resources
         Assets.initialize()
 
-        setScreen(MainMenuScreen())
+        //setScreen(MainMenuScreen())
+        // TODO
+        setScreen(DialogScreen())
         switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
     }
 

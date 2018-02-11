@@ -1,0 +1,46 @@
+{
+  "id": "example",
+  "states": [
+    {
+      "id": "start",
+      "start": true,
+      "triggers": [
+        {
+          "function": "logger",
+          "data": "at the start!"
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Hello!"
+      }
+    },
+    {
+      "id": "end",
+      "triggers": [
+        {
+          "function": "logger",
+          "data": "at the end!"
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Good job!"
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "start",
+      "to": "end",
+      "info": {
+        "function": "printer",
+        "data": "touch me"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    }
+  ]
+}
