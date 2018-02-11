@@ -1,7 +1,6 @@
 package ru.cryhards.brootkiddie
 
-import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.ui.items.ItemBlock
 
 /**
  * Global reference to the player
@@ -21,8 +20,10 @@ object Player {
      * Collection of items owned by player
      */
     class Inventory {
-        val scripts = ArrayList<Script>()
-        val malware = ArrayList<Malware>()
+        /**
+         * All things that Player has
+         */
+        val items = ArrayList<ItemBlock>()
         // tools (script optimizer!!! - decreases size)
     }
 
