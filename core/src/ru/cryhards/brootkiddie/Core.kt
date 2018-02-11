@@ -8,6 +8,7 @@ import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
+import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -75,6 +76,7 @@ class Core : Game() {
 
     private lateinit var globalMapScreen: GlobalMapScreen
     private lateinit var benchScreen: BenchScreen
+    private lateinit var browserScreen : BrowserScreen
 
     /**
      * Initializes map screen and switches to it
@@ -83,6 +85,7 @@ class Core : Game() {
         globalMapScreen = GlobalMapScreen()
         switchScreen(globalMapScreen)
         benchScreen = BenchScreen()
+        browserScreen = BrowserScreen()
     }
 
     /**
@@ -99,7 +102,9 @@ class Core : Game() {
         setScreen(benchScreen)
     }
 
-
+    fun toBrowser(){
+        setScreen(browserScreen)
+    }
 
     companion object {
         /**
@@ -144,7 +149,7 @@ class Core : Game() {
 
 
     /**
-     * Piece of code to be inveoked later
+     * Piece of code to be invoked later
      */
     class Task(private var repeatCount: Int, var period: Long, private val task: () -> Unit) {
         /**

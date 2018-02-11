@@ -9,7 +9,7 @@ import ru.cryhards.brootkiddie.items.Script
 object Player {
     var name = "user0"
     var level = 0
-    var money = 0
+    var money = 0.0
     var day = 0
 
     /**

@@ -70,7 +70,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         openBrowserButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                println("> OPEN BROWSER")
+                Core.instance.toBrowser()
             }
         })
 
