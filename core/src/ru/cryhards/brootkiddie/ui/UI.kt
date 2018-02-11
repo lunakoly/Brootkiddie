@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
 
 
 @Suppress("FunctionName")
@@ -192,5 +193,49 @@ object UI {
         con.style.fontColor = Color.WHITE
         con.isDisabled = true
         return con
+    }
+
+    /**
+     * Returns button with common style
+     */
+
+    fun StaticTextButton(text: String) : ShaderableButton{
+        val style = TextButton.TextButtonStyle()
+        style.font = Assets.fonts.ROBOTOx2
+        val but = ShaderableButton(text, style)
+
+        val pixUp = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pixUp.setColor(Color.BLACK)
+        pixUp.fill()
+
+        val pixDown = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pixDown.setColor(Color.LIGHT_GRAY)
+        pixDown.fill()
+
+        but.label.style.background = Image(Texture(pixUp)).drawable
+        but.width *= 1.2f
+        but.height *= 1.2f
+
+        but.addListener(object : ClickListener(){
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                but.label.style.background = Image(Texture(pixDown)).drawable
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                but.label.style.background = Image(Texture(pixUp)).drawable
+            }
+        })
+
+        return but
+    }
+
+    /**
+     * Returns widget that displays dialog
+     */
+
+    fun DialogWidget(dialog: Dialog) : DialogDisplay {
+
+        return DialogDisplay(dialog)
     }
 }

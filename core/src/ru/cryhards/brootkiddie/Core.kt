@@ -4,7 +4,9 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.screens.DialogScreen
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.screens.DialogsScreen
+import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
@@ -37,9 +39,8 @@ class Core : Game() {
         // start loading resources
         Assets.initialize()
 
-        //setScreen(MainMenuScreen())
-        // TODO
-        setScreen(DialogScreen())
+        setScreen(MainMenuScreen())
+
         switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
     }
 
@@ -79,15 +80,19 @@ class Core : Game() {
     private lateinit var globalMapScreen: GlobalMapScreen
     private lateinit var benchScreen: BenchScreen
     private lateinit var browserScreen : BrowserScreen
+    private lateinit var dialogsScreen: DialogsScreen
+
 
     /**
      * Initializes map screen and switches to it
      */
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
+        Player.dialogs.add(Dialog.readFromFile("dialogs/example.json"))
         switchScreen(globalMapScreen)
         benchScreen = BenchScreen()
         browserScreen = BrowserScreen()
+        dialogsScreen = DialogsScreen()
     }
 
     /**
@@ -103,6 +108,18 @@ class Core : Game() {
     fun toBench() {
         setScreen(benchScreen)
     }
+
+    /**
+     * Shows dialogs screen
+     */
+
+    fun toDialogs(){
+        setScreen(dialogsScreen)
+    }
+
+    /**
+     * Shows browser screen
+     */
 
     fun toBrowser(){
         setScreen(browserScreen)
@@ -128,6 +145,9 @@ class Core : Game() {
         tasks.add(task)
     }
 
+    fun removeTask(task: Task){
+        tasks.remove(task)
+    }
     /**
      * Executes tasks and removes redutant if needed
      */
@@ -174,6 +194,14 @@ class Core : Game() {
             lastStartTime = currentTimeMillis()
             if (repeatCount > 0)
                 repeatCount--
+        }
+
+        /*
+            Constant for period for daily tasks
+         */
+
+        companion object {
+            val DayTaskPeriod = 3000L
         }
     }
 }

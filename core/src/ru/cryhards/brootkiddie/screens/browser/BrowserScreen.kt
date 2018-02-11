@@ -5,23 +5,37 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.ui.ShaderableButton
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
- * Created by Dima on 11.02.2018.
+ * Screen, where news will be displayed
  */
 class BrowserScreen : ScreenAdapter() {
     private val stage = Stage()
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
+    private val pageGroup = VerticalGroup()
+    private val dialogsButton : ShaderableButton = UI.StaticTextButton("dialogs")
+    private val newsButton : ShaderableButton = UI.StaticTextButton("news")
 
     init {
-        val label = UI.StaticLabel("Shitty browser")
-        label.setPosition(Gdx.graphics.width/2f, Gdx.graphics.height/2f, Align.center)
-        label.style.background = null
-        stage.addActor(label)
+
+        dialogsButton.addListener(object : ClickListener(){
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                Core.instance.toDialogs()
+            }
+        })
+
+        pageGroup.addActor(dialogsButton)
+        pageGroup.addActor(newsButton)
+        pageGroup.pack()
+
+        pageGroup.setPosition(Gdx.graphics.width/2f, Gdx.graphics.height/2f, Align.center)
+        stage.addActor(pageGroup)
 
         backButton.setPosition(50f, 50f, Align.bottomLeft)
         stage.addActor(backButton)
@@ -39,5 +53,10 @@ class BrowserScreen : ScreenAdapter() {
 
         stage.act(delta)
         stage.draw()
+    }
+
+    override fun show() {
+        Gdx.input.inputProcessor = stage
+        super.show()
     }
 }

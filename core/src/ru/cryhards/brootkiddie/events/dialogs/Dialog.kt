@@ -21,6 +21,11 @@ class Dialog(config: Map<String, Any>) {
     val id: String
 
     /**
+     * Sender of messages in dialog
+     */
+    val sender: String
+
+    /**
      * states = Map<id, State>
      * Represents all states of the Finite Automaton of the Dialog
      */
@@ -45,6 +50,7 @@ class Dialog(config: Map<String, Any>) {
         Gdx.app.log("Dialog", "Parsing config...")
 
         id = config["id"] as String
+        sender = config["sender"] as String
 
         for (rawState in (config["states"] as ArrayList<Any>)) {
             val state = State(rawState as Map<String, Any>)

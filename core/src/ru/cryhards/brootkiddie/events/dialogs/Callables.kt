@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.events.dialogs
 
 import com.badlogic.gdx.Gdx
+import ru.cryhards.brootkiddie.events.Events
 
 /**
  * Created by remmargorp on 11.02.18.
@@ -49,6 +50,17 @@ object Callables {
             override fun act(data: Any?): Any? {
                 return false
             }
+        })
+
+        callables.put("runEvent", object : Callable(){
+            override val id: String
+                get() = "runEvent"
+
+            override fun act(data: Any?): Any? {
+                Events.eventsByName[(data as Map<String, Any>)["event"]]!!.act(data["data"] as Map<String, Any?>)
+                return null
+            }
+
         })
     }
 

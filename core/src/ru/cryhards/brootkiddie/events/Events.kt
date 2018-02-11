@@ -1,29 +1,30 @@
 package ru.cryhards.brootkiddie.events
 
+import com.badlogic.gdx.Gdx
+import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import java.util.*
 
 /**
- * Created by Dima on 11.02.2018.
+ * List of all available events
  */
 class Events {
     companion object {
-        val eventsById = listOf<GameEvent>(
-                object : GameEvent("Free script", "Some anonymous gifted you a script."){
-                    override fun act() {
-                        val script = Script("Miner", "Mines crypto", 5f)
-                        script.effects.add(MiningEffect())
-                        Player.inventory.scripts.add(Script("Miner", "Mines crypto", 5f))
+        val eventsByName = mapOf<String, GameEvent>(
+                Pair("Delayed Letter" , object : GameEvent("Delayed letter", "It took some time for this letter to get to you.") {
+                    override fun act(data: Map<String, Any?>) {
+                        var delay = (data["delay"] as Double).toInt()
+                        Core.instance.addTask(Core.Task((data["delay"] as Double).toInt(), Core.Task.DayTaskPeriod, {
+                                delay-=1
+                                if (delay == 0) {
+                                    Player.dialogs.add(Dialog.readFromFile("dialogs/${data["id"]}.json"))
+                                }
+                        }))
                     }
-                },
-
-                object : GameEvent("FBI inspection", "FBI found one of your bank accounts and blocked it. You've lost some of your money."){
-                    override fun act() {
-                        Player.money*=0.6 + 0.4*Random().nextDouble()
-                    }
-                }
+                })
         )
     }
 }

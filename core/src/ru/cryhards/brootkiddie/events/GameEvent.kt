@@ -1,8 +1,8 @@
 package ru.cryhards.brootkiddie.events
 
 /**
- * Created by Dima on 11.02.2018.
+    Event class
  */
 abstract class GameEvent(val name: String, val description: String) {
-    abstract fun act()
+    abstract fun act(data : Map<String, Any?>)
 }

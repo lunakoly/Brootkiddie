@@ -1,7 +1,9 @@
 package ru.cryhards.brootkiddie
 
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
+
 
 /**
  * Global reference to the player
@@ -11,7 +13,7 @@ object Player {
     var level = 0
     var money = 0.0
     var day = 0
-
+    var dialogs = mutableListOf<Dialog>()
     /**
      * Collection of items owned by player
      */

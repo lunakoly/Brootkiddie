@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.UI
@@ -90,8 +91,8 @@ class GlobalMapScreen : ScreenAdapter() {
         })
 
 
-        // run day updator
-        Core.instance.addTask(Core.Task(-1, 3000, {
+        // run day updater
+        Core.instance.addTask(Core.Task(-1, Core.Task.DayTaskPeriod, {
             Player.day++
             console.log("Day ${Player.day}")
         }))
