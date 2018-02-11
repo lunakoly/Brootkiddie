@@ -6,6 +6,10 @@ import com.badlogic.gdx.Gdx
  * Created by remmargorp on 11.02.18.
  */
 
+/**
+ * Library that hold all functions that can be called from JSON config of Dialog
+ */
+
 object Callables {
     private val callables = mutableMapOf<String, Callable>()
 
