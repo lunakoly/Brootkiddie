@@ -20,24 +20,19 @@ object Assets {
      * Loads resources. Call on startup
      */
     fun initialize() {
-        fonts.initialize()
-        sounds.initialize()
-        shaders.initialize()
+        Fonts.initialize()
+        Sounds.initialize()
+        Shaders.initialize()
     }
 
     /**
      * Updates resources state. Call periodically
      */
     fun update() {
-        shaders.update()
+        Shaders.update()
     }
 
 
-    /**
-     * Contains fonts resources
-     */
-//    val fonts = Fonts()
-//
     /**
      * Contains fonts resources
      */
@@ -73,12 +68,7 @@ object Assets {
     /**
      * Contains shaders resources
      */
-    val shaders = Shaders()
-
-    /**
-     * Contains shaders resources
-     */
-    class Shaders {
+    object Shaders {
         lateinit var ABERRATION: ShaderProgram
         lateinit var GLITCH: ShaderProgram
         lateinit var WAVE: ShaderProgram
@@ -125,12 +115,7 @@ object Assets {
     /**
      * Contains shaders resources
      */
-    val sounds = Sounds()
-
-    /**
-     * Contains shaders resources
-     */
-    class Sounds {
+    object Sounds {
         // SOUNDS
         lateinit var NOIZE: Sound
 

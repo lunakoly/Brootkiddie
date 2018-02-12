@@ -1,5 +1,7 @@
 package ru.cryhards.brootkiddie.screens.bench
 
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -36,6 +38,11 @@ class BlockSpace(private val explorer: ItemExplorer) : ScrollPane(Group()) {
      */
     private val table = Table()
 
+    /**
+     * Use for adding shader effects
+     */
+    var shader: ShaderProgram? = null
+
 
     init {
         content.addActor(table)
@@ -44,6 +51,18 @@ class BlockSpace(private val explorer: ItemExplorer) : ScrollPane(Group()) {
 
         setOverscroll(false, false)
         layout()
+    }
+
+
+    override fun draw(batch: Batch?, parentAlpha: Float) {
+        if (shader != null) {
+            val old = batch?.shader
+            batch?.shader = shader
+            super.draw(batch, parentAlpha)
+            batch?.shader = old
+
+        } else
+            super.draw(batch, parentAlpha)
     }
 
 
@@ -108,7 +127,6 @@ class BlockSpace(private val explorer: ItemExplorer) : ScrollPane(Group()) {
 
             table.row()
         }
-
     }
 
 }

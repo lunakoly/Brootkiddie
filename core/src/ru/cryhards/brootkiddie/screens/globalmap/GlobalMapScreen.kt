@@ -47,7 +47,8 @@ class GlobalMapScreen : ScreenAdapter() {
                 background.width, background.height)
         background.setPosition(bounds[0], bounds[1])
         background.setSize(bounds[2], bounds[3])
-        mapStage.batch.shader = Assets.shaders.WAVE
+        mapStage.batch.shader = Assets.Shaders.WAVE
+        Environment.UI.globalMap = background
         mapStage.addActor(background)
 
         // camera controls
@@ -80,10 +81,8 @@ class GlobalMapScreen : ScreenAdapter() {
 
         // console
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
-        uiStage.addActor(console)
-
         Environment.UI.console = console
-        // TODO: console, handlers for ui
+        uiStage.addActor(console)
     }
 
 

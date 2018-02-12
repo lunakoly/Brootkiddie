@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.screens.DialogsScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
@@ -41,7 +40,7 @@ class Core : Game() {
 
         setScreen(MainMenuScreen())
 
-        switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
+        switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }
 
 
@@ -88,7 +87,7 @@ class Core : Game() {
      */
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
-        Scenario.initialize()
+        Environment.initialize()
         switchScreen(globalMapScreen)
         benchScreen = BenchScreen()
         browserScreen = BrowserScreen()
@@ -145,9 +144,6 @@ class Core : Game() {
         tasks.add(task)
     }
 
-    fun removeTask(task: Task){
-        tasks.remove(task)
-    }
     /**
      * Executes tasks and removes redutant if needed
      */
@@ -173,7 +169,7 @@ class Core : Game() {
     /**
      * Piece of code to be invoked later
      */
-    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Unit) {
+    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Boolean) {
         /**
          * Saves time when the code got invoked the last time
          * or holds initial time
@@ -190,18 +186,12 @@ class Core : Game() {
          * Runs task
          */
         fun invoke() {
-            task()
+            if (task())
+                repeatCount = 0
+
             lastStartTime = currentTimeMillis()
             if (repeatCount > 0)
                 repeatCount--
-        }
-
-        /*
-            Constant for period for daily tasks
-         */
-
-        companion object {
-            val DayTaskPeriod = 3000L
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.tests
 
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
@@ -84,8 +85,8 @@ class Tests {
 
     fun nuke() {
         println(Player.money)
-        println(Player.day)
-        Core.instance.switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
+        println(Environment.day)
+        Core.instance.switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
         Core.instance.switchScreen(SplashScreen())
     }
 }

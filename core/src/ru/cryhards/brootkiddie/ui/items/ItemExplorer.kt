@@ -1,11 +1,15 @@
 package ru.cryhards.brootkiddie.ui.items
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.Value
 import com.badlogic.gdx.utils.Align
+import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -25,24 +29,31 @@ class ItemExplorer : ScrollPane(Table()) {
 
         // name
         table.add(name).width(Value.percentWidth(1f, this)).row()
+        name.style.fontColor = Color.LIGHT_GRAY
         name.setAlignment(Align.center)
         name.style.background = null
 
         // icon
         val iconCell = table.add(icon).width(Value.percentWidth(1f, this))
         iconCell.height(iconCell.prefWidthValue).row()
+        icon.shader = Assets.Shaders.ABERRATION
+
+
+        // info & data
+        val textTable = Table().padLeft(50f)
+        table.add(textTable).width(Value.percentWidth(1f, this)).row()
 
         // info
         info.setWrap(true)
-        table.add(info).width(Value.percentWidth(1f, this))
-        table.row()
         info.style.background = null
+        info.style.fontColor = Color.LIGHT_GRAY
+        textTable.add(info).width(Value.percentWidth(1f, this)).row()
 
         // data
         data.setWrap(true)
-        table.add(data).width(Value.percentWidth(1f, this))
-        table.row()
         data.style.background = null
+        data.style.fontColor = Color.LIGHT_GRAY
+        textTable.add(data).width(Value.percentWidth(1f, this)).row()
 
         // actions
         table.add(actions).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, actions)).row()
@@ -75,12 +86,20 @@ class ItemExplorer : ScrollPane(Table()) {
         actions.height += 20f
     }
 
+
     /**
-     * Updates width and height of inner
-     * UI components according to parent size
+     * Use for adding shader effects
      */
-//    fun squeezeUI() {
-//        info.squeeze(width)
-//        data.squeeze(width)
-//    }
+    var shader: ShaderProgram? = null
+
+    override fun draw(batch: Batch?, parentAlpha: Float) {
+        if (shader != null) {
+            val old = batch?.shader
+            batch?.shader = shader
+            super.draw(batch, parentAlpha)
+            batch?.shader = old
+
+        } else
+            super.draw(batch, parentAlpha)
+    }
 }

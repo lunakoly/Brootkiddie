@@ -47,7 +47,7 @@ class MainMenuScreen : ScreenAdapter() {
 
 
         // shader
-        stage.batch.shader = Assets.shaders.ABERRATION
+        stage.batch.shader = Assets.Shaders.ABERRATION
 
 
         // actions

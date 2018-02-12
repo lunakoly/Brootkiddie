@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
@@ -21,6 +22,17 @@ import ru.cryhards.brootkiddie.ui.items.ItemBlock
 object UI {
 
     /**
+     * Returns drawable made of specified color
+     */
+    fun colorToDrawable(color: Color): Drawable {
+        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pix.setColor(color)
+        pix.fill()
+        return Image(Texture(pix)).drawable
+    }
+
+
+    /**
      * Returns text button with glitch effect on touchDown
      */
     fun GlitchTextButton(text: String): ShaderableButton {
@@ -28,24 +40,20 @@ object UI {
         style.font = Assets.Fonts.HACK_REGULAR
         val butt = ShaderableButton(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        butt.label.style.background = Image(Texture(pix)).drawable
+        butt.label.style.background = colorToDrawable(Color.BLACK)
         butt.width *= 1.2f
         butt.height *= 1.2f
 
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                butt.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -68,14 +76,14 @@ object UI {
 
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                butt.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -88,27 +96,23 @@ object UI {
      */
     fun GlitchLabel(text: String): ShaderableLabel {
         val style = Label.LabelStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val lbl = ShaderableLabel(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        lbl.style.background = Image(Texture(pix)).drawable
+        lbl.style.background = colorToDrawable(Color.BLACK)
         lbl.width *= 1.2f
         lbl.height *= 1.2f
 
         lbl.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                lbl.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                lbl.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 lbl.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -121,14 +125,10 @@ object UI {
      */
     fun GlitchConsole(text: String): ShaderableConsole {
         val style = TextField.TextFieldStyle()
-        style.font = Assets.fonts.ROBOTO
+        style.font = Assets.Fonts.ROBOTO
         val con = ShaderableConsole(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        con.style.background = Image(Texture(pix)).drawable
+        con.style.background = colorToDrawable(Color.BLACK)
 
         con.width = 500f
         con.height = 230f
@@ -139,14 +139,14 @@ object UI {
 
         con.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                con.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                con.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 con.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -159,27 +159,13 @@ object UI {
      */
     fun StaticLabel(text: String): ShaderableLabel {
         val style = Label.LabelStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val lbl = ShaderableLabel(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        lbl.style.background = Image(Texture(pix)).drawable
+        lbl.style.background = colorToDrawable(Color.BLACK)
         lbl.width *= 1.2f
         lbl.height *= 1.2f
         return lbl
-    }
-
-
-    /**
-     * Returns textarea that increasess its height if needed
-     */
-    fun ExtendingTextArea(text: String): ExtendingTextArea {
-        val style = TextField.TextFieldStyle()
-        style.font = Assets.fonts.ROBOTOx2
-        return ExtendingTextArea(text, style)
     }
 
 
@@ -219,29 +205,24 @@ object UI {
 
     fun StaticTextButton(text: String) : ShaderableButton{
         val style = TextButton.TextButtonStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val but = ShaderableButton(text, style)
 
-        val pixUp = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pixUp.setColor(Color.BLACK)
-        pixUp.fill()
+        val pixUp = colorToDrawable(Color.BLACK)
+        val pixDown = colorToDrawable(Color.LIGHT_GRAY)
 
-        val pixDown = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pixDown.setColor(Color.LIGHT_GRAY)
-        pixDown.fill()
-
-        but.label.style.background = Image(Texture(pixUp)).drawable
+        but.label.style.background = pixUp
         but.width *= 1.2f
         but.height *= 1.2f
 
         but.addListener(object : ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                but.label.style.background = Image(Texture(pixDown)).drawable
+                but.label.style.background = pixDown
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                but.label.style.background = Image(Texture(pixUp)).drawable
+                but.label.style.background = pixUp
             }
         })
 
