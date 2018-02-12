@@ -37,7 +37,9 @@ class GlobalMapScreen : ScreenAdapter() {
 
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
     private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
-    private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
+    companion object {
+        val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
+    }
     private val crypto = UI.GlitchLabel("  $100  ")
 
 
@@ -83,14 +85,6 @@ class GlobalMapScreen : ScreenAdapter() {
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         uiStage.addActor(console)
 
-        var i = 1
-        Core.instance.addTask(Core.Task(3, 1000) {
-            console.log("HI $i this is long text with important data here")
-//            console.log("HI $i")
-            i++
-        })
-
-
         // run day updater
         Core.instance.addTask(Core.Task(-1, Core.Task.DayTaskPeriod, {
             Player.day++
@@ -99,6 +93,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         // TODO: console, handlers for ui
     }
+
 
 
     override fun render(delta: Float) {

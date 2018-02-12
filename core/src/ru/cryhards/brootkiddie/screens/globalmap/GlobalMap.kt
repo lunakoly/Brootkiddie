@@ -10,7 +10,7 @@ import ru.cryhards.brootkiddie.ui.ImageActor
 class GlobalMap : ImageActor("img/bg/map.jpg") {
 
     /**
-     * Returns a rair of random coordinates within
+     * Returns a pair of random coordinates within
      * a specified region
      */
     @Suppress("unused")

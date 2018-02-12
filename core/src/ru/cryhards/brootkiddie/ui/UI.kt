@@ -248,13 +248,4 @@ object UI {
 
         return but
     }
-
-    /**
-     * Returns widget that displays dialog
-     */
-
-    fun DialogWidget(dialog: Dialog) : DialogDisplay {
-
-        return DialogDisplay(dialog)
-    }
 }

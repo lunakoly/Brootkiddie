@@ -88,7 +88,7 @@ class Core : Game() {
      */
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
-        Player.dialogs.add(Dialog.readFromFile("dialogs/example.json"))
+        Scenario.initialize()
         switchScreen(globalMapScreen)
         benchScreen = BenchScreen()
         browserScreen = BrowserScreen()

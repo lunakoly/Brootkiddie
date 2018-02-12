@@ -6,6 +6,7 @@ import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import java.util.*
 
 /**
@@ -20,7 +21,9 @@ class Events {
                         Core.instance.addTask(Core.Task((data["delay"] as Double).toInt(), Core.Task.DayTaskPeriod, {
                                 delay-=1
                                 if (delay == 0) {
-                                    Player.dialogs.add(Dialog.readFromFile("dialogs/${data["id"]}.json"))
+                                    val dialog = Dialog.readFromFile("dialogs/${data["id"]}.json")
+                                    Player.dialogs.add(dialog)
+                                    GlobalMapScreen.console.log("You've got a letter from ${dialog.sender}")
                                 }
                         }))
                     }
