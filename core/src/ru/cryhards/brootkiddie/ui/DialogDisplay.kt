@@ -2,10 +2,8 @@ package ru.cryhards.brootkiddie.ui
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
@@ -21,13 +19,13 @@ class DialogDisplay(var dialog: Dialog) : Table(){
 
 
     init {
-        val currentState = dialog.getCurrentState()
+        val currentState = dialog.getCurrentState()!!
 
         senderLabel = UI.StaticLabel(dialog.sender)
         add(senderLabel).align(Align.topLeft)
         row()
 
-        val info = currentState!!.getInfo()
+        val info = currentState.getInfo()
         infoLabel = UI.StaticLabel(info)
         infoLabel.setWrap(true)
         val pane = ScrollPane(infoLabel)

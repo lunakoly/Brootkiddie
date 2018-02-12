@@ -36,12 +36,12 @@ object Assets {
     /**
      * Contains fonts resources
      */
-    val fonts = Fonts()
-
+//    val fonts = Fonts()
+//
     /**
      * Contains fonts resources
      */
-    class Fonts {
+    object Fonts {
         lateinit var ROBOTO: BitmapFont
         lateinit var ROBOTOx2: BitmapFont
         lateinit var HACK_REGULAR: BitmapFont

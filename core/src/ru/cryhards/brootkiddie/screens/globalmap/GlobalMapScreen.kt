@@ -12,8 +12,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.UI
@@ -37,9 +36,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
     private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
-    companion object {
-        val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
-    }
+    private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
     private val crypto = UI.GlitchLabel("  $100  ")
 
 
@@ -85,12 +82,7 @@ class GlobalMapScreen : ScreenAdapter() {
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         uiStage.addActor(console)
 
-        // run day updater
-        Core.instance.addTask(Core.Task(-1, Core.Task.DayTaskPeriod, {
-            Player.day++
-            console.log("Day ${Player.day}")
-        }))
-
+        Environment.UI.console = console
         // TODO: console, handlers for ui
     }
 

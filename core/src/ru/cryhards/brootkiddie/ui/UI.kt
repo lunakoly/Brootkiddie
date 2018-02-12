@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.ui.items.ItemBlock
-import ru.cryhards.brootkiddie.events.dialogs.Dialog
 
 
 @Suppress("FunctionName")
@@ -26,7 +25,7 @@ object UI {
      */
     fun GlitchTextButton(text: String): ShaderableButton {
         val style = TextButton.TextButtonStyle()
-        style.font = Assets.fonts.HACK_REGULAR
+        style.font = Assets.Fonts.HACK_REGULAR
         val butt = ShaderableButton(text, style)
 
         val pix = Pixmap(50, 50, Pixmap.Format.RGB888)

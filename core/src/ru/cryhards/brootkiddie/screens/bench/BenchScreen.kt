@@ -11,8 +11,8 @@ import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
-import ru.cryhards.brootkiddie.ui.items.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
+import ru.cryhards.brootkiddie.ui.items.ItemExplorer
 
 /**
  * One of the screens that guys needed
@@ -65,7 +65,7 @@ class BenchScreen : ScreenAdapter() {
 
         // explorer
         explorer.setSize(stage.width / 3.5f, stage.height)
-        explorer.squeezeUI()
+        //explorer.squeezeUI()
 
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)

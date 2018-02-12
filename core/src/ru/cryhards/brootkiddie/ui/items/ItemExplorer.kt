@@ -15,8 +15,8 @@ import ru.cryhards.brootkiddie.ui.UI
 class ItemExplorer : ScrollPane(Table()) {
     private val icon = ImageActor("img/ui/empty.png")
     private val name = UI.StaticLabel("<name>")
-    private val info = UI.ExtendingTextArea("<info>")
-    private val data = UI.ExtendingTextArea("<item dependent data>")
+    private val info = UI.StaticLabel("<info>")
+    private val data = UI.StaticLabel("<item dependent data>")
     private val actions = Group()
 
 
@@ -33,11 +33,15 @@ class ItemExplorer : ScrollPane(Table()) {
         iconCell.height(iconCell.prefWidthValue).row()
 
         // info
-        table.add(info).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, info)).row()
+        info.setWrap(true)
+        table.add(info).width(Value.percentWidth(1f, this))
+        table.row()
         info.style.background = null
 
         // data
-        table.add(data).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, data)).row()
+        data.setWrap(true)
+        table.add(data).width(Value.percentWidth(1f, this))
+        table.row()
         data.style.background = null
 
         // actions
@@ -55,9 +59,9 @@ class ItemExplorer : ScrollPane(Table()) {
      */
     fun explore(block: ItemBlock) {
         name.setText(block.item.name)
-        info.text = block.item.info
+        info.setText(block.item.info)
         icon.drawable = Image(block.iconTexture).drawable
-        data.text = block.toString()
+        data.setText(block.toString())
 
         actions.clear()
         actions.height = 20f
@@ -75,8 +79,8 @@ class ItemExplorer : ScrollPane(Table()) {
      * Updates width and height of inner
      * UI components according to parent size
      */
-    fun squeezeUI() {
-        info.squeeze(width)
-        data.squeeze(width)
-    }
+//    fun squeezeUI() {
+//        info.squeeze(width)
+//        data.squeeze(width)
+//    }
 }
