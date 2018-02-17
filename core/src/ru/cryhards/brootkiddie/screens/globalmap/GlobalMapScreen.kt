@@ -37,7 +37,8 @@ class GlobalMapScreen : ScreenAdapter() {
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
     private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
     private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
-    private val crypto = UI.GlitchLabel("  $100  ")
+    private val crypto = UI.GlitchLabel("  0.0  ")
+    private val infected = UI.GlitchLabel("  0  ")
 
     init {
         // map
@@ -78,6 +79,10 @@ class GlobalMapScreen : ScreenAdapter() {
         crypto.setPosition(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f, Align.topRight)
         uiStage.addActor(crypto)
 
+        // infected
+        infected.setPosition(Gdx.graphics.width - 50f, Gdx.graphics.height - 150f, Align.topRight)
+        uiStage.addActor(infected)
+
         // console
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         Environment.UI.console = console
@@ -90,12 +95,18 @@ class GlobalMapScreen : ScreenAdapter() {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
+        updateUI()
+
         mapStage.act(delta)
         mapStage.draw()
         uiStage.act(delta)
         uiStage.draw()
 
         super.render(delta)
+    }
+
+    fun updateUI() {
+        infected.setText(Environment.infectedNodes.toString())
     }
 
     override fun show() {

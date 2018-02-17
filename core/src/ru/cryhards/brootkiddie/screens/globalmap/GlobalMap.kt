@@ -1,9 +1,11 @@
 package ru.cryhards.brootkiddie.screens.globalmap
 
+import com.badlogic.gdx.Gdx
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.Environment.SUSPICIOUSNESS_DETECT
 import ru.cryhards.brootkiddie.Environment.currentSuspiciousness
+import ru.cryhards.brootkiddie.Environment.infectedNodes
 import ru.cryhards.brootkiddie.Environment.isMalwareDetected
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
@@ -22,8 +24,10 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
     fun nextDay() {
         Environment.activeMalware?.run {
+            Gdx.app.log("GlobalMapDay", "running day-logic")
             currentSuspiciousness += calcSuspiciousness(stats.suspiciousness.toDouble())
             if (currentSuspiciousness > SUSPICIOUSNESS_DETECT) isMalwareDetected = true
+            infectedNodes++
         }
     }
 
