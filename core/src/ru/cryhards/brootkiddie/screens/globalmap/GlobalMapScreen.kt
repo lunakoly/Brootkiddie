@@ -39,7 +39,6 @@ class GlobalMapScreen : ScreenAdapter() {
     private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
     private val crypto = UI.GlitchLabel("  $100  ")
 
-
     init {
         // map
         val bounds = Cropper.fitCenter(

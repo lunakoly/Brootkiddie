@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 import ru.cryhards.brootkiddie.ui.ShaderableConsole
 
@@ -19,6 +20,14 @@ object Environment {
      */
     var day = 0
 
+    var activeMalware: Malware? = null
+
+    val TOTAL_NODES = 1.3e9.toLong()
+    var infectedNodes = 0L
+
+    val SUSPICIOUSNESS_DETECT = 100.0
+    var currentSuspiciousness = 0.0
+    var isMalwareDetected = false
 
     /**
      * Loads game state. Call on startup

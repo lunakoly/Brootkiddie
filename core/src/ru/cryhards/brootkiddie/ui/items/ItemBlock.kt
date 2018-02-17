@@ -17,6 +17,6 @@ class ItemBlock(var item: Item, var iconTexture: Texture) : ImageActor(iconTextu
 
 
     override fun toString(): String {
-        return "Some unknown item"
+        return item.toString()
     }
 }

@@ -3,7 +3,7 @@ package ru.cryhards.brootkiddie.items
 /**
  * Represents a script that can be combined into malware
  */
-class Script(name: String, info: String, var size: Float) : Item(name, info, Item.Type.SCRIPT) {
+open class Script(name: String, info: String, var size: Float) : Item(name, info, Item.Type.SCRIPT) {
 
     /**
      * The script level affets effects stats

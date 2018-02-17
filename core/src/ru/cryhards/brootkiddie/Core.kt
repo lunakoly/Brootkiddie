@@ -145,7 +145,7 @@ class Core : Game() {
     }
 
     /**
-     * Executes tasks and removes redutant if needed
+     * Executes tasks and removes redundant if needed
      */
     private fun invokeTasks() {
         val newTime = currentTimeMillis()

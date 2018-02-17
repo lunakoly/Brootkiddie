@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.ui.items.ItemBlock
 
 
@@ -199,10 +201,48 @@ object UI {
         block.actions.add(logger)
         return block
     }
+
+    /**
+     * Returns ItemBlock with Player's malware inside
+     */
+    fun malwareItem(malware: Malware): ItemBlock {
+        val block = ItemBlock(malware, Texture("img/ui/script_net.png"))
+        val logger = UI.GlitchTextButton("KUKAREKU v log")
+
+        logger.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Gdx.app.log("ahaha", "rabotaet")
+            }
+        })
+
+        block.actions.add(logger)
+
+
+        val setGlobalMapMalware = if (Environment.activeMalware == malware) UI.GlitchTextButton("DEACTIVATE") else UI.GlitchTextButton("ACTIVATE")
+        setGlobalMapMalware.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (Environment.activeMalware == malware) {
+                    Gdx.app.log("activeMalware", "deactivated")
+                    Environment.UI.console?.log("${malware.name} deactivated")
+                    Environment.activeMalware = null
+                    setGlobalMapMalware.setText("ACTIVATE")
+                } else {
+                    Gdx.app.log("activeMalware", "activated")
+                    Environment.activeMalware = malware
+                    Environment.UI.console?.log("${malware.name} activated")
+                    setGlobalMapMalware.setText("DEACTIVATE")
+                }
+            }
+        })
+
+        block.actions.add(setGlobalMapMalware)
+
+        return block
+    }
+
     /**
      * Returns button with common style
      */
-
     fun StaticTextButton(text: String) : ShaderableButton{
         val style = TextButton.TextButtonStyle()
         style.font = Assets.Fonts.ROBOTOx2

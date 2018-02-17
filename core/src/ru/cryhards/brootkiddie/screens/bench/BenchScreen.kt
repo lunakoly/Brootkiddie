@@ -12,6 +12,10 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
+import ru.cryhards.brootkiddie.items.effects.MiningEffect
+import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 import ru.cryhards.brootkiddie.ui.UI
 import ru.cryhards.brootkiddie.ui.items.ItemExplorer
 
@@ -82,6 +86,12 @@ class BenchScreen : ScreenAdapter() {
         // test bench
         Player.Inventory.items.add(UI.emptyItem())
         Player.Inventory.items.add(UI.loremItem())
+        val exmalw = Malware("PETYA", "MINER")
+        exmalw.combine(DisguiseEffect())
+        exmalw.combine(MiningEffect())
+        exmalw.combine(SpreadingEffect())
+        Player.Inventory.items.add(UI.malwareItem(exmalw))
+
         blockSpace.buildBlockSpace(Player.Inventory.items)
     }
 

@@ -92,10 +92,6 @@ open class GlobalMapLevel(player: Player) : Level(player) {
         return delta
     }
 
-    fun sigmoid(x: Float): Float {
-        return 1f / (1f + Math.exp(-10.0 * x + 5.0)).toFloat()
-    }
-
     fun isSpotted(m: Malware): Boolean {
         return isSpottedByMalware.contains(m)
     }

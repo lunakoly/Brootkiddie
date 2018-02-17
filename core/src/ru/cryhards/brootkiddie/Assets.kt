@@ -81,15 +81,15 @@ object Assets {
 
             ABERRATION = ShaderProgram(Gdx.files.internal("shaders/aberration.vsh"), Gdx.files.internal("shaders/aberration.fsh"))
             if (!ABERRATION.isCompiled)
-                println(ABERRATION.log)
+                Gdx.app.error("SHADER FAILED", ABERRATION.log)
 
             GLITCH = ShaderProgram(Gdx.files.internal("shaders/glitch.vsh"), Gdx.files.internal("shaders/glitch.fsh"))
             if (!GLITCH.isCompiled)
-                println(GLITCH.log)
+                Gdx.app.error("SHADER FAILED", GLITCH.log)
 
             WAVE = ShaderProgram(Gdx.files.internal("shaders/wave.vsh"), Gdx.files.internal("shaders/wave.fsh"))
             if (!WAVE.isCompiled)
-                println(WAVE.log)
+                Gdx.app.error("SHADER FAILED", WAVE.log)
         }
 
         /**

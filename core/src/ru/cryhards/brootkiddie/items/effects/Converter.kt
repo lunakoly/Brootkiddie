@@ -14,4 +14,7 @@ object Converter {
             else
                 -Math.sqrt(-x.toDouble()).toFloat()
 
+    fun sigmoid(x: Float) =
+            1f / (1f + Math.exp(-10.0 * x + 5.0)).toFloat()
+
 }

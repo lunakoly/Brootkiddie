@@ -1,5 +1,10 @@
 package ru.cryhards.brootkiddie.screens.globalmap
 
+import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.Environment
+import ru.cryhards.brootkiddie.Environment.SUSPICIOUSNESS_DETECT
+import ru.cryhards.brootkiddie.Environment.currentSuspiciousness
+import ru.cryhards.brootkiddie.Environment.isMalwareDetected
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
 
@@ -8,6 +13,21 @@ import ru.cryhards.brootkiddie.ui.ImageActor
  * Incapsulates global map object logic
  */
 class GlobalMap : ImageActor("img/bg/map.jpg") {
+    init {
+        Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
+            nextDay()
+            false
+        }))
+    }
+
+    fun nextDay() {
+        Environment.activeMalware?.run {
+            currentSuspiciousness += calcSuspiciousness(stats.suspiciousness.toDouble())
+            if (currentSuspiciousness > SUSPICIOUSNESS_DETECT) isMalwareDetected = true
+        }
+    }
+
+    fun calcSuspiciousness(suspiciousness: Double) = 0f
 
     /**
      * Returns a pair of random coordinates within

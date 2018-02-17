@@ -19,7 +19,6 @@ class ShaderableButton(text: String, style: TextButtonStyle) : TextButton(text, 
             batch?.shader = shader
             super.draw(batch, parentAlpha)
             batch?.shader = old
-
         } else
             super.draw(batch, parentAlpha)
     }
