@@ -9,8 +9,8 @@ import ru.cryhards.brootkiddie.items.Malware
  * Increases malware spreading speed
  */
 class SpreadingEffect(var infectiousness: Float = 0.5f,
-                      var spreadingSpeed: Float = 0.5f,
-                      var suspiciousness: Float = 0.5f) : Item.Effect(
+                      var spreadingSpeed: Float = 0.27f,
+                      var suspiciousness: Float = 0.7f) : Item.Effect(
         "Spreading Effect",
         "Increases malware spreading speed") {
 

@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
+import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.UI
@@ -37,8 +39,8 @@ class GlobalMapScreen : ScreenAdapter() {
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
     private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
     private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
-    private val crypto = UI.GlitchLabel("  0.0  ")
-    private val infected = UI.GlitchLabel("  0  ")
+    private val crypto = UI.GlitchLabel("$888M")
+    private val infected = UI.GlitchLabel("888M")
 
     init {
         // map
@@ -106,7 +108,8 @@ class GlobalMapScreen : ScreenAdapter() {
     }
 
     fun updateUI() {
-        infected.setText(Environment.infectedNodes.toString())
+        infected.setText(humanReadable(Environment.infectedNodes))
+        crypto.setText("$" + humanReadable(Player.money.toFloat()))
     }
 
     override fun show() {

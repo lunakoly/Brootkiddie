@@ -8,7 +8,7 @@ import ru.cryhards.brootkiddie.items.Malware
  * -------------
  * Increases malware mining speed
  */
-class MiningEffect(var miningSpeed: Float = 0.5f) : Item.Effect(
+class MiningEffect(var miningSpeed: Float = 1f) : Item.Effect(
         "Mining Effect",
         "Increases malware mining speed") {
 

@@ -13,16 +13,18 @@ class ShaderableConsole(text: String, style: TextFieldStyle) : TextArea(text, st
      */
     var shader: ShaderProgram? = null
 
+    // TODO KOSTILI-VELOSIPEDEPE
+    private val ALPHA = 0.7f
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if (shader != null) {
             val old = batch?.shader
             batch?.shader = shader
-            super.draw(batch, parentAlpha)
+            super.draw(batch, parentAlpha * ALPHA)
             batch?.shader = old
 
         } else
-            super.draw(batch, parentAlpha)
+            super.draw(batch, parentAlpha * ALPHA)
     }
 
     /**

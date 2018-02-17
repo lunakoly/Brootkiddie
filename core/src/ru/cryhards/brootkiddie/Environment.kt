@@ -11,9 +11,9 @@ import ru.cryhards.brootkiddie.ui.ShaderableConsole
 
 object Environment {
     /**
-     * Time that one in-game day occures
+     * Time that one in-game day occures (ms)
      */
-    const val DAY_TASK_PERIOD = 3000L
+    const val DAY_TASK_PERIOD = 1000L
 
     /**
      * Current day
@@ -25,8 +25,8 @@ object Environment {
     val TOTAL_NODES = 1.3e9.toLong()
     var infectedNodes = 0L
 
-    val SUSPICIOUSNESS_DETECT = 100.0
-    var currentSuspiciousness = 0.0
+    val SUSPICIOUSNESS_DETECT = 1.0f
+    var currentSuspiciousness = 0.0f
     var isMalwareDetected = false
 
     /**
