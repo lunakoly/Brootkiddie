@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.ui.items
+package ru.cryhards.brootkiddie.screens.inventory
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.Value
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -18,7 +19,7 @@ import ru.cryhards.brootkiddie.ui.UI
  */
 class ItemExplorer : ScrollPane(Table()) {
     private val icon = ImageActor("img/ui/empty.png")
-    private val name = UI.StaticLabel("<name>")
+    private val name = UI.StaticLabel("<title>")
     private val info = UI.StaticLabel("<info>")
     private val data = UI.StaticLabel("<item dependent data>")
     private val actions = Group()
@@ -27,7 +28,7 @@ class ItemExplorer : ScrollPane(Table()) {
     init {
         val table = actor as Table
 
-        // name
+        // title
         table.add(name).width(Value.percentWidth(1f, this)).row()
         name.style.fontColor = Color.LIGHT_GRAY
         name.setAlignment(Align.center)
@@ -59,7 +60,7 @@ class ItemExplorer : ScrollPane(Table()) {
         table.add(actions).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, actions)).row()
 
 
-        setOverscroll(false, false)
+        setOverscroll(false, true)
         layout()
         explore(UI.emptyItem())
     }
@@ -68,9 +69,9 @@ class ItemExplorer : ScrollPane(Table()) {
     /**
      * Displays information about item
      */
-    fun explore(block: ItemBlock) {
-        name.setText(block.item.name)
-        info.setText(block.item.info)
+    fun explore(block: Item) {
+        name.setText(block.title)
+        info.setText(block.info)
         icon.drawable = Image(block.iconTexture).drawable
         data.setText(block.toString())
 

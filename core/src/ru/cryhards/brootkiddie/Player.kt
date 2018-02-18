@@ -1,7 +1,7 @@
 package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
-import ru.cryhards.brootkiddie.ui.items.ItemBlock
+import ru.cryhards.brootkiddie.items.Item
 
 
 /**
@@ -20,7 +20,7 @@ object Player {
         /**
          * All things that Player has
          */
-        val items = ArrayList<ItemBlock>()
+        val items = ArrayList<Item>()
         // tools (script optimizer!!! - decreases size)
     }
 

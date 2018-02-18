@@ -1,9 +1,11 @@
 package ru.cryhards.brootkiddie.items
 
+import com.badlogic.gdx.graphics.Texture
+
 /**
  * Represents a script that can be combined into malware
  */
-class Script(name: String, info: String, var size: Float) : Item(name, info, Item.Type.SCRIPT) {
+class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
 
     /**
      * The script level affets effects stats
@@ -30,8 +32,8 @@ class Script(name: String, info: String, var size: Float) : Item(name, info, Ite
      * Returns malware that is a combination of the 2 scripts
      */
     fun combine(script: Script) = Malware(
-            this.name.substring(0, 3) + " + " + script.name.substring(0, 3),
-            "Combo of " + this.name + " and " + script.name, this, script)
+            this.title.substring(0, 3) + " + " + script.title.substring(0, 3),
+            "Combo of " + this.title + " and " + script.title, Texture("img/items/malware.png"), this, script)
 
     /**
      * Adds this to malware and returns it

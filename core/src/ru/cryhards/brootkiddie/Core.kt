@@ -4,10 +4,12 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.DialogsScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
+import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import java.lang.System.currentTimeMillis
@@ -77,9 +79,13 @@ class Core : Game() {
     }
 
     private lateinit var globalMapScreen: GlobalMapScreen
-    private lateinit var benchScreen: BenchScreen
+    private lateinit var inventoryScreen: InventoryScreen
     private lateinit var browserScreen : BrowserScreen
     private lateinit var dialogsScreen: DialogsScreen
+    private lateinit var benchScreen: BenchScreen
+
+    private var prevScreen: Screen? = null
+    private var mustDispose = false
 
 
     /**
@@ -87,42 +93,76 @@ class Core : Game() {
      */
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
+        prevScreen = globalMapScreen
         Environment.initialize()
         switchScreen(globalMapScreen)
-        benchScreen = BenchScreen()
+        inventoryScreen = InventoryScreen()
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
+        benchScreen = BenchScreen()
     }
 
     /**
      * Shows map screen
      */
     fun toGlobalMap() {
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(globalMapScreen)
+    }
+
+    /**
+     * Shows inventory screen
+     */
+    fun toInventory() {
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(inventoryScreen)
     }
 
     /**
      * Shows bench screen
      */
-    fun toBench() {
+    fun toBench(malware: Malware) {
+        benchScreen.inspect(malware)
+        mustDispose = true
+        prevScreen = getScreen()
         setScreen(benchScreen)
     }
 
     /**
      * Shows dialogs screen
      */
-
     fun toDialogs(){
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(dialogsScreen)
     }
 
     /**
      * Shows browser screen
      */
-
     fun toBrowser(){
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(browserScreen)
     }
+
+    /**
+     * Shows previous screen
+     */
+    fun toBack(){
+        if (prevScreen != null) {
+            val sub = getScreen()
+            setScreen(prevScreen)
+
+            if (mustDispose)
+                sub.dispose()
+            else
+                prevScreen = sub
+        }
+    }
+
 
     companion object {
         /**

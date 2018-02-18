@@ -3,6 +3,7 @@ package ru.cryhards.brootkiddie
 import android.annotation.TargetApi
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 
 import com.badlogic.gdx.backends.android.AndroidApplication
@@ -27,5 +28,9 @@ class AndroidLauncher : AndroidApplication() {
         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         or View.SYSTEM_UI_FLAG_FULLSCREEN
         or View.SYSTEM_UI_FLAG_IMMERSIVE)
+    }
+
+    override fun onBackPressed() {
+        Core.instance.toBack()
     }
 }
