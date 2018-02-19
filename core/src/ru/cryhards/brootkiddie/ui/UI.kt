@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
@@ -172,24 +173,18 @@ object UI {
 
 
     /**
-     * Returns ItemBlock debug example
+     * Returns Item debug example
      */
-    fun emptyItem(): ItemBlock {
-        val item = Item("<Name>", "<Some info about item>", Item.Type.SCRIPT)
-        return ItemBlock(item, Texture("img/ui/empty.png"))
-    }
+    fun emptyItem() = Script(
+            "<Name>",
+            "<Some info about item>",
+            Texture("img/ui/empty.png"), 1f)
 
 
     /**
-     * Returns ItemBlock debug example 2
+     * Returns Item debug example 2
      */
-    fun loremItem(): ItemBlock {
-        val item = Item(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
-                Item.Type.SCRIPT)
-
-        val block = ItemBlock(item, Texture("img/ui/back.png"))
+    fun loremItem(): Script {
         val logger = UI.GlitchTextButton("LOL")
 
         logger.addListener(object : ClickListener() {
@@ -198,9 +193,16 @@ object UI {
             }
         })
 
+        val block = Script(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
+                Texture("img/ui/back.png"), 1f)
+
         block.actions.add(logger)
         return block
     }
+
+
 
     /**
      * Returns ItemBlock with Player's malware inside
@@ -243,6 +245,7 @@ object UI {
     /**
      * Returns button with common style
      */
+
     fun StaticTextButton(text: String) : ShaderableButton{
         val style = TextButton.TextButtonStyle()
         style.font = Assets.Fonts.ROBOTOx2

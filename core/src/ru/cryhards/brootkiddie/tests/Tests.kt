@@ -1,5 +1,6 @@
 package ru.cryhards.brootkiddie.tests
 
+import com.badlogic.gdx.graphics.Texture
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
@@ -16,38 +17,38 @@ import ru.cryhards.brootkiddie.screens.SplashScreen
  */
 class Tests {
     fun test() {
-        val apple = Item("Apple", "Fruit", Item.Type.SCRIPT)
-        println(apple.name)
+        val apple = Item("Apple", "Fruit", Texture("img/items/worm.png"), Item.Type.SCRIPT)
+        println(apple.title)
         println(apple.info)
         println(apple.type.info)
 
         val greyDeath = Item.Effect("Grey Death", "Kills everyone")
-        println(greyDeath.name)
+        println(greyDeath.title)
         println(greyDeath.info)
 
         apple.effects.add(greyDeath)
-        println(apple.findEffect(greyDeath.name))
+        println(apple.findEffect(greyDeath.title))
     }
 
     fun fest() {
-        val scr1 = Script("Crack", "Focus-Pocus", 10.4f)
-        val scr2 = Script("EVIL", "Cry, baby", 5f)
-        val scr3 = Script("BadAss", "Very bad", 15f)
+        val scr1 = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10.4f)
+        val scr2 = Script("EVIL", "Cry, baby", Texture("img/items/worm.png"), 5f)
+        val scr3 = Script("BadAss", "Very bad", Texture("img/items/worm.png"), 15f)
 
         var mal = scr1.combine(scr2)
-        println(mal.name)
+        println(mal.title)
         println(mal.info)
 
         mal = scr1.combine(scr2).combine(scr3)
-        println(mal.name)
+        println(mal.title)
         println(mal.info)
 
         mal = scr1 + scr2 + scr3
-        println(mal.name)
+        println(mal.title)
         println(mal.info)
 
         mal = scr1.combine(scr2 + scr3)
-        println(mal.name)
+        println(mal.title)
         println(mal.info)
 
         println(mal.stats)
@@ -60,7 +61,7 @@ class Tests {
         val hiding = DisguiseEffect()
         val spreading = SpreadingEffect()
 
-        val s = Script("Crack", "Focus-Pocus", 10.4f)
+        val s = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10.4f)
 
         s.effects.add(mining)
         s.effects.add(hiding)

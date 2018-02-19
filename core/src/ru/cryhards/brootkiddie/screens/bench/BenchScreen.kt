@@ -16,25 +16,20 @@ import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
-import ru.cryhards.brootkiddie.ui.items.ItemExplorer
 
 /**
- * One of the screens that guys needed
+ * Malware crafting
  */
 class BenchScreen : ScreenAdapter() {
     private val stage = Stage()
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
-//    private val background = Image(UI.colorToDrawable(Color(.0f, .0f, .0f, 1f)))
-
-
-    private val crypto = UI.GlitchLabel("  $100  ")
-    private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
-
+    private val applyButton = UI.GlitchTextButton("APPLY")
     private val explorer = ItemExplorer()
-    private val blockSpace = BlockSpace(explorer)
+    private val blockSpace = BenchBlockSpace(explorer)
 
 
     init {
@@ -44,44 +39,28 @@ class BenchScreen : ScreenAdapter() {
         stage.addActor(background)
 
 
-        // back
-        backButton.setPosition(50f, 50f, Align.bottomLeft)
-        stage.addActor(backButton)
-
-        backButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toGlobalMap()
-            }
-        })
-
-        // browser
-        openBrowserButton.setPosition(50f, stage.height - 50f, Align.topLeft)
-        stage.addActor(openBrowserButton)
-
-        openBrowserButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toBrowser()
-            }
-        })
-
-        // crypto
-        crypto.setPosition(50f, stage.height - openBrowserButton.height - 100f, Align.topLeft)
-        crypto.setSize(openBrowserButton.width, crypto.height)
-        crypto.style.background = null
-        stage.addActor(crypto)
-
         // explorer
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
 
+        // back
+        applyButton.width = explorer.width
+        applyButton.setPosition(stage.width - 50, stage.height - 50, Align.topRight)
+        stage.addActor(applyButton)
+
+        applyButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Core.instance.toInventory()
+            }
+        })
+
         // blockSpace
-        blockSpace.setSize(stage.width - explorer.width - backButton.width - 100f, stage.height)
+        blockSpace.setSize(stage.width - explorer.width, stage.height)
         blockSpace.squeezeUI()
-        blockSpace.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
+        blockSpace.setPosition(0f, stage.height, Align.topLeft)
         blockSpace.shader = Assets.Shaders.WAVE
         stage.addActor(blockSpace)
-
 
         // test bench
         Player.Inventory.items.add(UI.emptyItem())
@@ -93,6 +72,12 @@ class BenchScreen : ScreenAdapter() {
         Player.Inventory.items.add(UI.malwareItem(exmalw))
 
         blockSpace.buildBlockSpace(Player.Inventory.items)
+//        blockSpace.buildBlockSpace(Player.Inventory.items)
+    }
+
+
+    fun inspect(malware: Malware) {
+        blockSpace.fill(malware.scripts)
     }
 
 

@@ -37,7 +37,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
 
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
-    private val openBenchButton = UI.GlitchImageButton("img/ui/bench.png")
+    private val openInventoryButton = UI.GlitchImageButton("img/ui/bench.png")
     private val console = UI.GlitchConsole("=== MEGA SHELL V8000 ===")
     private val crypto = UI.GlitchLabel("$888M")
     private val infected = UI.GlitchLabel("888M")
@@ -57,13 +57,13 @@ class GlobalMapScreen : ScreenAdapter() {
         mapStage.addListener(FloatingCameraControls(camera, background))
 
 
-        // bench
-        openBenchButton.setPosition(50f, 50f, Align.bottomLeft)
-        uiStage.addActor(openBenchButton)
+        // inventory
+        openInventoryButton.setPosition(50f, 50f, Align.bottomLeft)
+        uiStage.addActor(openInventoryButton)
 
-        openBenchButton.addListener(object : ClickListener() {
+        openInventoryButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toBench()
+                Core.instance.toInventory()
             }
         })
 
