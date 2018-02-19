@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -16,7 +17,6 @@ import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
-import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -57,7 +57,7 @@ class BenchScreen : ScreenAdapter() {
 
         // blockSpace
         blockSpace.setSize(stage.width - explorer.width, stage.height)
-        blockSpace.squeezeUI()
+        //blockSpace.squeezeUI()
         blockSpace.setPosition(0f, stage.height, Align.topLeft)
         blockSpace.shader = Assets.Shaders.WAVE
         stage.addActor(blockSpace)
@@ -65,14 +65,13 @@ class BenchScreen : ScreenAdapter() {
         // test bench
         Player.Inventory.items.add(UI.emptyItem())
         Player.Inventory.items.add(UI.loremItem())
-        val exmalw = Malware("PETYA", "MINER")
+        val exmalw = Malware("PETYA", "MINER", Texture("img/items/malware.png"))
         exmalw.combine(DisguiseEffect())
         exmalw.combine(MiningEffect())
         exmalw.combine(SpreadingEffect())
         Player.Inventory.items.add(UI.malwareItem(exmalw))
 
-        blockSpace.buildBlockSpace(Player.Inventory.items)
-//        blockSpace.buildBlockSpace(Player.Inventory.items)
+        // blockSpace.buildBlockSpace(Player.Inventory.items)
     }
 
 

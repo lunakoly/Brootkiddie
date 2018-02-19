@@ -3,12 +3,9 @@ package ru.cryhards.brootkiddie.screens.bench
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.screens.inventory.BlockSpace
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
-import kotlin.math.max
-import kotlin.math.truncate
 
 /**
  * Inventory field
@@ -35,10 +32,10 @@ class BenchBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
             item.setSize(blockSize, blockSize)
             item.setPosition(
                     i * blockSize,
-                    table.height - j * blockSize,
+                    height - j * blockSize,
                     Align.topLeft)
 
-            content.addActor(item)
+            addActor(item)
             field[j][i] = item
 
 

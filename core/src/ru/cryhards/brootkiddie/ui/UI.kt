@@ -11,11 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.ui.items.ItemBlock
+import ru.cryhards.brootkiddie.items.Script
 
 
 @Suppress("FunctionName")
@@ -207,8 +206,7 @@ object UI {
     /**
      * Returns ItemBlock with Player's malware inside
      */
-    fun malwareItem(malware: Malware): ItemBlock {
-        val block = ItemBlock(malware, Texture("img/ui/script_net.png"))
+    fun malwareItem(malware: Malware): Item {
         val logger = UI.GlitchTextButton("KUKAREKU v log")
 
         logger.addListener(object : ClickListener() {
@@ -217,8 +215,7 @@ object UI {
             }
         })
 
-        block.actions.add(logger)
-
+        malware.actions.add(logger)
 
         val setGlobalMapMalware = if (Environment.activeMalware == malware) UI.GlitchTextButton("DEACTIVATE") else UI.GlitchTextButton("ACTIVATE")
         setGlobalMapMalware.addListener(object : ClickListener() {
@@ -237,9 +234,9 @@ object UI {
             }
         })
 
-        block.actions.add(setGlobalMapMalware)
+        malware.actions.add(setGlobalMapMalware)
 
-        return block
+        return malware
     }
 
     /**
