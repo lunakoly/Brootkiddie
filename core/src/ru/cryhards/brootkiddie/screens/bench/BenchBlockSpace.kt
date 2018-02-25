@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.screens.inventory.BlockSpace
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
+import kotlin.math.max
+import kotlin.math.truncate
 
 /**
  * Inventory field

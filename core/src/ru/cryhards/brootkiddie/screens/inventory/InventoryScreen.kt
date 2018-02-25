@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
@@ -31,7 +32,6 @@ class InventoryScreen : ScreenAdapter() {
 
     private val explorer = ItemExplorer()
     private val blockSpace = InventoryBlockSpace(explorer)
-
 
     init {
         // background
@@ -78,6 +78,7 @@ class InventoryScreen : ScreenAdapter() {
         pane.setSize(stage.width - explorer.width - backButton.width - 100f, stage.height)
         //pane.squeezeUI()
         pane.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
+
         blockSpace.shader = Assets.Shaders.WAVE
         blockSpace.pane = pane
         stage.addActor(pane)

@@ -1,9 +1,18 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Cell
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.ui.ImageActor
 
@@ -29,6 +38,12 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
      */
     var shader: ShaderProgram? = null
 
+    /**
+     * For DragAndDrop
+     */
+    val dragAndDrop = DragAndDrop()
+
+
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if (shader != null) {
             val old = batch?.shader
@@ -49,7 +64,7 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
 
 
     /**
-     * BUilds 2d field of blocks and puts
+     * Builds 2d field of blocks and puts
      * items in its cells
      */
     fun buildBlockSpace(rowCount: Int): BlockSpace {
@@ -57,7 +72,7 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
 
         val colCount = width.toInt() / prefBlockSize.toInt()
         val blockSize = width / colCount
-
+        dragAndDrop.clear()
 
         field = Array(rowCount) { arrayOfNulls<Item?>(colCount) }
 
@@ -65,8 +80,9 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
         for (j in 0 until rowCount) {
             for (i in 0 until colCount) {
                 // create block bg
-                val block = ImageActor("img/ui/inventory_block.png")
-                add(block).size(blockSize)
+            val block = Container<Item>()
+            block.background = SpriteDrawable(Sprite(Texture("img/ui/inventory_block.png")))
+            val cell = add(block).size(blockSize)
             }
 
             row()

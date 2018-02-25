@@ -1,11 +1,23 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener
+import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.ui.ImageActor
+import kotlin.math.max
+import kotlin.math.truncate
 
 /**
  * Inventory field
@@ -36,7 +48,69 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
             val item = items[k]
             item.setSize(blockSize, blockSize)
 
-            cells[k].setActor<Actor>(item)
+            val cont : Container<*>? = cells[k].actor as? Container<*>
+            cont!!.actor = item
+
+            dragAndDrop.addSource(object : DragAndDrop.Source(item){
+                override fun dragStart(event: InputEvent?, x: Float, y: Float, pointer: Int): DragAndDrop.Payload? {
+                    if (!item.isDragged) return null
+
+                    val payload = DragAndDrop.Payload()
+
+                    payload.`object` = item
+
+                    payload.dragActor = ImageActor(item.iconTexture)
+
+                    val validActor = ImageActor(item.iconTexture)
+                    validActor.color = Color(0f, 1f, 0f, 0.3f)
+                    payload.validDragActor = validActor
+
+                    return payload
+                }
+
+                override fun dragStop(event: InputEvent?, x: Float, y: Float, pointer: Int, payload: DragAndDrop.Payload?, target: DragAndDrop.Target?) {
+                    item.isDragged = false
+                    item.color = Color(1f, 1f, 1f, 1f)
+                }
+
+
+            })
+
+            dragAndDrop.addTarget(object : DragAndDrop.Target(item){
+                override fun drop(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int) {
+
+                    when (source!!.actor) {
+                        is Malware -> {
+                            (source.actor as Malware).combine(item as Script)
+                            Player.Inventory.items.remove(item)
+                            this@InventoryBlockSpace.fill(Player.Inventory.items)
+                        }
+                        is Script -> {
+                            val mal = (source.actor as Script) + (item as Script)
+                            Player.Inventory.items.remove(item)
+                            Player.Inventory.items.remove(source.actor as Script)
+                            Player.Inventory.items.add(mal)
+                            this@InventoryBlockSpace.fill(Player.Inventory.items)
+                        }
+                    }
+
+                    item.color = Color(1f, 1f, 1f, 1f)
+                }
+
+                override fun drag(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int): Boolean {
+                    if (source!!.actor is Item && (source.actor != item)) {
+                        item.color = Color(0f, 1f, 0f, 0.3f)
+                        return true
+                    }
+                    return false
+                }
+
+                override fun reset(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?) {
+
+                    if (source!!.actor != item) item.color = Color(1f, 1f, 1f, 1f)
+                }
+
+            })
 
 //            __  __                                        __                __              __  __
 //            /  |/  |                                      /  |              /  |            /  |/  |
@@ -50,9 +124,19 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
 
 
 
-            item.addListener(object : ClickListener() {
-                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+            item.addListener(object : InputListener() {
+                override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                     explorer.explore(item)
+                    return super.touchDown(event, x, y, pointer, button)
+                }
+            })
+            /**
+            item.addListener(object : ClickListener()
+            {
+                override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                    pane.setScrollingDisabled(true, true)
+                    Gdx.app.log("SADA", pane.isScrollingDisabledY.toString())
+                    return super.touchDown(event, x, y, pointer, button)
                 }
             })
 
@@ -70,6 +154,7 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
                         subY = height - item.height
 
                     item.moveBy(subX - item.x, subY - item.y)
+                    //pane.setScrollingDisabled(true, true)
                 }
 
                 private var oldX = 0f
@@ -79,14 +164,14 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
 
                     oldX = item.x
                     oldY = item.y
-                    pane.setScrollingDisabled(true, true)
+
                     super.touchDown(event, x, y, pointer, button)
                     return true
                 }
 
                 override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
 
-                    pane.setScrollingDisabled(false, false)
+                    //pane.setScrollingDisabled(false, false)
 
                     val cellX = (item.x + item.width / 2) / blockSize
                     val cellY = (height - item.y - item.height / 2) / blockSize
@@ -119,6 +204,7 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
                     }*/
                 }
             })
+            **/
         }
     }
 

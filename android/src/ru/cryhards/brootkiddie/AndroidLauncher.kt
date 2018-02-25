@@ -33,4 +33,5 @@ class AndroidLauncher : AndroidApplication() {
     override fun onBackPressed() {
         Core.instance.toBack()
     }
+
 }

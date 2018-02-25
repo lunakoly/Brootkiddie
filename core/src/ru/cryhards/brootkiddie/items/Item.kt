@@ -1,14 +1,24 @@
 package ru.cryhards.brootkiddie.items
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
+import ru.cryhards.brootkiddie.ui.Draggable
 import ru.cryhards.brootkiddie.ui.ImageActor
 
 /**
  * Represents an item that the Player may own
  */
-open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture) {
+open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture), Draggable{
+    /*
+        Boolean for DragAndDrop
+     */
 
+    override var isDragged = false
     /**
      * Represents an item type
      */
@@ -51,5 +61,33 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
 
     override fun toString(): String {
         return "Some unknown item"
+    }
+
+
+
+    init {
+
+        /**
+         * Listeners for DragAndDrop
+         */
+
+        val gestureListener = object : ActorGestureListener() {
+            override fun longPress(actor: Actor?, x: Float, y: Float): Boolean {
+                isDragged = true
+                color = Color(1f, 0f, 0f, 0.3f)
+                return super.longPress(actor, x, y)
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                isDragged = false
+                color = Color(1f, 1f, 1f, 1f)
+                super.touchUp(event, x, y, pointer, button)
+            }
+        }
+
+        gestureListener.gestureDetector.setLongPressSeconds(0.6f)
+
+        this.addListener(gestureListener)
+
     }
 }

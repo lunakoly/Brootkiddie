@@ -8,6 +8,7 @@ import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.DialogsScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
+import ru.cryhards.brootkiddie.screens.TestScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
@@ -40,7 +41,7 @@ class Core : Game() {
         // start loading resources
         Assets.initialize()
 
-        setScreen(MainMenuScreen())
+        setScreen(InventoryScreen())
 
         switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }
