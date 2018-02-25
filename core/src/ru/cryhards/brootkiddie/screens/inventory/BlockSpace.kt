@@ -19,9 +19,7 @@ import ru.cryhards.brootkiddie.ui.ImageActor
 /**
  * Square field of blocks
  */
-/**
- * CHTO ZA GOVNO?!!?!?!?! KOSTYA, BLYAT!
- */
+
 abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
     /**
      * The preferred size of a single square block
@@ -72,17 +70,16 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
 
         val colCount = width.toInt() / prefBlockSize.toInt()
         val blockSize = width / colCount
-        dragAndDrop.clear()
 
         field = Array(rowCount) { arrayOfNulls<Item?>(colCount) }
 
 
         for (j in 0 until rowCount) {
             for (i in 0 until colCount) {
-                // create block bg
-            val block = Container<Item>()
-            block.background = SpriteDrawable(Sprite(Texture("img/ui/inventory_block.png")))
-            val cell = add(block).size(blockSize)
+                // container for items
+                val block = Container<Item>()
+                block.background = SpriteDrawable(Sprite(Texture("img/ui/inventory_block.png")))
+                add(block).size(blockSize)
             }
 
             row()

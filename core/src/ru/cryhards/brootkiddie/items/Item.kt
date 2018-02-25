@@ -17,8 +17,8 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
     /*
         Boolean for DragAndDrop
      */
-
     override var isDragged = false
+
     /**
      * Represents an item type
      */
@@ -63,31 +63,4 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
         return "Some unknown item"
     }
 
-
-
-    init {
-
-        /**
-         * Listeners for DragAndDrop
-         */
-
-        val gestureListener = object : ActorGestureListener() {
-            override fun longPress(actor: Actor?, x: Float, y: Float): Boolean {
-                isDragged = true
-                color = Color(1f, 0f, 0f, 0.3f)
-                return super.longPress(actor, x, y)
-            }
-
-            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                isDragged = false
-                color = Color(1f, 1f, 1f, 1f)
-                super.touchUp(event, x, y, pointer, button)
-            }
-        }
-
-        gestureListener.gestureDetector.setLongPressSeconds(0.6f)
-
-        this.addListener(gestureListener)
-
-    }
 }
