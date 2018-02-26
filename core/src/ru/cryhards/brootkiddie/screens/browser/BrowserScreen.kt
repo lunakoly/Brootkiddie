@@ -15,6 +15,8 @@ import ru.cryhards.brootkiddie.ui.UI
 /**
  * Screen, where news will be displayed
  */
+
+
 class BrowserScreen : ScreenAdapter() {
     private val stage = Stage()
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
@@ -29,6 +31,8 @@ class BrowserScreen : ScreenAdapter() {
                 Core.instance.toDialogs()
             }
         })
+
+
 
         pageGroup.addActor(dialogsButton)
         pageGroup.addActor(newsButton)
