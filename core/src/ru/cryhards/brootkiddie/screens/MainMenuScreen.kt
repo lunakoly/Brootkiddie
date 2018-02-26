@@ -17,6 +17,7 @@ import ru.cryhards.brootkiddie.ui.UI
 /**
  * Main menu screen
  */
+
 class MainMenuScreen : ScreenAdapter() {
     private val background = ImageActor("img/bg/logo.png")
     private var playButton: TextButton

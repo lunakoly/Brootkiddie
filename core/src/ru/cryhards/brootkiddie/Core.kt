@@ -12,6 +12,7 @@ import ru.cryhards.brootkiddie.screens.TestScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
+import ru.cryhards.brootkiddie.screens.browser.NewsScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import java.lang.System.currentTimeMillis
 
@@ -41,7 +42,7 @@ class Core : Game() {
         // start loading resources
         Assets.initialize()
 
-        setScreen(InventoryScreen())
+        setScreen(MainMenuScreen())
 
         switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }
@@ -83,6 +84,7 @@ class Core : Game() {
     private lateinit var inventoryScreen: InventoryScreen
     private lateinit var browserScreen : BrowserScreen
     private lateinit var dialogsScreen: DialogsScreen
+    private lateinit var newsScreen: NewsScreen
     private lateinit var benchScreen: BenchScreen
 
     private var prevScreen: Screen? = null
@@ -100,6 +102,7 @@ class Core : Game() {
         inventoryScreen = InventoryScreen()
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
+        newsScreen = NewsScreen()
         benchScreen = BenchScreen()
     }
 
@@ -138,6 +141,15 @@ class Core : Game() {
         mustDispose = false
         prevScreen = getScreen()
         setScreen(dialogsScreen)
+    }
+
+    /**
+     * Shows news screen
+     */
+    fun toNews(){
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(newsScreen)
     }
 
     /**

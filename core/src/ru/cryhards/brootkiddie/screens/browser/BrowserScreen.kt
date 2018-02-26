@@ -32,6 +32,12 @@ class BrowserScreen : ScreenAdapter() {
             }
         })
 
+        newsButton.addListener(object : ClickListener(){
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                Core.instance.toNews()
+            }
+        })
+
 
 
         pageGroup.addActor(dialogsButton)
