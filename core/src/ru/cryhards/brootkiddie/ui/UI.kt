@@ -15,6 +15,7 @@ import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.screens.market.MarketItems
 
 
 @Suppress("FunctionName")
@@ -237,6 +238,23 @@ object UI {
         malware.actions.add(setGlobalMapMalware)
 
         return malware
+    }
+
+    /**
+     * Returns ItemBlock with market's item inside
+     */
+    fun marketItem(item: Item): Item {
+        val buybutt = UI.GlitchTextButton("BUY")
+
+        buybutt.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                MarketItems.buy(item)
+            }
+        })
+
+        item.actions.add(buybutt)
+
+        return item
     }
 
     /**

@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture
 /**
  * Represents a script that can be combined into malware
  */
-class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
+open class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
 
     /**
-     * The script level affets effects stats
+     * The script level affects effects stats
      * Initial value = 1
      */
     var level = 1

@@ -1,24 +1,18 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.ImageActor
-import kotlin.math.max
-import kotlin.math.truncate
 
 /**
  * Inventory field
@@ -114,13 +108,13 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
                     when (source!!.actor) {
                         is Malware -> {
                             (source.actor as Malware).combine(item as Script)
-                            Player.Inventory.items.remove(item)
+                            // Player.Inventory.items.remove(item)
                             this@InventoryBlockSpace.fill(Player.Inventory.items)
                         }
                         is Script -> {
                             val mal = (source.actor as Script) + (item as Script)
-                            Player.Inventory.items.remove(item)
-                            Player.Inventory.items.remove(source.actor as Script)
+                            // Player.Inventory.items.remove(item)
+                            // Player.Inventory.items.remove(source.actor as Script)
                             Player.Inventory.items.add(mal)
                             this@InventoryBlockSpace.fill(Player.Inventory.items)
                         }

@@ -2,6 +2,8 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.custom.MiningScript
+import ru.cryhards.brootkiddie.items.custom.SpreadingScript
 
 
 /**
@@ -21,6 +23,12 @@ object Player {
          * All things that Player has
          */
         val items = ArrayList<Item>()
+
+        // test bench
+        init {
+            items.add(MiningScript())
+            items.add(SpreadingScript())
+        }
         // tools (script optimizer!!! - decreases size)
     }
 

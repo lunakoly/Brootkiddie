@@ -1,4 +1,4 @@
-package ru.cryhards.brootkiddie.screens.inventory
+package ru.cryhards.brootkiddie.screens.market
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
@@ -13,12 +13,14 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.screens.inventory.InventoryBlockSpace
+import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * One of the screens that guys needed
  */
-class InventoryScreen : ScreenAdapter() {
+class MarketScreen : ScreenAdapter() {
     private val stage = Stage()
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
@@ -27,7 +29,6 @@ class InventoryScreen : ScreenAdapter() {
 
     private val crypto = UI.GlitchLabel("  $100  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
     private val explorer = ItemExplorer()
     private val blockSpace = InventoryBlockSpace(explorer)
@@ -49,19 +50,9 @@ class InventoryScreen : ScreenAdapter() {
             }
         })
 
-        // browser
-        openBrowserButton.setPosition(50f, stage.height - 50f, Align.topLeft)
-        stage.addActor(openBrowserButton)
-
-        openBrowserButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toBrowser()
-            }
-        })
-
         // crypto
-        crypto.setPosition(50f, stage.height - openBrowserButton.height - 100f, Align.topLeft)
-        crypto.setSize(openBrowserButton.width, crypto.height)
+        crypto.setPosition(50f, stage.height, Align.topLeft)
+        crypto.setSize(backButton.width, crypto.height)
         crypto.style.background = null
         stage.addActor(crypto)
 
@@ -81,6 +72,10 @@ class InventoryScreen : ScreenAdapter() {
         blockSpace.shader = Assets.Shaders.WAVE
         blockSpace.pane = pane
         stage.addActor(pane)
+
+        // test bench
+        Player.Inventory.items.add(UI.emptyItem())
+        Player.Inventory.items.add(UI.loremItem())
     }
 
 
@@ -95,7 +90,7 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Player.Inventory.items)
+        blockSpace.fill(MarketItems.generateItems())
         Gdx.input.inputProcessor = stage
         super.show()
     }
