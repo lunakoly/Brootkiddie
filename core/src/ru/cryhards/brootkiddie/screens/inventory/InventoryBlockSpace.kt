@@ -1,17 +1,13 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
@@ -119,8 +115,6 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
                         }
                         is Script -> {
                             val mal = (source.actor as Script) + (item as Script)
-                            Player.Inventory.items.remove(item)
-                            Player.Inventory.items.remove(source.actor as Script)
                             Player.Inventory.items.add(mal)
                             this@InventoryBlockSpace.fill(Player.Inventory.items)
                         }

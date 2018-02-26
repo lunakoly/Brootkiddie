@@ -8,11 +8,10 @@ import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.DialogsScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
-import ru.cryhards.brootkiddie.screens.TestScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
-import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
+import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -41,7 +40,7 @@ class Core : Game() {
         // start loading resources
         Assets.initialize()
 
-        setScreen(InventoryScreen())
+        setScreen(MainMenuScreen())
 
         switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }

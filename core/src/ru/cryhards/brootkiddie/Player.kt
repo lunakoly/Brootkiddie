@@ -11,7 +11,8 @@ object Player {
     var name = "user0"
     var level = 0
     var money = 0.0
-    var dialogs = mutableListOf<Dialog>()
+    val dialogs = mutableListOf<Dialog>()
+    val senders = mapOf(Pair("Game Master", "img/items/worm.png"))
 
     /**
      * Collection of items owned by player

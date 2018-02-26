@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
-import ru.cryhards.brootkiddie.ui.Cropper
-import ru.cryhards.brootkiddie.ui.DialogDisplay
+import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -25,29 +25,50 @@ class DialogsScreen : ScreenAdapter() {
 
     private val background = Texture("img/bg/logo.png")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    val dialogWidget : DialogDisplay by lazy {
+    /**val dialogWidget : DialogDisplay by lazy {
         val w = DialogDisplay(Player.dialogs[0])
         uiGroup.addActor(w)
         uiGroup.pack()
         w
-    }
+    }**/
+
+    private val uiGroup = HorizontalGroup()
+    private val sendersGroup = VerticalGroup()
+    private val senderViewer = VerticalGroup()
+
     private val dialogsGroup = HorizontalGroup()
-    private val uiGroup : VerticalGroup = VerticalGroup()
+
+    private val emptyDialogsLabel = UI.StaticLabel("Looks like you have no dialogs at the moment. /n" +
+            "Come back later")
+
     private val stage = Stage()
 
+
+    private val dialogsBySender = mutableMapOf<String, MutableList<Dialog>>()
+
     init {
-        uiGroup.columnLeft()
-        uiGroup.align(Align.topLeft)
         uiGroup.pad(10f)
         uiGroup.space(10f)
         uiGroup.setFillParent(true)
+        uiGroup.align(Align.topLeft)
         stage.addActor(uiGroup)
 
-        uiGroup.addActor(dialogsGroup)
+        sendersGroup.width = 100f
 
-        if (Player.dialogs.size > 0) {
+        senderViewer.addActor(dialogsGroup)
+
+        val pane = ScrollPane(sendersGroup)
+        pane.width = sendersGroup.width
+        pane.height = Gdx.graphics.height * 1f
+
+        //senderViewer.addActor(dialogWidget)
+
+        uiGroup.addActor(pane)
+        uiGroup.addActor(senderViewer)
+
+        /**if (Player.dialogs.size > 0) {
             dialogWidget.refreshInfo()
-        }
+        }**/
 
 
         refreshDialogs()
@@ -80,18 +101,49 @@ class DialogsScreen : ScreenAdapter() {
      */
 
     private fun refreshDialogs(){
-        dialogsGroup.clear()
+
+
+        dialogsBySender.clear()
+        sendersGroup.clear()
+
+        for (d in Player.dialogs) {
+            if (!dialogsBySender.contains(d.sender)) {
+                dialogsBySender[d.sender] = mutableListOf(d)
+            } else {
+                dialogsBySender[d.sender]!!.add(d)
+            }
+        }
+
+        for (s in dialogsBySender.keys) {
+            val sender = Player.senders[s]
+            val image = ImageActor(sender!!)
+            image.setSize(50f, 50f)
+
+            val nameLabel = UI.StaticLabel(s)
+
+            val group = HorizontalGroup()
+            group.addActor(image)
+            group.addActor(nameLabel)
+
+            group.rowAlign(Align.center)
+
+            group.pack()
+
+            sendersGroup.addActor(group)
+        }
+
+        sendersGroup.pack()
 
         for (dialog in Player.dialogs)
         {
             val button = UI.StaticTextButton(dialog.id)
             Gdx.app.log("Dialog", dialog.id)
-            button.addListener(object : ClickListener(){
+            /**button.addListener(object : ClickListener(){
                 override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                     dialogWidget.dialog = dialog
                     dialogWidget.refreshInfo()
                 }
-            })
+            })**/
             dialogsGroup.addActor(button)
         }
 

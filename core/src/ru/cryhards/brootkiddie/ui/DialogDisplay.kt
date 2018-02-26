@@ -17,7 +17,6 @@ class DialogDisplay(var dialog: Dialog) : Table(){
     private val infoLabel : ShaderableLabel
     private val transitionsTable : Table
 
-
     init {
         val currentState = dialog.getCurrentState()!!
 
