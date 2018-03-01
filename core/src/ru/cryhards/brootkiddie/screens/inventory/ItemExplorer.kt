@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -72,9 +71,7 @@ class ItemExplorer : ScrollPane(Table()) {
      */
     fun explore(block: Item) {
         name.setText(block.title)
-        info.setText(block.info + if (block is Script) {
-            "\n" + "Level: ${block.level}"
-        } else "")
+        info.setText(block.info)
         icon.drawable = Image(block.iconTexture).drawable
         data.setText(block.toString())
 

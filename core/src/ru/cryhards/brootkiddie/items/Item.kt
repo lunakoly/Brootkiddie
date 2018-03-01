@@ -8,7 +8,7 @@ import ru.cryhards.brootkiddie.ui.ImageActor
 /**
  * Represents an item that the Player may own
  */
-open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture), Draggable{
+open class Item(val title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture), Draggable {
     /*
         Boolean for DragAndDrop
      */
@@ -19,7 +19,9 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
      */
     enum class Type(val info: String) {
         SCRIPT("Code written by the community that can do something. Combining the right code pieces will increment the common malware effect. Some scripts may have dependencies to another ones (frameworks)"),
-        MALWARE("A multifunctional set of cooperating scripts (source codes)")
+        MALWARE("A multifunctional set of cooperating scripts (source codes)"),
+        NOTHING(""),
+        MARKET("FOR SALE")
     }
 
 

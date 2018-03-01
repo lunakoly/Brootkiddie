@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.items.effects.Converter
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -88,6 +89,8 @@ class InventoryScreen : ScreenAdapter() {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
+        crypto.setText("$" + Converter.humanReadable(Player.money.toFloat()))
+
         stage.act(delta)
         stage.draw()
 
@@ -96,6 +99,7 @@ class InventoryScreen : ScreenAdapter() {
 
     override fun show() {
         blockSpace.fill(Player.Inventory.items)
+        crypto.setText("$" + Converter.humanReadable(Player.money.toFloat()))
         Gdx.input.inputProcessor = stage
         super.show()
     }

@@ -12,11 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.screens.market.MarketItems
 
 
 @Suppress("FunctionName")
@@ -224,10 +222,10 @@ object UI {
     /**
      * Returns Item debug example
      */
-    fun emptyItem() = Script(
+    fun emptyItem() = Item(
             "<Name>",
             "<Some info about item>",
-            Texture("img/ui/empty.png"), 1f)
+            Texture("img/ui/empty.png"), Item.Type.NOTHING)
 
 
     /**
@@ -267,43 +265,9 @@ object UI {
 
         malware.actions.add(logger)
 
-        val setGlobalMapMalware = if (Environment.activeMalware == malware) UI.GlitchTextButton("DEACTIVATE") else UI.GlitchTextButton("ACTIVATE")
-        setGlobalMapMalware.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (Environment.activeMalware == malware) {
-                    Gdx.app.log("activeMalware", "deactivated")
-                    Environment.UI.console?.log("${malware.name} deactivated")
-                    Environment.activeMalware = null
-                    setGlobalMapMalware.setText("ACTIVATE")
-                } else {
-                    Gdx.app.log("activeMalware", "activated")
-                    Environment.activeMalware = malware
-                    Environment.UI.console?.log("${malware.name} activated")
-                    setGlobalMapMalware.setText("DEACTIVATE")
-                }
-            }
-        })
 
-        malware.actions.add(setGlobalMapMalware)
 
         return malware
-    }
-
-    /**
-     * Returns ItemBlock with market's item inside
-     */
-    fun marketItem(item: Item): Item {
-        val buybutt = UI.GlitchTextButton("BUY")
-
-        buybutt.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                MarketItems.buy(item)
-            }
-        })
-
-        item.actions.add(buybutt)
-
-        return item
     }
 
     /**

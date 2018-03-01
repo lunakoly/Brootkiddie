@@ -8,7 +8,7 @@ import ru.cryhards.brootkiddie.items.effects.MiningEffect
  * Created by user on 2/26/18.
  */
 
-class MiningScript : Script("Miner", "Mines crypto for U", Texture("img/items/miner.png"), 10f) {
+class MiningScript(level: Int = 1) : Script("Miner", "Mines crypto for U", Texture("img/items/miner.png"), 10f, level) {
     init {
         this.combine(MiningEffect())
     }

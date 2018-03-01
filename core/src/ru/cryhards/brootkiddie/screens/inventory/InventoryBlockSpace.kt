@@ -1,3 +1,5 @@
+@file:Suppress("UnusedImport")
+
 package ru.cryhards.brootkiddie.screens.inventory
 
 import com.badlogic.gdx.graphics.Color

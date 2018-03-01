@@ -4,13 +4,13 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.DialogsScreen
+import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
-import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
+import ru.cryhards.brootkiddie.screens.market.MarketScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -40,7 +40,7 @@ class Core : Game() {
         Assets.initialize()
 
         // TODO KOSTIL
-        setScreen(InventoryScreen())
+        setScreen(MainMenuScreen())
 
         switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }
@@ -82,7 +82,7 @@ class Core : Game() {
     private lateinit var inventoryScreen: InventoryScreen
     private lateinit var browserScreen : BrowserScreen
     private lateinit var dialogsScreen: DialogsScreen
-    private lateinit var benchScreen: BenchScreen
+    private lateinit var marketScreen: MarketScreen
 
     private var prevScreen: Screen? = null
     private var mustDispose = false
@@ -99,7 +99,7 @@ class Core : Game() {
         inventoryScreen = InventoryScreen()
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
-        benchScreen = BenchScreen()
+        marketScreen = MarketScreen()
     }
 
     /**
@@ -121,16 +121,6 @@ class Core : Game() {
     }
 
     /**
-     * Shows bench screen
-     */
-    fun toBench(malware: Malware) {
-        benchScreen.inspect(malware)
-        mustDispose = true
-        prevScreen = getScreen()
-        setScreen(benchScreen)
-    }
-
-    /**
      * Shows dialogs screen
      */
     fun toDialogs(){
@@ -146,6 +136,12 @@ class Core : Game() {
         mustDispose = false
         prevScreen = getScreen()
         setScreen(browserScreen)
+    }
+
+    fun toMarket() {
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(marketScreen)
     }
 
     /**

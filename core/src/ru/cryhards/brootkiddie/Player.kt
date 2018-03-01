@@ -12,7 +12,7 @@ import ru.cryhards.brootkiddie.items.custom.SpreadingScript
 object Player {
     var name = "user0"
     var level = 0
-    var money = 0.0
+    var money = 0.0f
     var dialogs = mutableListOf<Dialog>()
 
     /**

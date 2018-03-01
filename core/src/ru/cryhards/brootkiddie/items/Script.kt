@@ -6,15 +6,7 @@ import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 /**
  * Represents a script that can be combined into malware
  */
-open class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
-
-    /**
-     * The script level affects effects stats
-     * Initial value = 1
-     */
-    var level = 1
-
-
+open class Script(title: String, info: String, iconTexture: Texture, var size: Float, var level: Int = 1) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
     /**
      * Returns the result of affecting the empty
      * malware stats. Use it to modulate
@@ -46,7 +38,8 @@ open class Script(title: String, info: String, iconTexture: Texture, var size: F
 
     override fun toString(): String {
         val stats = affection()
-        return "Infectiousness: ${humanReadable(stats.infectiousness)}\n" +
+        return "Level: $level\n" +
+                "Infectiousness: ${humanReadable(stats.infectiousness)}\n" +
                 "Spreading Speed: ${humanReadable(stats.spreadingSpeed)}\n" +
                 "Suspiciousness: ${humanReadable(stats.suspiciousness)}\n" +
                 "Mining Speed: ${humanReadable(stats.miningSpeed)}"
