@@ -10,6 +10,6 @@ import ru.cryhards.brootkiddie.items.effects.MiningEffect
 
 class MiningScript : Script("Miner", "Mines crypto for U", Texture("img/items/miner.png"), 10f) {
     init {
-        this.plus(MiningEffect())
+        this.combine(MiningEffect())
     }
 }

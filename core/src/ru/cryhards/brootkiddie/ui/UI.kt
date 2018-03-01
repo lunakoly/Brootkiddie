@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
@@ -120,6 +121,54 @@ object UI {
         })
 
         return lbl
+    }
+
+    /**
+     * Returns popup dialog with glitch effect
+     */
+    fun GlitchPopupDialog(caption: String, callback: (String) -> Unit, text: String = ""): ShaderablePopupTextInput {
+        val style = Label.LabelStyle()
+        style.font = Assets.Fonts.ROBOTOx2
+
+        val dialog = object : ShaderablePopupTextInput(caption, WindowStyle(Assets.Fonts.ROBOTOx2, Color.WHITE, colorToDrawable(Color.BLACK))) {
+            override fun result(`object`: Any?) {
+                super.result(`object`)
+                callback((`object` as TextArea).text)
+            }
+        }
+        dialog.align(Align.top)
+        dialog.setOrigin(Align.top)
+
+        dialog.row()
+
+        dialog.style.background = colorToDrawable(Color.BLACK)
+
+        val ta = TextArea(text, TextField.TextFieldStyle(Assets.Fonts.ROBOTO, Color.WHITE, Image(Texture("img/ui/back.png")).drawable, Image(Texture("img/ui/back.png")).drawable, colorToDrawable(Color.BLACK)))
+        ta.height *= 2
+
+
+
+        dialog.add(ta)
+        dialog.row()
+        dialog.button(UI.GlitchTextButton("OK"), ta)
+        dialog.row()
+
+        /*dialog.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                dialog.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                dialog.shader = null
+                Assets.Sounds.NOIZE.stop()
+            }
+        })*/
+
+        dialog.pack()
+
+        return dialog
     }
 
 

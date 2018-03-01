@@ -29,13 +29,9 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
     val effects = ArrayList<Effect>()
 
     open fun combine(effect: Effect): Item {
-        title += effect.title.subSequence(0, 3) // TODO: wtf is dis
-        info += " and " + effect.title
         effects.add(effect)
         return this
     }
-
-    open operator fun plus(effect: Effect) = combine(effect)
 
     /**
      * Returns effect with matching title

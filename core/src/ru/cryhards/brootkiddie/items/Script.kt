@@ -31,20 +31,16 @@ open class Script(title: String, info: String, iconTexture: Texture, var size: F
     /**
      * Returns malware that is a combination of the 2 scripts
      */
-    fun combine(script: Script) = Malware(
-            this.title.substring(0, 3) + " + " + script.title.substring(0, 3),
-            "Combo of " + this.title + " and " + script.title, Texture("img/items/malware.png"), this, script)
+    fun combine(script: Script, title: String) = Malware(
+            title,
+            "", Texture("img/items/malware.png"), this, script)
 
     /**
      * Adds this to malware and returns it
      */
     fun combine(malware: Malware): Malware {
-        malware.scripts.add(this)
+        malware.combine(this)
         return malware
     }
-
-    operator fun plus(script: Script) = combine(script)
-
-    operator fun plus(malware: Malware) = combine(malware)
 
 }

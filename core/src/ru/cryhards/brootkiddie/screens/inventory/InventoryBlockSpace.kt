@@ -13,6 +13,7 @@ import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.ImageActor
+import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * Inventory field
@@ -107,16 +108,31 @@ class InventoryBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
 
                     when (source!!.actor) {
                         is Malware -> {
-                            (source.actor as Malware).combine(item as Script)
+                            if (item is Script) {
+                                (source.actor as Malware).combine(item as Script)
+                            }
                             // Player.Inventory.items.remove(item)
                             this@InventoryBlockSpace.fill(Player.Inventory.items)
                         }
                         is Script -> {
-                            val mal = (source.actor as Script) + (item as Script)
-                            // Player.Inventory.items.remove(item)
-                            // Player.Inventory.items.remove(source.actor as Script)
-                            Player.Inventory.items.add(mal)
-                            this@InventoryBlockSpace.fill(Player.Inventory.items)
+                            when (item) {
+                                is Script -> {
+                                    val d = UI.GlitchPopupDialog("Malware Name", {
+                                        val mal = (source.actor as Script).combine(item as Script, it)
+                                        // Player.Inventory.items.remove(item)
+                                        // Player.Inventory.items.remove(source.actor as Script)
+                                        Player.Inventory.items.add(mal)
+                                        this@InventoryBlockSpace.fill(Player.Inventory.items)
+                                    }, "<name>")
+
+                                    d.show(stage)
+                                }
+                                is Malware -> {
+                                    (item as Malware).combine(source.actor as Script)
+                                    this@InventoryBlockSpace.fill(Player.Inventory.items)
+                                }
+                            }
+
                         }
                     }
 

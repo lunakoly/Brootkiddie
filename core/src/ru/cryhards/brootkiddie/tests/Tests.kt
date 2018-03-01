@@ -5,11 +5,11 @@ import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
-import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.screens.SplashScreen
 
 /**
@@ -35,19 +35,11 @@ class Tests {
         val scr2 = Script("EVIL", "Cry, baby", Texture("img/items/worm.png"), 5f)
         val scr3 = Script("BadAss", "Very bad", Texture("img/items/worm.png"), 15f)
 
-        var mal = scr1.combine(scr2)
+        var mal = scr1.combine(scr2, "mal 1")
         println(mal.title)
         println(mal.info)
 
-        mal = scr1.combine(scr2).combine(scr3)
-        println(mal.title)
-        println(mal.info)
-
-        mal = scr1 + scr2 + scr3
-        println(mal.title)
-        println(mal.info)
-
-        mal = scr1.combine(scr2 + scr3)
+        mal = scr1.combine(scr2, "mal 2").combine(scr3)
         println(mal.title)
         println(mal.info)
 
@@ -73,7 +65,7 @@ class Tests {
         spreading.spreadingSpeed += 0.1f
         spreading.infectiousness += 0.1f
 
-        (s + s).update()
+        (s.combine(s, "kek")).update()
     }
 
     fun frost() {

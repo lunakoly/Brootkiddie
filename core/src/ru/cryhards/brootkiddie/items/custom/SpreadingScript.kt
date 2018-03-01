@@ -6,6 +6,6 @@ import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 
 class SpreadingScript : Script("Spreading Script", "Spreads malware", Texture("img/items/worm.png"), 10f) {
     init {
-        this.plus(SpreadingEffect())
+        this.combine(SpreadingEffect())
     }
 }
