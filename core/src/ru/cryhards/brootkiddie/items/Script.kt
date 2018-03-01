@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.graphics.Texture
+import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 
 /**
  * Represents a script that can be combined into malware
@@ -41,6 +42,14 @@ open class Script(title: String, info: String, iconTexture: Texture, var size: F
     fun combine(malware: Malware): Malware {
         malware.combine(this)
         return malware
+    }
+
+    override fun toString(): String {
+        val stats = affection()
+        return "Infectiousness: ${humanReadable(stats.infectiousness)}\n" +
+                "Spreading Speed: ${humanReadable(stats.spreadingSpeed)}\n" +
+                "Suspiciousness: ${humanReadable(stats.suspiciousness)}\n" +
+                "Mining Speed: ${humanReadable(stats.miningSpeed)}"
     }
 
 }
