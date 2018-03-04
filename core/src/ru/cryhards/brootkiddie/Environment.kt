@@ -29,6 +29,8 @@ object Environment {
     var currentSuspiciousness = 0.0f
     var isMalwareDetected = false
 
+    var consoleCounter = 0
+
     /**
      * Loads game state. Call on startup
      */
