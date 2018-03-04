@@ -81,7 +81,6 @@ class InventoryScreen : ScreenAdapter() {
         pane.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
 
         blockSpace.shader = Assets.Shaders.WAVE
-        blockSpace.pane = pane
         stage.addActor(pane)
 
 

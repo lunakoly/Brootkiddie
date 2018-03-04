@@ -4,19 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -39,13 +35,8 @@ class BenchScreen : ScreenAdapter() {
         stage.addActor(background)
 
 
-        // explorer
-        explorer.setSize(stage.width / 3.5f, stage.height)
-        explorer.setPosition(stage.width, stage.height, Align.topRight)
-        stage.addActor(explorer)
-
         // back
-        applyButton.width = explorer.width
+        applyButton.width = stage.width / 3.5f - 50
         applyButton.setPosition(stage.width - 50, stage.height - 50, Align.topRight)
         stage.addActor(applyButton)
 
@@ -55,11 +46,18 @@ class BenchScreen : ScreenAdapter() {
             }
         })
 
+        // explorer
+        explorer.setSize(applyButton.width + 100, stage.height - applyButton.height)
+        explorer.setPosition(stage.width, stage.height - applyButton.height - 50, Align.topRight)
+        stage.addActor(explorer)
+
         // blockSpace
-        blockSpace.setSize(stage.width - explorer.width, stage.height)
-        blockSpace.setPosition(0f, stage.height, Align.topLeft)
+        val pane = ScrollPane(blockSpace)
+        pane.setSize(stage.width - explorer.width, stage.height)
+        pane.setPosition(0f, stage.height, Align.topLeft)
+        blockSpace.setSize(pane.width, pane.height)
         blockSpace.shader = Assets.Shaders.WAVE
-        stage.addActor(blockSpace)
+        stage.addActor(pane)
     }
 
 

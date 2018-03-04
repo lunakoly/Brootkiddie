@@ -31,9 +31,9 @@ class Tests {
     }
 
     fun fest() {
-        val scr1 = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10.4f)
-        val scr2 = Script("EVIL", "Cry, baby", Texture("img/items/worm.png"), 5f)
-        val scr3 = Script("BadAss", "Very bad", Texture("img/items/worm.png"), 15f)
+        val scr1 = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10)
+        val scr2 = Script("EVIL", "Cry, baby", Texture("img/items/worm.png"), 5)
+        val scr3 = Script("BadAss", "Very bad", Texture("img/items/worm.png"), 15)
 
         var mal = scr1.combine(scr2)
         println(mal.title)
@@ -63,7 +63,7 @@ class Tests {
         val hiding = DisguiseEffect()
         val spreading = SpreadingEffect()
 
-        val s = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10.4f)
+        val s = Script("Crack", "Focus-Pocus", Texture("img/items/worm.png"), 10)
 
         s.effects.add(mining)
         s.effects.add(hiding)

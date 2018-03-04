@@ -80,11 +80,11 @@ class ItemExplorer : ScrollPane(Table()) {
 
         block.actions.forEach {
             it.setPosition(actions.width / 2, actions.height, Align.bottom)
-            actions.height += it.height
+            actions.height += it.height + 20f
             actions.addActor(it)
         }
 
-        actions.height += 20f
+//        actions.height += 20f
     }
 
 

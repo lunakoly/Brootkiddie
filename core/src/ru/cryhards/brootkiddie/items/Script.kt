@@ -5,13 +5,23 @@ import com.badlogic.gdx.graphics.Texture
 /**
  * Represents a script that can be combined into malware
  */
-class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
+class Script(title: String, info: String, iconTexture: Texture, var size: Int) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
 
     /**
      * The script level affets effects stats
      * Initial value = 1
      */
     var level = 1
+
+    /**
+     * Used by BlockSpace's to determin saved position
+     */
+    var gridX: Int = 0
+
+    /**
+     * Used by BlockSpace's to determin saved position
+     */
+    var gridY: Int = 0
 
 
     /**

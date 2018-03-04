@@ -203,7 +203,7 @@ object UI {
     fun emptyItem() = Script(
             "<Name>",
             "<Some info about item>",
-            Texture("img/ui/empty.png"), 1f)
+            Texture("img/ui/empty.png"), 1)
 
 
     /**
@@ -221,7 +221,7 @@ object UI {
         val block = Script(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
-                Texture("img/ui/back.png"), 1f)
+                Texture("img/ui/back.png"), 1)
 
         block.actions.add(logger)
         return block
