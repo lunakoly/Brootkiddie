@@ -1,6 +1,7 @@
 {
   "id": "example",
   "sender": "Game Master",
+  "topic" : "Introduction",
   "states": [
     {
       "id": "start",
