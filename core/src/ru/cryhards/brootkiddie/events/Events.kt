@@ -75,7 +75,7 @@ class Events {
                             }
 
                             if (countdown == 3) {
-                                if (Environment.consoleCounter < 2)
+                                if (Environment.consoleCounter < 3)
                                     Environment.UI.console?.log("Trust me: nothing will happen until you do what I've said.")
                             }
 
