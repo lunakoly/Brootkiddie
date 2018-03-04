@@ -16,9 +16,9 @@ class SpreadingEffect(var infectiousness: Float = 0.5f,
 
     override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
         // TODO: make dependencies[0] (script level) affect the affection)))
-        (target as Malware.Stats).infectiousness += Converter.pnsqrt(infectiousness)
-        (target as Malware.Stats).spreadingSpeed += Converter.pnsqrt(spreadingSpeed)
-        (target as Malware.Stats).suspiciousness += Converter.pnsqrt(suspiciousness)
+        (target as Malware.Stats).infectiousness += Converter.pnsqrt(infectiousness) * if (dependencies.isNotEmpty()) Converter.pnsqrt((dependencies[0] as Int).toFloat()) else 1f
+        (target as Malware.Stats).spreadingSpeed += Converter.pnsqrt(spreadingSpeed) * if (dependencies.isNotEmpty()) Converter.pnsqrt((dependencies[0] as Int).toFloat()) else 1f
+        (target as Malware.Stats).suspiciousness += Converter.pnsqrt(suspiciousness) * if (dependencies.isNotEmpty()) Converter.pnsqrt((dependencies[0] as Int).toFloat()) else 1f
         return super.affect(target)
     }
 

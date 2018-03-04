@@ -13,7 +13,7 @@ object Environment {
     /**
      * Time that one in-game day occures (ms)
      */
-    const val DAY_TASK_PERIOD = 1000L
+    const val DAY_TASK_PERIOD = 2000L
 
     /**
      * Current day
