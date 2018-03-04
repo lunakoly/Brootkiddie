@@ -23,6 +23,7 @@ class ItemExplorer : ScrollPane(Table()) {
     private val info = UI.StaticLabel("<info>")
     private val data = UI.StaticLabel("<item dependent data>")
     private val actions = Group()
+    private var lastBlock: Item? = null
 
 
     init {
@@ -70,6 +71,7 @@ class ItemExplorer : ScrollPane(Table()) {
      * Displays information about item
      */
     fun explore(block: Item) {
+        lastBlock = block
         name.setText(block.title)
         info.setText(block.info)
         icon.drawable = Image(block.iconTexture).drawable
@@ -84,7 +86,17 @@ class ItemExplorer : ScrollPane(Table()) {
             actions.addActor(it)
         }
 
-//        actions.height += 20f
+        actions.height += 20f
+    }
+
+
+    /**
+     * Updates info about last item
+     */
+    fun reexplore() {
+        val last = lastBlock
+        if (last != null)
+            explore(last)
     }
 
 

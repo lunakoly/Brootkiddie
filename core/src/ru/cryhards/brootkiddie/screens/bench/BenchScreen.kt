@@ -62,7 +62,7 @@ class BenchScreen : ScreenAdapter() {
 
 
     fun inspect(malware: Malware) {
-        blockSpace.fill(malware.scripts)
+        blockSpace.inspect(malware)
     }
 
 

@@ -24,7 +24,7 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
     /**
      * Returns effect with matching title
      */
-    fun findEffect(name: String) = effects.find { it.title == name }
+    open fun findEffect(name: String) = effects.find { it.title == name }
 
 
     /**

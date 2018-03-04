@@ -11,7 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.effects.Converter
+import ru.cryhards.brootkiddie.items.effects.MiningEffect
 
 
 @Suppress("FunctionName")
@@ -224,6 +228,74 @@ object UI {
                 Texture("img/ui/back.png"), 1)
 
         block.actions.add(logger)
+        return block
+    }
+
+
+    /**
+     * Basic spreading script
+     */
+    fun SpreaderV3000(): Script {
+        val block = Script(
+                "Spreader V3000",
+                "adds 50 to spreading",
+                Texture("img/items/worm.png"), 1)
+
+        block.applyDependency = { script, sides, i ->
+            Gdx.app.log("UI", "DABDM CALLED")
+
+            when (sides) {
+                Script.SIDES.BOTTOM -> {
+                    if (script.title == "<Name>") {
+                        Gdx.app.log("UI", "DABDM")
+                        script.temporaryEffects.add(MiningEffect())
+                    }
+                }
+                else -> {
+                    // nothing
+                }
+            }
+        }
+
+        block.additionalDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
+        return block
+    }
+
+
+    /**
+     * Spreading Multiplyer
+     */
+    fun spreadingMultiplier(side: Script.SIDES): Script {
+        val block = Script(
+                "Spreading Mult",
+                "Multiplies spreading effect of the item to the ${side.text} of script",
+                Texture("img/ui/back.png"), 1)
+
+        block.sideAffection = { script, sides, i ->
+            Gdx.app.log("UI", "YAHOOO CALLED")
+
+            when (sides) {
+                side -> {
+                    val affection = object : Item.Effect(
+                            "Affected Spreading (Spreading Mult)",
+                            "x2 | Add-on given by Spreading Mult") {
+                        override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
+                            (target as Malware.Stats).spreadingSpeed *= 2
+                            return super.affect(target, *dependencies)
+                        }
+                    }
+
+                    Gdx.app.log("UI", "YAHOOO")
+
+                    script.temporaryEffects.add(affection)
+                }
+                else -> {
+                    // nothing
+                }
+            }
+        }
+
+        block.additionalDescription = "Affects item located to the $side of it"
         return block
     }
 

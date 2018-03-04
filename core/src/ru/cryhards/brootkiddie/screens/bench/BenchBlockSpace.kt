@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.ImageActor
@@ -46,7 +47,7 @@ class BenchBlockSpace(val explorer: ItemExplorer) : Group() {
     /**
      * Last inspected scripts
      */
-    private lateinit var lastInspectedItems: ArrayList<Script>
+    private lateinit var malware: Malware
 
     /**
      * Item color mask when combination must succeed
@@ -119,7 +120,7 @@ class BenchBlockSpace(val explorer: ItemExplorer) : Group() {
 
 
                         sourceItem.color = COLOR_NORMAL
-                        fill(lastInspectedItems)
+                        fill(malware.scripts)
                     }
 
                     override fun drag(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int): Boolean {
@@ -191,9 +192,7 @@ class BenchBlockSpace(val explorer: ItemExplorer) : Group() {
     /**
      * Fills field with items
      */
-    fun fill(items: ArrayList<Script>) {
-        lastInspectedItems = items
-
+    private fun fill(items: ArrayList<Script>) {
         val colCount = width.toInt() / prefBlockSize.toInt()
         val blockSize = width / colCount
         val minRowCount = truncate(parent.height / blockSize).toInt() + 1
@@ -328,6 +327,70 @@ class BenchBlockSpace(val explorer: ItemExplorer) : Group() {
                 }
             })
         }
+
+        recalculateScriptStats()
     }
 
+
+    /**
+     * Sets itself to inspect the given malware
+     */
+    fun inspect(malware: Malware) {
+        this.malware = malware
+        fill(malware.scripts)
+    }
+
+
+    /**
+     * Null or Script
+     */
+    private fun scr(i: Int, j: Int) = field[j][i]!!.item as Script
+
+    /**
+     * Recalculates scripts and malware stats
+     */
+    private fun recalculateScriptStats() {
+        for (script in malware.scripts) {
+            script.temporaryEffects.clear()
+        }
+
+        // inner ones
+        for (j in 1 until field.size - 1)
+            for (i in 1 until field[j].size - 1) {
+                if (field[j][i] == null) continue
+                val script = scr(i, j)
+
+                for (w in 0 until script.size) {
+
+                    // TOP
+                    if (field[j - 1][i] != null) {
+                        script.applyDependency(scr(i + w, j - 1), Script.SIDES.TOP, w)
+                        script.sideAffection(scr(i + w, j - 1), Script.SIDES.TOP, w)
+                    }
+
+                    // RIGHT
+                    if (field[j][i + 1] != null) {
+                        script.applyDependency(scr(i + 1, j + w), Script.SIDES.RIGHT, w)
+                        script.sideAffection(scr(i + 1, j + w), Script.SIDES.RIGHT, w)
+                    }
+
+                    // BOTTOM
+                    if (field[j + 1][i] != null) {
+                        script.applyDependency(scr(i + w, j + 1), Script.SIDES.BOTTOM, w)
+                        script.sideAffection(scr(i + w, j + 1), Script.SIDES.BOTTOM, w)
+                    }
+
+                    // LEFT
+                    if (field[j][i - 1] != null) {
+                        script.applyDependency(scr(i - 1, j + w), Script.SIDES.LEFT, w)
+                        script.sideAffection(scr(i - 1, j + w), Script.SIDES.LEFT, w)
+                    }
+
+                }
+
+                malware.update()
+            }
+
+        explorer.reexplore()
+    }
 }

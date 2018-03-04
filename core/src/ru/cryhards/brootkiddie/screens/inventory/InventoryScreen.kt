@@ -15,6 +15,7 @@ import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
@@ -92,6 +93,10 @@ class InventoryScreen : ScreenAdapter() {
         exmalw.combine(MiningEffect())
         exmalw.combine(SpreadingEffect())
         Player.Inventory.items.add(exmalw)
+
+
+        Player.Inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
+        Player.Inventory.items.add(UI.SpreaderV3000())
     }
 
 
