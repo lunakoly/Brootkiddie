@@ -1,0 +1,115 @@
+{
+  "id": "example",
+  "sender": "Game Master",
+  "states": [
+    {
+      "id": "start",
+      "start": true,
+      "triggers": [
+        {
+          "function": "logger",
+          "data": "at the start!"
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Hello! I'm Game Master. This is your first dialog. Do you want to speak to me a bit more? "
+      }
+    },
+    {
+      "id": "yes1",
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "That's very kind of you. To be honest, there isn't much stuff to do in this game at this moment, but I'm working on it, so don't worry. Would you like me to send you another letter?"
+      }
+    },
+    {
+      "id": "yes2",
+      "triggers": [
+        {
+          "function" : "runEvent",
+          "data" :
+          {
+            "event" : "Delayed Letter",
+            "data" :
+            {
+              "delay" : 5,
+              "id" : "example2"
+            }
+          }
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "I think, that's all for now. Wait 5 days for next letter."
+      }
+    },
+    {
+      "id": "no1",
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "Well, I am not very disappointed, but it was quite rude from you. I think, I won't text you anymore."
+      }
+    },
+    {
+      "id": "no2",
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "I am glad that you wanted to be here for some time. Goodbye."
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "start",
+      "to": "yes1",
+      "info": {
+        "function": "printer",
+        "data": "Yes"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    },
+    {
+      "from": "start",
+      "to": "no1",
+      "info": {
+        "function": "printer",
+        "data": "No"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    },
+    {
+      "from": "yes1",
+      "to": "yes2",
+      "info": {
+        "function": "printer",
+        "data": "Yes"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    },
+    {
+      "from": "yes1",
+      "to": "no2",
+      "info": {
+        "function": "printer",
+        "data": "No"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    }
+  ]
+}
