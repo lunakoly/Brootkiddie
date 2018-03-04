@@ -138,10 +138,10 @@ class GlobalMapScreen : ScreenAdapter() {
                 openBrowserButton.isVisible = true
                 crypto.isVisible = true
                 infected.isVisible = true
+                openInventoryButton.isVisible = true
             }
 
             1 -> {
-                openInventoryButton.isVisible = true
             }
         }
     }

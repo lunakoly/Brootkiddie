@@ -37,6 +37,11 @@ class Events {
                         var countdown = 30
                         Core.instance.addTask(Core.Task(-1, (Environment.DAY_TASK_PERIOD*1.5f).toLong(), {
                             countdown-=1
+
+                            if (Environment.consoleCounter >= 3) {
+                                return@Task true
+                            }
+
                             if (countdown == 25) {
 
                                 Environment.UI.console?.log("Feels empty here, right?")
@@ -83,7 +88,6 @@ class Events {
                                 if (Environment.consoleCounter < 3) {
                                     Environment.UI.console?.log("Just click it already. I will say nothing till then.")
                                 }
-                                return@Task true
                             }
 
                             return@Task false
