@@ -5,10 +5,6 @@ import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.Gson
 
 /**
- * Created by remmargorp on 11.02.18.
- */
-
-/**
  * Represents Dialog's logic
  */
 
@@ -24,6 +20,12 @@ class Dialog(config: Map<String, Any>) {
      * Sender of messages in dialog
      */
     val sender: String
+
+    /**
+     * Topic to be displayed in dialog screen
+     */
+
+    val topic : String
 
     /**
      * states = Map<id, State>
@@ -51,6 +53,7 @@ class Dialog(config: Map<String, Any>) {
 
         id = config["id"] as String
         sender = config["sender"] as String
+        topic = config["topic"] as String
 
         for (rawState in (config["states"] as ArrayList<Any>)) {
             val state = State(rawState as Map<String, Any>)
