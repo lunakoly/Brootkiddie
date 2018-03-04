@@ -54,6 +54,8 @@ class Tests {
         println(mal.stats)
         println(scr1.level)
         println(scr2.size)
+
+        mal.combine(mal)
     }
 
     fun brest() {

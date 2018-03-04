@@ -1,24 +1,12 @@
 package ru.cryhards.brootkiddie.items
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
-import ru.cryhards.brootkiddie.ui.Draggable
-import ru.cryhards.brootkiddie.ui.ImageActor
 
 /**
  * Represents an item that the Player may own
  */
-open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture), Draggable{
-    /*
-        Boolean for DragAndDrop
-     */
-    override var isDragged = false
-
+open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) {
     /**
      * Represents an item type
      */

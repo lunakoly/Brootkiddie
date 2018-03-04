@@ -40,6 +40,7 @@ object Assets {
         lateinit var ROBOTO: BitmapFont
         lateinit var ROBOTOx2: BitmapFont
         lateinit var HACK_REGULAR: BitmapFont
+        lateinit var HACK_COMPACT: BitmapFont
 
         /**
          * Loads fonts. Call on startup
@@ -61,6 +62,9 @@ object Assets {
             params.size = 100
 
             HACK_REGULAR = generator.generateFont(params)
+
+            params.size = 70
+            HACK_COMPACT = generator.generateFont(params)
         }
     }
 

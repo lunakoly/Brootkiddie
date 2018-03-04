@@ -31,21 +31,21 @@ class BenchBlockSpace(explorer: ItemExplorer) : BlockSpace(explorer) {
             val j = k / rowCount
 
             val item = items[k / rowCount + k]
-            item.setSize(blockSize, blockSize)
-            item.setPosition(
-                    i * blockSize,
-                    height - j * blockSize,
-                    Align.topLeft)
+//            item.setSize(blockSize, blockSize)
+//            item.setPosition(
+//                    i * blockSize,
+//                    height - j * blockSize,
+//                    Align.topLeft)
+//
+//            addActor(item)
+//            field[j][i] = item
 
-            addActor(item)
-            field[j][i] = item
 
-
-            item.addListener(object : ClickListener() {
-                override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    explorer.explore(item)
-                }
-            })
+//            item.addListener(object : ClickListener() {
+//                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+//                    explorer.explore(item)
+//                }
+//            })
 
             // TODO: dragging
         }

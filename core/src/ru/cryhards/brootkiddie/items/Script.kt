@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 /**
  * Represents a script that can be combined into malware
  */
-class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
+class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
 
     /**
      * The script level affets effects stats
@@ -46,5 +46,19 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Float)
     operator fun plus(script: Script) = combine(script)
 
     operator fun plus(malware: Malware) = combine(malware)
+
+
+    /**
+     * Combines the given item with itself
+     */
+    override fun combine(item: Item): Item {
+        if (item is Script)
+            return combine(item)
+        if (item is Malware)
+            return combine(item)
+        return this
+    }
+
+    operator fun plus(item: Item) = combine(item)
 
 }

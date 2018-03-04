@@ -11,9 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 
 
@@ -40,6 +37,35 @@ object UI {
     fun GlitchTextButton(text: String): ShaderableButton {
         val style = TextButton.TextButtonStyle()
         style.font = Assets.Fonts.HACK_REGULAR
+        val butt = ShaderableButton(text, style)
+
+        butt.label.style.background = colorToDrawable(Color.BLACK)
+        butt.width *= 1.2f
+        butt.height *= 1.2f
+
+        butt.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                butt.shader = null
+                Assets.Sounds.NOIZE.stop()
+            }
+        })
+
+        return butt
+    }
+
+
+    /**
+     * Returns compact text button with glitch effect on touchDown
+     */
+    fun GlitchTextButtonCompact(text: String): ShaderableButton {
+        val style = TextButton.TextButtonStyle()
+        style.font = Assets.Fonts.HACK_COMPACT
         val butt = ShaderableButton(text, style)
 
         butt.label.style.background = colorToDrawable(Color.BLACK)
@@ -201,43 +227,6 @@ object UI {
         return block
     }
 
-
-
-    /**
-     * Returns ItemBlock with Player's malware inside
-     */
-    fun malwareItem(malware: Malware): Item {
-        val logger = UI.GlitchTextButton("KUKAREKU v log")
-
-        logger.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Gdx.app.log("ahaha", "rabotaet")
-            }
-        })
-
-        malware.actions.add(logger)
-
-        val setGlobalMapMalware = if (Environment.activeMalware == malware) UI.GlitchTextButton("DEACTIVATE") else UI.GlitchTextButton("ACTIVATE")
-        setGlobalMapMalware.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (Environment.activeMalware == malware) {
-                    Gdx.app.log("activeMalware", "deactivated")
-                    Environment.UI.console?.log("${malware.name} deactivated")
-                    Environment.activeMalware = null
-                    setGlobalMapMalware.setText("ACTIVATE")
-                } else {
-                    Gdx.app.log("activeMalware", "activated")
-                    Environment.activeMalware = malware
-                    Environment.UI.console?.log("${malware.name} activated")
-                    setGlobalMapMalware.setText("DEACTIVATE")
-                }
-            }
-        })
-
-        malware.actions.add(setGlobalMapMalware)
-
-        return malware
-    }
 
     /**
      * Returns button with common style

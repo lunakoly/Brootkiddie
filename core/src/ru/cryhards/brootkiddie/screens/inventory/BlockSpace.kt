@@ -1,20 +1,15 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
-import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.ui.ImageActor
+import ru.cryhards.brootkiddie.ui.ItemActor
 
 /**
  * Square field of blocks
@@ -25,11 +20,6 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
      * The preferred size of a single square block
      */
     protected val prefBlockSize = 76 * Gdx.graphics.density
-
-    /**
-     * Holds links to ItemBlocks in the cells
-     */
-    protected lateinit var field: Array<Array<Item?>>
 
     /**
      * Use for adding shader effects
@@ -55,13 +45,6 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
 
 
     /**
-     * Updates width and height of inner
-     * UI components according to parent size
-     */
-
-
-
-    /**
      * Builds 2d field of blocks and puts
      * items in its cells
      */
@@ -71,13 +54,11 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
         val colCount = width.toInt() / prefBlockSize.toInt()
         val blockSize = width / colCount
 
-        field = Array(rowCount) { arrayOfNulls<Item?>(colCount) }
-
 
         for (j in 0 until rowCount) {
             for (i in 0 until colCount) {
                 // container for items
-                val block = Container<Item>()
+                val block = Container<ItemActor>()
                 block.background = SpriteDrawable(Sprite(Texture("img/ui/inventory_block.png")))
                 add(block).size(blockSize)
             }
@@ -87,5 +68,4 @@ abstract class BlockSpace(protected val explorer: ItemExplorer) : Table() {
 
         return this
     }
-
 }

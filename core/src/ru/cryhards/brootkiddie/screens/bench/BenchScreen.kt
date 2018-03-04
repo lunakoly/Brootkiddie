@@ -57,21 +57,9 @@ class BenchScreen : ScreenAdapter() {
 
         // blockSpace
         blockSpace.setSize(stage.width - explorer.width, stage.height)
-        //blockSpace.squeezeUI()
         blockSpace.setPosition(0f, stage.height, Align.topLeft)
         blockSpace.shader = Assets.Shaders.WAVE
         stage.addActor(blockSpace)
-
-        // test bench
-        Player.Inventory.items.add(UI.emptyItem())
-        Player.Inventory.items.add(UI.loremItem())
-        val exmalw = Malware("PETYA", "MINER", Texture("img/items/malware.png"))
-        exmalw.combine(DisguiseEffect())
-        exmalw.combine(MiningEffect())
-        exmalw.combine(SpreadingEffect())
-        Player.Inventory.items.add(UI.malwareItem(exmalw))
-
-        // blockSpace.buildBlockSpace(Player.Inventory.items)
     }
 
 
