@@ -67,6 +67,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
+        explorer.explore(Environment.player.Inventory.items.firstOrNull() ?: UI.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
@@ -81,6 +82,9 @@ class InventoryScreen : ScreenAdapter() {
 
         // test inventory
         Environment.player.inventory.items.add(UI.emptyItem())
+        Environment.player.inventory.items.add(UI.loremItem())
+        Environment.player.inventory.items.add(UI.SpreaderV3000())
+        Environment.player.inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
     }
 
 
