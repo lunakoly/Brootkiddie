@@ -2,85 +2,67 @@ package ru.cryhards.brootkiddie.screens.bench
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.ui.Cropper
-import ru.cryhards.brootkiddie.ui.ImageActor
-import ru.cryhards.brootkiddie.ui.items.ItemExplorer
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
- * One of the screens that guys needed
+ * Malware crafting
  */
 class BenchScreen : ScreenAdapter() {
     private val stage = Stage()
 
-    private val background = ImageActor("img/bg/noisy_surface.png")
-    private val crypto = UI.GlitchLabel("  $100  ")
-    private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
-
+    private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
+    private val applyButton = UI.GlitchTextButton("APPLY")
     private val explorer = ItemExplorer()
-    private val blockSpace = BlockSpace(explorer)
+    private val blockSpace = BenchBlockSpace(explorer)
 
 
     init {
         // background
-        val bounds = Cropper.fitCenter(
-                stage.width, stage.height,
-                background.width, background.height)
-        background.setPosition(bounds[0], bounds[1])
-        background.setSize(bounds[2], bounds[3])
+        background.setPosition(0f, 0f)
+        background.setSize(stage.width, stage.height)
         stage.addActor(background)
 
 
         // back
-        backButton.setPosition(50f, 50f, Align.bottomLeft)
-        stage.addActor(backButton)
+        applyButton.width = stage.width / 3.5f - 50
+        applyButton.setPosition(stage.width - 50, stage.height - 50, Align.topRight)
+        stage.addActor(applyButton)
 
-        backButton.addListener(object : ClickListener() {
+        applyButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toGlobalMap()
+                Core.instance.toInventory()
             }
         })
-
-        // browser
-        openBrowserButton.setPosition(50f, stage.height - 50f, Align.topLeft)
-        stage.addActor(openBrowserButton)
-
-        openBrowserButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toBrowser()
-            }
-        })
-
-        // crypto
-        crypto.setPosition(50f, stage.height - openBrowserButton.height - 100f, Align.topLeft)
-        stage.addActor(crypto)
 
         // explorer
-        explorer.setSize(stage.width / 3.5f, stage.height)
-        explorer.squeezeUI()
-
-        explorer.setPosition(stage.width, stage.height, Align.topRight)
+        explorer.setSize(applyButton.width + 100, stage.height - applyButton.height)
+        explorer.setPosition(stage.width, stage.height - applyButton.height - 50, Align.topRight)
         stage.addActor(explorer)
 
         // blockSpace
-        blockSpace.setSize(stage.width - explorer.width - backButton.width - 100f, stage.height)
-        blockSpace.squeezeUI()
-        blockSpace.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
-        stage.addActor(blockSpace)
+        val pane = ScrollPane(blockSpace)
+        pane.setSize(stage.width - explorer.width, stage.height)
+        pane.setPosition(0f, stage.height, Align.topLeft)
+        blockSpace.setSize(pane.width, pane.height)
+        blockSpace.shader = Assets.Shaders.WAVE
+        stage.addActor(pane)
+    }
 
 
-        // test bench
-        Player.inventory.items.add(UI.emptyItem())
-        Player.inventory.items.add(UI.loremItem())
-        blockSpace.buildBlockSpace(Player.inventory.items)
+    fun inspect(malware: Malware) {
+        blockSpace.inspect(malware)
     }
 
 

@@ -1,6 +1,7 @@
 {
   "id": "example",
   "sender": "Game Master",
+  "topic" : "Introduction",
   "states": [
     {
       "id": "start",
@@ -9,6 +10,14 @@
         {
           "function": "logger",
           "data": "at the start!"
+        },
+        {
+          "function" : "runEvent",
+          "data" :
+          {
+            "event" : "Introduction 1",
+            "data" : {}
+          }
         }
       ],
       "info": {

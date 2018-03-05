@@ -1,0 +1,17 @@
+{
+  "id": "introduction2",
+  "sender": "Game Master",
+  "topic" : "Congratulations",
+  "states": [
+    {
+      "id": "start",
+      "start": true,
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "Good job. You have launched your first malware. Now try to earn one 1T dollars. But be careful: time goes on and everyone's malware protection grows stronger. So you need to increase your infectiousness. For now it is all that I want to tell you. Bye."
+      }
+    }
+  ],
+  "transitions": []
+}

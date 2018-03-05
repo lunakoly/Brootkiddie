@@ -8,11 +8,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.ui.items.ItemBlock
-import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.effects.Converter
+import ru.cryhards.brootkiddie.items.effects.MiningEffect
 
 
 @Suppress("FunctionName")
@@ -22,31 +25,67 @@ import ru.cryhards.brootkiddie.events.dialogs.Dialog
 object UI {
 
     /**
+     * Returns drawable made of specified color
+     */
+    fun colorToDrawable(color: Color): Drawable {
+        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
+        pix.setColor(color)
+        pix.fill()
+        return Image(Texture(pix)).drawable
+    }
+
+
+    /**
      * Returns text button with glitch effect on touchDown
      */
     fun GlitchTextButton(text: String): ShaderableButton {
         val style = TextButton.TextButtonStyle()
-        style.font = Assets.fonts.HACK_REGULAR
+        style.font = Assets.Fonts.HACK_REGULAR
         val butt = ShaderableButton(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        butt.label.style.background = Image(Texture(pix)).drawable
+        butt.label.style.background = colorToDrawable(Color.BLACK)
         butt.width *= 1.2f
         butt.height *= 1.2f
 
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                butt.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
+            }
+        })
+
+        return butt
+    }
+
+
+    /**
+     * Returns compact text button with glitch effect on touchDown
+     */
+    fun GlitchTextButtonCompact(text: String): ShaderableButton {
+        val style = TextButton.TextButtonStyle()
+        style.font = Assets.Fonts.HACK_COMPACT
+        val butt = ShaderableButton(text, style)
+
+        butt.label.style.background = colorToDrawable(Color.BLACK)
+        butt.width *= 1.2f
+        butt.height *= 1.2f
+
+        butt.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                butt.shader = null
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -67,16 +106,17 @@ object UI {
         butt.width *= 1.3f
         butt.height *= 1.3f
 
+
         butt.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                butt.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 butt.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -89,27 +129,23 @@ object UI {
      */
     fun GlitchLabel(text: String): ShaderableLabel {
         val style = Label.LabelStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val lbl = ShaderableLabel(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        lbl.style.background = Image(Texture(pix)).drawable
+        lbl.style.background = colorToDrawable(Color.BLACK)
         lbl.width *= 1.2f
         lbl.height *= 1.2f
 
         lbl.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                lbl.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                lbl.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 lbl.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -122,14 +158,10 @@ object UI {
      */
     fun GlitchConsole(text: String): ShaderableConsole {
         val style = TextField.TextFieldStyle()
-        style.font = Assets.fonts.ROBOTO
+        style.font = Assets.Fonts.ROBOTO
         val con = ShaderableConsole(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        con.style.background = Image(Texture(pix)).drawable
+        con.style.background = colorToDrawable(Color.BLACK)
 
         con.width = 500f
         con.height = 230f
@@ -140,14 +172,14 @@ object UI {
 
         con.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                con.shader = Assets.shaders.GLITCH
-                Assets.sounds.NOIZE.loop()
+                con.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
                 con.shader = null
-                Assets.sounds.NOIZE.stop()
+                Assets.Sounds.NOIZE.stop()
             }
         })
 
@@ -160,14 +192,10 @@ object UI {
      */
     fun StaticLabel(text: String): ShaderableLabel {
         val style = Label.LabelStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val lbl = ShaderableLabel(text, style)
 
-        val pix = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pix.setColor(Color.BLACK)
-        pix.fill()
-
-        lbl.style.background = Image(Texture(pix)).drawable
+        lbl.style.background = colorToDrawable(Color.BLACK)
         lbl.width *= 1.2f
         lbl.height *= 1.2f
         return lbl
@@ -175,34 +203,18 @@ object UI {
 
 
     /**
-     * Returns textarea that increasess its height if needed
+     * Returns Item debug example
      */
-    fun ExtendingTextArea(text: String): ExtendingTextArea {
-        val style = TextField.TextFieldStyle()
-        style.font = Assets.fonts.ROBOTOx2
-        return ExtendingTextArea(text, style)
-    }
+    fun emptyItem() = Script(
+            "<Name>",
+            "<Some info about item>",
+            Texture("img/ui/empty.png"), 1)
 
 
     /**
-     * Returns ItemBlock debug example
+     * Returns Item debug example 2
      */
-    fun emptyItem(): ItemBlock {
-        val item = Item("<Name>", "<Some info about item>", Item.Type.SCRIPT)
-        return ItemBlock(item, Texture("img/ui/empty.png"))
-    }
-
-
-    /**
-     * Returns ItemBlock debug example 2
-     */
-    fun loremItem(): ItemBlock {
-        val item = Item(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
-                Item.Type.SCRIPT)
-
-        val block = ItemBlock(item, Texture("img/ui/back.png"))
+    fun loremItem(): Script {
         val logger = UI.GlitchTextButton("LOL")
 
         logger.addListener(object : ClickListener() {
@@ -211,38 +223,108 @@ object UI {
             }
         })
 
+        val block = Script(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
+                Texture("img/ui/back.png"), 1)
+
         block.actions.add(logger)
         return block
     }
+
+
+    /**
+     * Basic spreading script
+     */
+    fun SpreaderV3000(): Script {
+        val block = Script(
+                "Spreader V3000",
+                "adds 50 to spreading",
+                Texture("img/items/worm.png"), 1)
+
+        block.applyDependency = { script, sides, i ->
+            Gdx.app.log("UI", "DABDM CALLED")
+
+            when (sides) {
+                Script.SIDES.BOTTOM -> {
+                    if (script.title == "<Name>") {
+                        Gdx.app.log("UI", "DABDM")
+                        script.temporaryEffects.add(MiningEffect())
+                    }
+                }
+                else -> {
+                    // nothing
+                }
+            }
+        }
+
+        block.additionalDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
+        return block
+    }
+
+
+    /**
+     * Spreading Multiplier
+     */
+    fun spreadingMultiplier(side: Script.SIDES): Script {
+        val block = Script(
+                "Spreading Mult",
+                "Multiplies spreading effect of the item to the ${side.text} of script",
+                Texture("img/ui/back.png"), 1)
+
+        block.sideAffection = { script, sides, i ->
+            Gdx.app.log("UI", "YAHOOO CALLED")
+
+            when (sides) {
+                side -> {
+                    val affection = object : Item.Effect(
+                            "Affected Spreading (Spreading Mult)",
+                            "x2 | Add-on given by Spreading Mult") {
+                        override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
+                            (target as Malware.Stats).spreadingSpeed *= 2
+                            return super.affect(target, *dependencies)
+                        }
+                    }
+
+                    Gdx.app.log("UI", "YAHOOO")
+
+                    script.temporaryEffects.add(affection)
+                }
+                else -> {
+                    // nothing
+                }
+            }
+        }
+
+        block.additionalDescription = "Affects item located to the $side of it"
+        return block
+    }
+
+
     /**
      * Returns button with common style
      */
 
     fun StaticTextButton(text: String) : ShaderableButton{
         val style = TextButton.TextButtonStyle()
-        style.font = Assets.fonts.ROBOTOx2
+        style.font = Assets.Fonts.ROBOTOx2
         val but = ShaderableButton(text, style)
 
-        val pixUp = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pixUp.setColor(Color.BLACK)
-        pixUp.fill()
+        val pixUp = colorToDrawable(Color.BLACK)
+        val pixDown = colorToDrawable(Color.LIGHT_GRAY)
 
-        val pixDown = Pixmap(50, 50, Pixmap.Format.RGB888)
-        pixDown.setColor(Color.LIGHT_GRAY)
-        pixDown.fill()
-
-        but.label.style.background = Image(Texture(pixUp)).drawable
+        but.label.style.background = pixUp
         but.width *= 1.2f
         but.height *= 1.2f
 
         but.addListener(object : ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                but.label.style.background = Image(Texture(pixDown)).drawable
+                but.label.style.background = pixDown
                 return true
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                but.label.style.background = Image(Texture(pixUp)).drawable
+                but.label.style.background = pixUp
             }
         })
 

@@ -1,20 +1,14 @@
 package ru.cryhards.brootkiddie.ui
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 
 /**
- * Represents Image with dispose method
+ * Created by remmargorp on 02.03.18.
  */
-open class ImageActor(private val texture: Texture) : Image(texture) {
-    constructor(path: String) : this(Texture(path))
-    fun dispose() = texture.dispose()
 
-    /**
-     * Use for adding shader effects
-     */
+open class ShaderablePopupTextInput(title: String, style: WindowStyle) : Dialog(title, style) {
     var shader: ShaderProgram? = null
 
     override fun draw(batch: Batch?, parentAlpha: Float) {

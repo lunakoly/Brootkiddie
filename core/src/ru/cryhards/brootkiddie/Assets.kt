@@ -20,31 +20,27 @@ object Assets {
      * Loads resources. Call on startup
      */
     fun initialize() {
-        fonts.initialize()
-        sounds.initialize()
-        shaders.initialize()
+        Fonts.initialize()
+        Sounds.initialize()
+        Shaders.initialize()
     }
 
     /**
      * Updates resources state. Call periodically
      */
     fun update() {
-        shaders.update()
+        Shaders.update()
     }
 
 
     /**
      * Contains fonts resources
      */
-    val fonts = Fonts()
-
-    /**
-     * Contains fonts resources
-     */
-    class Fonts {
+    object Fonts {
         lateinit var ROBOTO: BitmapFont
         lateinit var ROBOTOx2: BitmapFont
         lateinit var HACK_REGULAR: BitmapFont
+        lateinit var HACK_COMPACT: BitmapFont
 
         /**
          * Loads fonts. Call on startup
@@ -66,6 +62,9 @@ object Assets {
             params.size = 100
 
             HACK_REGULAR = generator.generateFont(params)
+
+            params.size = 70
+            HACK_COMPACT = generator.generateFont(params)
         }
     }
 
@@ -73,12 +72,7 @@ object Assets {
     /**
      * Contains shaders resources
      */
-    val shaders = Shaders()
-
-    /**
-     * Contains shaders resources
-     */
-    class Shaders {
+    object Shaders {
         lateinit var ABERRATION: ShaderProgram
         lateinit var GLITCH: ShaderProgram
         lateinit var WAVE: ShaderProgram
@@ -91,15 +85,15 @@ object Assets {
 
             ABERRATION = ShaderProgram(Gdx.files.internal("shaders/aberration.vsh"), Gdx.files.internal("shaders/aberration.fsh"))
             if (!ABERRATION.isCompiled)
-                println(ABERRATION.log)
+                Gdx.app.error("SHADER FAILED", ABERRATION.log)
 
             GLITCH = ShaderProgram(Gdx.files.internal("shaders/glitch.vsh"), Gdx.files.internal("shaders/glitch.fsh"))
             if (!GLITCH.isCompiled)
-                println(GLITCH.log)
+                Gdx.app.error("SHADER FAILED", GLITCH.log)
 
             WAVE = ShaderProgram(Gdx.files.internal("shaders/wave.vsh"), Gdx.files.internal("shaders/wave.fsh"))
             if (!WAVE.isCompiled)
-                println(WAVE.log)
+                Gdx.app.error("SHADER FAILED", WAVE.log)
         }
 
         /**
@@ -125,12 +119,7 @@ object Assets {
     /**
      * Contains shaders resources
      */
-    val sounds = Sounds()
-
-    /**
-     * Contains shaders resources
-     */
-    class Sounds {
+    object Sounds {
         // SOUNDS
         lateinit var NOIZE: Sound
 

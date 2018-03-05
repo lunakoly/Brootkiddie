@@ -1,19 +1,120 @@
 package ru.cryhards.brootkiddie.screens.globalmap
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.Environment
+import ru.cryhards.brootkiddie.Environment.SUSPICIOUSNESS_DETECT
+import ru.cryhards.brootkiddie.Environment.TOTAL_NODES
+import ru.cryhards.brootkiddie.Environment.currentSuspiciousness
+import ru.cryhards.brootkiddie.Environment.infectedNodes
+import ru.cryhards.brootkiddie.Environment.isMalwareDetected
+import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.items.effects.Converter.sigmoid
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
+import java.lang.Math.*
+import java.util.*
 
 @Suppress("unused")
 /**
  * Incapsulates global map object logic
  */
 class GlobalMap : ImageActor("img/bg/map.jpg") {
+    private val shapeBatch = ShapeRenderer()
+    private var projectionMatrixSet = false
+
+    private val points = mutableListOf<Pair<Float, Float>>()
+    private val MAX_POINTS = 1000
+
+    init {
+        Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
+            nextDay()
+            false
+        }))
+
+        shapeBatch.color = Color.RED
+    }
+
+    private fun nextDay() {
+        Environment.activeMalware?.run {
+            Gdx.app.log("GlobalMapDay", "running day-logic")
+            currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)
+            if (currentSuspiciousness > 0.55f) {
+                isMalwareDetected = true
+                Environment.UI.console?.log("YOUR MALWARE IS DETECTED")
+            }
+
+            infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)
+
+            Player.money += (pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
+
+            Gdx.app.log("DAY", "infected: $infectedNodes money: ${Player.money} susp: $currentSuspiciousness")
+        }
+
+        val ptd = pointsToDraw()
+        while (points.size > ptd) {
+            points.removeAt(Random().nextInt(points.size))
+        }
+        while (points.size < ptd) {
+            points.add(randomXYInRegions())
+        }
+        Gdx.app.log("PTD", "drawing ${points.size} points on global map")
+    }
+
+    private fun deltaSuspiciousness(suspiciousness: Float) = sqrt(sigmoid(infectedNodes.toFloat() / TOTAL_NODES + if (isMalwareDetected) 0.1f else 0f).toDouble()).toFloat() * suspiciousness * (1f / 8f)
+
+    private fun deltaInfected(spreadingSpeed: Float, infectiousness: Float): Long {
+        val aware = currentSuspiciousness / SUSPICIOUSNESS_DETECT
+
+        val shouldBeInfected = min(
+                (TOTAL_NODES * exp(-pow(aware * 1.23, 9.0))).toLong(), // suspiciousness limit
+                ((infectedNodes + 5) * (1 + infectiousness)).toLong()
+        )
+
+        var delta = (shouldBeInfected - infectedNodes)
+
+        if (delta > 0)
+            delta = max(1L, (delta * spreadingSpeed).toLong())
+
+        return delta
+    }
+
+    private fun pointsToDraw(): Int {
+        return (pow(infectedNodes / TOTAL_NODES.toDouble(), 0.37) * MAX_POINTS).toInt()
+    }
+
+    override fun draw(batch: Batch?, parentAlpha: Float) {
+        super.draw(batch, parentAlpha)
+        if (!projectionMatrixSet) {
+            batch?.run {
+                shapeBatch.projectionMatrix = projectionMatrix
+                projectionMatrixSet = true
+            }
+        }
+        if (projectionMatrixSet) {
+            batch?.end()
+            shapeBatch.begin(ShapeRenderer.ShapeType.Filled)
+
+            points.forEach {
+                shapeBatch.rect(it.first, it.second, 5f, 5f)
+            }
+
+            shapeBatch.end()
+            batch?.begin()
+        }
+    }
+
+    fun randomXYInRegions(): Pair<Float, Float> {
+        return randomXYInRegion(regionList[Random().nextInt(regionList.size)])
+    }
 
     /**
      * Returns a pair of random coordinates within
      * a specified region
      */
-    @Suppress("unused")
     fun randomXYInRegion(region: Regions): Pair<Float, Float> {
         val size = unmapSize(region)
         val pos = unmapCoordinates(region)
@@ -73,5 +174,23 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
         CHINA(0.592f, 0.135f, 0.11f, 0.145f)
     }
+
+    val regionList = arrayListOf<Regions>(
+            Regions.SIBERIA,
+            Regions.EASTERN_RUSSIA,
+            Regions.WESTERN_RUSSIA,
+            Regions.USA,
+            Regions.EASTERN_CANADA,
+            Regions.WESTERN_CANADA,
+            Regions.NORTHERN_CANADA,
+            Regions.AUSTRALIA,
+            Regions.GREENLAND,
+            Regions.BRASILIA,
+            Regions.ARGENTINA,
+            Regions.COLUMBIA,
+            Regions.NORTHERN_AFRICA,
+            Regions.SOUTHERN_AFRICA,
+            Regions.MADAGASCAR,
+            Regions.CHINA)
     
 }

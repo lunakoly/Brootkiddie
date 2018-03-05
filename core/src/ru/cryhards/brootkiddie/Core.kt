@@ -4,13 +4,15 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.DialogsScreen
 import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
+import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
+import ru.cryhards.brootkiddie.screens.market.MarketScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -41,7 +43,7 @@ class Core : Game() {
 
         setScreen(MainMenuScreen())
 
-        switchBackgroundMusic(Assets.sounds.AUTUMNS_DREAM_LULLABY)
+        switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
     }
 
 
@@ -78,9 +80,14 @@ class Core : Game() {
     }
 
     private lateinit var globalMapScreen: GlobalMapScreen
-    private lateinit var benchScreen: BenchScreen
+    private lateinit var inventoryScreen: InventoryScreen
     private lateinit var browserScreen : BrowserScreen
     private lateinit var dialogsScreen: DialogsScreen
+    private lateinit var benchScreen: BenchScreen
+    private lateinit var marketScreen : MarketScreen
+
+    private var prevScreen: Screen? = null
+    private var mustDispose = false
 
 
     /**
@@ -88,42 +95,86 @@ class Core : Game() {
      */
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
-        Scenario.initialize()
+        prevScreen = globalMapScreen
+        Environment.initialize()
         switchScreen(globalMapScreen)
-        benchScreen = BenchScreen()
+        inventoryScreen = InventoryScreen()
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
+        benchScreen = BenchScreen()
+        marketScreen = MarketScreen()
     }
 
     /**
      * Shows map screen
      */
     fun toGlobalMap() {
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(globalMapScreen)
+    }
+
+    /**
+     * Shows inventory screen
+     */
+    fun toInventory() {
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(inventoryScreen)
     }
 
     /**
      * Shows bench screen
      */
-    fun toBench() {
+    fun toBench(malware: Malware) {
+        benchScreen.inspect(malware)
+        mustDispose = true
+        prevScreen = getScreen()
         setScreen(benchScreen)
     }
 
     /**
      * Shows dialogs screen
      */
-
     fun toDialogs(){
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(dialogsScreen)
+    }
+
+    /**
+     * Shows dialogs screen
+     */
+    fun toMarket(){
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(marketScreen)
     }
 
     /**
      * Shows browser screen
      */
-
     fun toBrowser(){
+        mustDispose = false
+        prevScreen = getScreen()
         setScreen(browserScreen)
     }
+
+    /**
+     * Shows previous screen
+     */
+    fun toBack(){
+        if (prevScreen != null) {
+            val sub = getScreen()
+            setScreen(prevScreen)
+
+            if (mustDispose)
+                sub.dispose()
+            else
+                prevScreen = sub
+        }
+    }
+
 
     companion object {
         /**
@@ -145,11 +196,8 @@ class Core : Game() {
         tasks.add(task)
     }
 
-    fun removeTask(task: Task){
-        tasks.remove(task)
-    }
     /**
-     * Executes tasks and removes redutant if needed
+     * Executes tasks and removes redundant if needed
      */
     private fun invokeTasks() {
         val newTime = currentTimeMillis()
@@ -173,7 +221,7 @@ class Core : Game() {
     /**
      * Piece of code to be invoked later
      */
-    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Unit) {
+    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Boolean) {
         /**
          * Saves time when the code got invoked the last time
          * or holds initial time
@@ -190,18 +238,12 @@ class Core : Game() {
          * Runs task
          */
         fun invoke() {
-            task()
+            if (task())
+                repeatCount = 0
+
             lastStartTime = currentTimeMillis()
             if (repeatCount > 0)
                 repeatCount--
-        }
-
-        /*
-            Constant for period for daily tasks
-         */
-
-        companion object {
-            val DayTaskPeriod = 3000L
         }
     }
 }
