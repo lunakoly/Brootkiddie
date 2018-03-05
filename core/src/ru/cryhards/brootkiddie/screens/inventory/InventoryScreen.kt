@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -13,12 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -29,7 +23,7 @@ class InventoryScreen : ScreenAdapter() {
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  ${Player.money}  ")
+    private val crypto = UI.GlitchLabel("  ${Environment.player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
@@ -86,7 +80,7 @@ class InventoryScreen : ScreenAdapter() {
 
 
         // test inventory
-        Player.Inventory.items.add(UI.emptyItem())
+        Environment.player.inventory.items.add(UI.emptyItem())
     }
 
 
@@ -101,9 +95,9 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Player.Inventory.items)
+        blockSpace.fill(Environment.player.inventory.items)
         Gdx.input.inputProcessor = stage
-        crypto.setText("${Player.money}")
+        crypto.setText("${Environment.player.money}")
         super.show()
     }
 

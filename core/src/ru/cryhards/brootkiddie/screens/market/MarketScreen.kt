@@ -12,9 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.effects.Converter
-import ru.cryhards.brootkiddie.screens.inventory.InventoryBlockSpace
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -79,7 +78,7 @@ class MarketScreen : ScreenAdapter() {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        crypto.setText("$" + Converter.humanReadable(Player.money))
+        crypto.setText("$" + Converter.humanReadable(Environment.player.money))
 
         stage.act(delta)
         stage.draw()
@@ -89,7 +88,7 @@ class MarketScreen : ScreenAdapter() {
 
     override fun show() {
         blockSpace.fill(MarketItems.generateItems())
-        crypto.setText("$" + Converter.humanReadable(Player.money))
+        crypto.setText("$" + Converter.humanReadable(Environment.player.money))
         Gdx.input.inputProcessor = stage
         super.show()
     }

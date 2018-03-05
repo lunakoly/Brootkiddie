@@ -1,7 +1,7 @@
 package ru.cryhards.brootkiddie.events.dialogs
 
 import com.badlogic.gdx.Gdx
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.events.Events
 
 /**
@@ -69,7 +69,7 @@ object Callables {
                 get() = "payer"
 
             override fun act(data: Any?): Any? {
-                Player.money += (data as Double).toFloat()
+                Environment.player.money += (data as Double).toFloat()
                 return null
             }
         }
@@ -79,7 +79,7 @@ object Callables {
                 get() = "checkItem"
 
             override fun act(data: Any?): Any? {
-                return Player.Inventory.items.any { it.title == data as String }
+                return Environment.player.inventory.items.any { it.title == data as String }
             }
         }
 

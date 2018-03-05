@@ -14,7 +14,6 @@ import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.Environment.consoleCounter
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.Cropper
@@ -124,7 +123,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
     fun updateUI() {
         infected.setText(humanReadable(Environment.infectedNodes))
-        crypto.setText("$" + humanReadable(Player.money.toFloat()))
+        crypto.setText("$" + humanReadable(Environment.player.money.toFloat()))
         if (Environment.consoleCounter == 5){
             showUI(1)
         }

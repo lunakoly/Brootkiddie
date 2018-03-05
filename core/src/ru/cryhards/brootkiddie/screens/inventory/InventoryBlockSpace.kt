@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Combinable
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.ui.ItemActor
@@ -182,10 +182,10 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
                         val temp = item.item.clone()
 
                         val res = item.item.combine(sourceItem)
-                        Player.Inventory.items.remove(item.item)
-                        Player.Inventory.items.add(res)
-                        Player.Inventory.items.add(temp as Item)
-                        this@InventoryBlockSpace.fill(Player.Inventory.items)
+                        Environment.player.inventory.items.remove(item.item)
+                        Environment.player.inventory.items.add(res)
+                        Environment.player.inventory.items.add(temp as Item)
+                        this@InventoryBlockSpace.fill(Environment.player.inventory.items)
                         explorer.explore(res)
                     }
 
