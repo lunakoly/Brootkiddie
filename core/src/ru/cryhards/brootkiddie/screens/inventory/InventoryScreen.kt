@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -67,7 +68,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Environment.player.Inventory.items.firstOrNull() ?: UI.emptyItem())
+        explorer.explore(Environment.player.inventory.items.firstOrNull() ?: UI.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
