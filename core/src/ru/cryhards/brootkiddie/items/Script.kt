@@ -5,13 +5,23 @@ import com.badlogic.gdx.graphics.Texture
 /**
  * Represents a script that can be combined into malware
  */
-class Script(title: String, info: String, iconTexture: Texture, var size: Float) : Item(title, info, iconTexture, Item.Type.SCRIPT) {
+class Script(title: String, info: String, iconTexture: Texture, var size: Int) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
 
     /**
-     * The script level affets effects stats
+     * The script level affects effects stats
      * Initial value = 1
      */
     var level = 1
+
+    /**
+     * Used by BlockSpace's to determine saved position
+     */
+    var gridX: Int = 0
+
+    /**
+     * Used by BlockSpace's to determine saved position
+     */
+    var gridY: Int = 0
 
 
     /**
@@ -24,8 +34,58 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Float)
 
         val affected = Malware.Stats()
         effects.forEach { it.affect(affected, level) }
+        temporaryEffects.forEach { it.affect(affected, level) }
         return affected
     }
+
+
+    /**
+     * Use it to add info about sideAffectionAffections and dependencies
+     */
+    var additionalDescription = ""
+
+
+    /**
+     * Affects the given script as if it was placed in the given position
+     *
+     *             TOP
+     *           1 2 3 4
+     *           _ _ _ _
+     *        1|         |1
+     * LEFT   2|         |2   RIGHT
+     *        3|         |3
+     *           - - - -
+     *           1 2 3 4
+     *           BOTTOM
+     */
+    var sideAffection: (Script, Script.SIDES, Int) -> Unit = { _, _, _ -> }
+
+
+    /**
+     * Affects this script as if it was placed near some script
+     *
+     *             TOP
+     *           1 2 3 4
+     *           _ _ _ _
+     *        1|         |1
+     * LEFT   2|         |2   RIGHT
+     *        3|         |3
+     *           - - - -
+     *           1 2 3 4
+     *           BOTTOM
+     */
+    var applyDependency: (Script, Script.SIDES, Int) -> Unit = { _, _, _ -> }
+
+
+    /**
+     * Effects that depend on outer world
+     */
+    val temporaryEffects = ArrayList<Effect>()
+
+    /**
+     * Returns effect with matching title
+     */
+    override fun findEffect(name: String) = effects.find { it.title == name } ?: temporaryEffects.find { it.title == name }
 
 
     /**
@@ -47,4 +107,52 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Float)
 
     operator fun plus(malware: Malware) = combine(malware)
 
+
+    /**
+     * Combines the given item with itself
+     */
+    override fun combine(item: Item): Item {
+        if (item is Script)
+            return combine(item)
+        if (item is Malware)
+            return combine(item)
+        return this
+    }
+
+    operator fun plus(item: Item) = combine(item)
+
+
+    override fun toString(): String {
+        var out = "  EFFECTS\n"
+
+        if (effects.size == 0)
+            out += " None"
+        else
+            effects.forEach { out += " * ${it.title}\n${it.info}\n"}
+
+        if (temporaryEffects.size != 0) {
+            out += "  ADD-ONS\n"
+            temporaryEffects.forEach { out += " * ${it.title}\n${it.info}\n" }
+        }
+
+        if (additionalDescription.isNotEmpty())
+            out += additionalDescription
+
+        return out
+    }
+
+
+    /**
+     * Used to apply special effects to other scripts
+     */
+    enum class SIDES(val text: String) {
+        TOP("top"),
+        LEFT("left"),
+        RIGHT("right"),
+        BOTTOM("bottom")
+    }
+
+    public override fun clone(): Any {
+        return super<Combinable>.clone()
+    }
 }

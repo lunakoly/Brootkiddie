@@ -11,10 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.effects.Converter
+import ru.cryhards.brootkiddie.items.effects.MiningEffect
 
 
 @Suppress("FunctionName")
@@ -40,6 +41,35 @@ object UI {
     fun GlitchTextButton(text: String): ShaderableButton {
         val style = TextButton.TextButtonStyle()
         style.font = Assets.Fonts.HACK_REGULAR
+        val butt = ShaderableButton(text, style)
+
+        butt.label.style.background = colorToDrawable(Color.BLACK)
+        butt.width *= 1.2f
+        butt.height *= 1.2f
+
+        butt.addListener(object : ClickListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                butt.shader = Assets.Shaders.GLITCH
+                Assets.Sounds.NOIZE.loop()
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                butt.shader = null
+                Assets.Sounds.NOIZE.stop()
+            }
+        })
+
+        return butt
+    }
+
+
+    /**
+     * Returns compact text button with glitch effect on touchDown
+     */
+    fun GlitchTextButtonCompact(text: String): ShaderableButton {
+        val style = TextButton.TextButtonStyle()
+        style.font = Assets.Fonts.HACK_COMPACT
         val butt = ShaderableButton(text, style)
 
         butt.label.style.background = colorToDrawable(Color.BLACK)
@@ -178,7 +208,7 @@ object UI {
     fun emptyItem() = Script(
             "<Name>",
             "<Some info about item>",
-            Texture("img/ui/empty.png"), 1f)
+            Texture("img/ui/empty.png"), 1)
 
 
     /**
@@ -196,49 +226,80 @@ object UI {
         val block = Script(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
-                Texture("img/ui/back.png"), 1f)
+                Texture("img/ui/back.png"), 1)
 
         block.actions.add(logger)
         return block
     }
 
 
-
     /**
-     * Returns ItemBlock with Player's malware inside
+     * Basic spreading script
      */
-    fun malwareItem(malware: Malware): Item {
-        val logger = UI.GlitchTextButton("KUKAREKU v log")
+    fun SpreaderV3000(): Script {
+        val block = Script(
+                "Spreader V3000",
+                "adds 50 to spreading",
+                Texture("img/items/worm.png"), 1)
 
-        logger.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Gdx.app.log("ahaha", "rabotaet")
-            }
-        })
+        block.applyDependency = { script, sides, i ->
+            Gdx.app.log("UI", "DABDM CALLED")
 
-        malware.actions.add(logger)
-
-        val setGlobalMapMalware = if (Environment.activeMalware == malware) UI.GlitchTextButton("DEACTIVATE") else UI.GlitchTextButton("ACTIVATE")
-        setGlobalMapMalware.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (Environment.activeMalware == malware) {
-                    Gdx.app.log("activeMalware", "deactivated")
-                    Environment.UI.console?.log("${malware.name} deactivated")
-                    Environment.activeMalware = null
-                    setGlobalMapMalware.setText("ACTIVATE")
-                } else {
-                    Gdx.app.log("activeMalware", "activated")
-                    Environment.activeMalware = malware
-                    Environment.UI.console?.log("${malware.name} activated")
-                    setGlobalMapMalware.setText("DEACTIVATE")
+            when (sides) {
+                Script.SIDES.BOTTOM -> {
+                    if (script.title == "<Name>") {
+                        Gdx.app.log("UI", "DABDM")
+                        script.temporaryEffects.add(MiningEffect())
+                    }
+                }
+                else -> {
+                    // nothing
                 }
             }
-        })
+        }
 
-        malware.actions.add(setGlobalMapMalware)
-
-        return malware
+        block.additionalDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
+        return block
     }
+
+
+    /**
+     * Spreading Multiplier
+     */
+    fun spreadingMultiplier(side: Script.SIDES): Script {
+        val block = Script(
+                "Spreading Mult",
+                "Multiplies spreading effect of the item to the ${side.text} of script",
+                Texture("img/ui/back.png"), 1)
+
+        block.sideAffection = { script, sides, i ->
+            Gdx.app.log("UI", "YAHOOO CALLED")
+
+            when (sides) {
+                side -> {
+                    val affection = object : Item.Effect(
+                            "Affected Spreading (Spreading Mult)",
+                            "x2 | Add-on given by Spreading Mult") {
+                        override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
+                            (target as Malware.Stats).spreadingSpeed *= 2
+                            return super.affect(target, *dependencies)
+                        }
+                    }
+
+                    Gdx.app.log("UI", "YAHOOO")
+
+                    script.temporaryEffects.add(affection)
+                }
+                else -> {
+                    // nothing
+                }
+            }
+        }
+
+        block.additionalDescription = "Affects item located to the $side of it"
+        return block
+    }
+
 
     /**
      * Returns button with common style

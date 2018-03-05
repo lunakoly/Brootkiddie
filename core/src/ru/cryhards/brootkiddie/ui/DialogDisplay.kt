@@ -68,7 +68,7 @@ class DialogDisplay : Table(){
                     refreshInfo()
                 }
             })
-            transitionsTable.add(transLabel).grow()
+            if (transition.isAvailable()) transitionsTable.add(transLabel).grow()
 
 
             counter++

@@ -1,10 +1,9 @@
-package ru.cryhards.brootkiddie.screens.inventory
+package ru.cryhards.brootkiddie.screens.market
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -14,27 +13,26 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
+import ru.cryhards.brootkiddie.items.effects.Converter
+import ru.cryhards.brootkiddie.screens.inventory.InventoryBlockSpace
+import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * One of the screens that guys needed
  */
-class InventoryScreen : ScreenAdapter() {
+class MarketScreen : ScreenAdapter() {
     private val stage = Stage()
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
+//    private val background = Image(UI.colorToDrawable(Color(.0f, .0f, .0f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  ${Player.money}  ")
+
+    private val crypto = UI.GlitchLabel("  $100  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
     private val explorer = ItemExplorer()
-    private val blockSpace = InventoryBlockSpace(explorer)
+    private val blockSpace = MarketBlockSpace(explorer)
 
     init {
         // background
@@ -53,19 +51,9 @@ class InventoryScreen : ScreenAdapter() {
             }
         })
 
-        // browser
-        openBrowserButton.setPosition(50f, stage.height - 50f, Align.topLeft)
-        stage.addActor(openBrowserButton)
-
-        openBrowserButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.toBrowser()
-            }
-        })
-
         // crypto
-        crypto.setPosition(50f, stage.height - openBrowserButton.height - 100f, Align.topLeft)
-        crypto.setSize(openBrowserButton.width, crypto.height)
+        crypto.setPosition(50f, stage.height, Align.topLeft)
+        crypto.setSize(backButton.width, crypto.height)
         crypto.style.background = null
         stage.addActor(crypto)
 
@@ -79,20 +67,19 @@ class InventoryScreen : ScreenAdapter() {
         blockSpace.setSize(stage.width - explorer.width - backButton.width - 100f, stage.height)
         pane.debug = true
         pane.setSize(stage.width - explorer.width - backButton.width - 100f, stage.height)
+        //pane.squeezeUI()
         pane.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
 
         blockSpace.shader = Assets.Shaders.WAVE
         stage.addActor(pane)
-
-
-        // test inventory
-        Player.Inventory.items.add(UI.emptyItem())
     }
 
 
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        crypto.setText("$" + Converter.humanReadable(Player.money))
 
         stage.act(delta)
         stage.draw()
@@ -101,9 +88,9 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Player.Inventory.items)
+        blockSpace.fill(MarketItems.generateItems())
+        crypto.setText("$" + Converter.humanReadable(Player.money))
         Gdx.input.inputProcessor = stage
-        crypto.setText("${Player.money}")
         super.show()
     }
 

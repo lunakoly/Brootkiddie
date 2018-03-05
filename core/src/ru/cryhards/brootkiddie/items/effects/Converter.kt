@@ -25,7 +25,7 @@ object Converter {
     fun humanReadable(x: Long): String {
         if (abs(x) < 1000) return "$x"
 
-        val suffixes = arrayListOf<String>("", "k", "M", "B", "T", "q", "Q")
+        val suffixes = arrayListOf("", "k", "M", "B", "T", "q", "Q")
         var sufid = 0
 
         val sign = if (x < 0) "-" else ""
@@ -39,14 +39,14 @@ object Converter {
         val ns = "$num"
         val ps = format(Locale.ENGLISH, "%03d", prenum % 1000)
 
-        if (ns.length == 3)
-            return sign + ns + suffixes[sufid]
+        return if (ns.length == 3)
+            sign + ns + suffixes[sufid]
         else
-            return sign + ns + "." + ps.subSequence(0, 3 - ns.length) + suffixes[sufid]
+            sign + ns + "." + ps.subSequence(0, 3 - ns.length) + suffixes[sufid]
     }
 
     fun humanReadable(x: Float): String {
-        val suffixes = arrayListOf<String>("", "k", "M", "B", "T", "q", "Q")
+        val suffixes = arrayListOf("", "k", "M", "B", "T", "q", "Q")
         var sufid = 0
 
         val sign = if (x < 0) "-" else ""
@@ -62,9 +62,9 @@ object Converter {
         val ns = "$num"
         val ps = format(Locale.ENGLISH, "%03d", prenum % 1000)
 
-        if (ns.length == 3)
-            return sign + ns + suffixes[sufid]
+        return if (ns.length == 3)
+            sign + ns + suffixes[sufid]
         else
-            return sign + ns + "." + ps.subSequence(0, 3 - ns.length) + suffixes[sufid]
+            sign + ns + "." + ps.subSequence(0, 3 - ns.length) + suffixes[sufid]
     }
 }

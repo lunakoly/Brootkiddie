@@ -49,7 +49,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
             infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)
 
-            Player.money += pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed
+            Player.money += (pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
 
             Gdx.app.log("DAY", "infected: $infectedNodes money: ${Player.money} susp: $currentSuspiciousness")
         }

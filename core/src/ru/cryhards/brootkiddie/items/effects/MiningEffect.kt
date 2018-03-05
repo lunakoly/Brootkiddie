@@ -14,7 +14,7 @@ class MiningEffect(var miningSpeed: Float = 1f) : Item.Effect(
 
     override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
         // TODO: make dependencies[0] (script level) affect the affection)))
-        (target as Malware.Stats).miningSpeed += miningSpeed * if (dependencies.isNotEmpty()) Converter.pnsqrt(dependencies[0] as Float) else 1f
+        (target as Malware.Stats).miningSpeed += miningSpeed * if (dependencies.isNotEmpty()) Converter.pnsqrt((dependencies[0] as Int).toFloat()) else 1f
         return super.affect(target)
     }
 
