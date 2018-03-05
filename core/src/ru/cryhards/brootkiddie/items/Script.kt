@@ -1,6 +1,10 @@
 package ru.cryhards.brootkiddie.items
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
+import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * Represents a script that can be combined into malware
@@ -40,10 +44,9 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
 
 
     /**
-     * Use it to add info about sideAffectionAffections and dependencies
+     * Use it to add info about sideAffectionAffections
      */
-    var additionalDescription = ""
-
+    var sideEffectsDescription = ""
 
     /**
      * Affects the given script as if it was placed in the given position
@@ -60,6 +63,11 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
      */
     var sideAffection: (Script, Script.SIDES, Int) -> Unit = { _, _, _ -> }
 
+
+    /**
+     * Use it to add info about dependencies
+     */
+    var dependencyDescription = ""
 
     /**
      * Affects this script as if it was placed near some script
@@ -122,23 +130,52 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
     operator fun plus(item: Item) = combine(item)
 
 
-    override fun toString(): String {
-        var out = "  EFFECTS\n"
+    /**
+     * Used to lay out custom stuff in explorer
+     */
+    override fun represent(): Array<Actor> {
+        val out = ArrayList<Actor>()
 
-        if (effects.size == 0)
-            out += " None"
-        else
-            effects.forEach { out += " * ${it.title}\n${it.info}\n"}
+        val eff = UI.StaticLabel("Effects:")
+        eff.setWrap(true)
+        eff.style.background = null
+        eff.color = Color.CORAL
+        if (effects.size != 0) {
+            effects.forEach { eff.setText(eff.text.toString() + "\n * ${it.title}\n ${it.info}") }
+        } else {
+            eff.setText(eff.text.toString() + "\n ** NONE **")
+        }
+        out += eff
 
+        val temp = UI.StaticLabel("Affection:")
+        temp.setWrap(true)
+        temp.style.background = null
+        temp.color = Color.RED
         if (temporaryEffects.size != 0) {
-            out += "  ADD-ONS\n"
-            temporaryEffects.forEach { out += " * ${it.title}\n${it.info}\n" }
+            temporaryEffects.forEach { temp.setText(temp.text.toString() + "\n * ${it.title}\n ${it.info}") }
+            out += temp
         }
 
-        if (additionalDescription.isNotEmpty())
-            out += additionalDescription
+        val side = UI.StaticLabel("Side Affections:\n")
+        side.setWrap(true)
+        side.style.background = null
+        side.color = Color.GREEN
+        if (sideEffectsDescription.isNotEmpty()) {
+            side.setText(side.text.toString() + sideEffectsDescription)
+            out += side
+        }
 
-        return out
+        val dep = UI.StaticLabel("Dependencies:\n")
+        dep.setWrap(true)
+        dep.style.background = null
+        dep.color = Color.BROWN
+        if (dependencyDescription.isNotEmpty()) {
+            dep.setText(dep.text.toString() + dependencyDescription)
+            out += dep
+        }
+
+        actions.forEach { out += it }
+        return out.toTypedArray()
     }
 
 

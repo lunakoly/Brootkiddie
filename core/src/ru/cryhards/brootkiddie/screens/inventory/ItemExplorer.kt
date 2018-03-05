@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.Value
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
@@ -22,7 +19,7 @@ class ItemExplorer : ScrollPane(Table()) {
     private val name = UI.StaticLabel("<title>")
     private val info = UI.StaticLabel("<info>")
     private val data = UI.StaticLabel("<item dependent data>")
-    private val actions = Group()
+    private val actions = Table().padLeft(50f)
     private var lastBlock: Item? = null
 
 
@@ -58,12 +55,12 @@ class ItemExplorer : ScrollPane(Table()) {
         textTable.add(data).width(Value.percentWidth(1f, this)).row()
 
         // actions
-        table.add(actions).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, actions)).row()
+//        table.add(actions).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, actions)).row()
+        table.add(actions).width(Value.percentWidth(1f, this)).row()
 
 
         setOverscroll(false, true)
         layout()
-        explore(UI.emptyItem())
     }
 
 
@@ -78,15 +75,18 @@ class ItemExplorer : ScrollPane(Table()) {
         data.setText(block.toString())
 
         actions.clear()
-        actions.height = 20f
 
-        block.actions.forEach {
-            it.setPosition(actions.width / 2, actions.height, Align.bottom)
-            actions.height += it.height + 20f
-            actions.addActor(it)
+        val repr = block.represent()
+
+        repr.forEach {
+            val cell = actions.add(it)
+
+            if (it is Label) {
+                cell.width(Value.percentWidth(1f, actions))
+            }
+
+            actions.row()
         }
-
-        actions.height += 20f
     }
 
 

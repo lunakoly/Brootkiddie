@@ -258,7 +258,7 @@ object UI {
             }
         }
 
-        block.additionalDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
+        block.dependencyDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
         return block
     }
 
@@ -296,7 +296,8 @@ object UI {
             }
         }
 
-        block.additionalDescription = "Affects item located to the $side of it"
+        block.sideEffectsDescription = "Affects item located to the $side of it"
+        block.dependencyDescription = "Np dep provided"
         return block
     }
 

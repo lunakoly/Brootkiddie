@@ -2,6 +2,7 @@ package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
  * Represents an item that the Player may own
@@ -47,6 +48,11 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
             return this
         }
     }
+
+    /**
+     * Used to lay out custom stuff in explorer
+     */
+    open fun represent(): Array<Actor> = emptyArray()
 
 
     override fun toString(): String {
