@@ -26,13 +26,13 @@ class BrowserScreen : ScreenAdapter() {
     init {
 
         dialogsButton.addListener(object : ClickListener(){
-            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Core.instance.toDialogs()
             }
         })
 
         pageGroup.addActor(dialogsButton)
-        pageGroup.addActor(newsButton)
+        //pageGroup.addActor(newsButton)
         pageGroup.addActor(marketButton)
         pageGroup.pack()
 
