@@ -14,7 +14,6 @@ import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.Converter
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 
 

@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
@@ -48,8 +47,8 @@ class BenchScreen : ScreenAdapter() {
         })
 
         // explorer
-        explorer.setSize(applyButton.width + 100, stage.height - applyButton.height)
-        explorer.setPosition(stage.width, stage.height - applyButton.height - 50, Align.topRight)
+        explorer.setSize(applyButton.width + 100, stage.height - applyButton.height - 100)
+        explorer.setPosition(stage.width, stage.height - applyButton.height - 100, Align.topRight)
         stage.addActor(explorer)
 
         // blockSpace

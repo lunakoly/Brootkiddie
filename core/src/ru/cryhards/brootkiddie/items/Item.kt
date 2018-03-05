@@ -2,7 +2,6 @@ package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
  * Represents an item that the Player may own

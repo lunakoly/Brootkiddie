@@ -3,7 +3,6 @@ package ru.cryhards.brootkiddie.screens.inventory
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
@@ -18,7 +17,6 @@ class ItemExplorer : ScrollPane(Table()) {
     private val icon = ImageActor("img/ui/empty.png")
     private val name = UI.StaticLabel("<title>")
     private val info = UI.StaticLabel("<info>")
-    private val data = UI.StaticLabel("<item dependent data>")
     private val actions = Table().padLeft(50f)
     private var lastBlock: Item? = null
 
@@ -48,14 +46,7 @@ class ItemExplorer : ScrollPane(Table()) {
         info.style.fontColor = Color.LIGHT_GRAY
         textTable.add(info).width(Value.percentWidth(1f, this)).row()
 
-        // data
-        data.setWrap(true)
-        data.style.background = null
-        data.style.fontColor = Color.LIGHT_GRAY
-        textTable.add(data).width(Value.percentWidth(1f, this)).row()
-
         // actions
-//        table.add(actions).width(Value.percentWidth(1f, this)).height(Value.percentHeight(1f, actions)).row()
         table.add(actions).width(Value.percentWidth(1f, this)).row()
 
 
@@ -72,7 +63,6 @@ class ItemExplorer : ScrollPane(Table()) {
         name.setText(block.title)
         info.setText(block.info)
         icon.drawable = Image(block.iconTexture).drawable
-        data.setText(block.toString())
 
         actions.clear()
 

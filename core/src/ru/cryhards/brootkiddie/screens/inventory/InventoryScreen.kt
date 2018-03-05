@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -14,11 +13,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
-import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -106,6 +101,7 @@ class InventoryScreen : ScreenAdapter() {
 
     override fun show() {
         blockSpace.fill(Player.Inventory.items)
+        explorer.reexplore()
         Gdx.input.inputProcessor = stage
         crypto.setText("${Player.money}")
         super.show()

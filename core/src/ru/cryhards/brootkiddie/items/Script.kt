@@ -3,7 +3,6 @@ package ru.cryhards.brootkiddie.items
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -189,7 +188,7 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
         BOTTOM("bottom")
     }
 
-    public override fun clone(): Any {
+    override fun clone(): Any {
         return super<Combinable>.clone()
     }
 }
