@@ -2,7 +2,7 @@
 
 package ru.cryhards.brootkiddie.screens.market
 
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.UI
@@ -15,7 +15,7 @@ object MarketItems {
     fun generateItems(): ArrayList<Item> {
         val result = ArrayList<Item>()
 
-        val got = Player.Inventory.items.map {
+        val got = Environment.player.inventory.items.map {
             Pair<String, Int>(it.title, if (it is Script) {
                 it.level
             } else {

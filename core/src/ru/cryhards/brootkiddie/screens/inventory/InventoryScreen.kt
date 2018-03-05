@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -24,7 +23,7 @@ class InventoryScreen : ScreenAdapter() {
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  ${Player.money}  ")
+    private val crypto = UI.GlitchLabel("  ${Environment.player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
@@ -68,7 +67,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Player.Inventory.items.firstOrNull() ?: UI.emptyItem())
+        explorer.explore(Environment.player.Inventory.items.firstOrNull() ?: UI.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
@@ -82,10 +81,10 @@ class InventoryScreen : ScreenAdapter() {
 
 
         // test inventory
-        Player.Inventory.items.add(UI.emptyItem())
-        Player.Inventory.items.add(UI.loremItem())
-        Player.Inventory.items.add(UI.SpreaderV3000())
-        Player.Inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
+        Environment.player.inventory.items.add(UI.emptyItem())
+        Environment.player.inventory.items.add(UI.loremItem())
+        Environment.player.inventory.items.add(UI.SpreaderV3000())
+        Environment.player.inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
     }
 
 
@@ -100,10 +99,10 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Player.Inventory.items)
+        blockSpace.fill(Environment.player.inventory.items)
         explorer.reexplore()
         Gdx.input.inputProcessor = stage
-        crypto.setText("${Player.money}")
+        crypto.setText("${Environment.player.money}")
         super.show()
     }
 

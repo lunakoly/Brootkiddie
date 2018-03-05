@@ -4,12 +4,13 @@ import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 import ru.cryhards.brootkiddie.ui.ShaderableConsole
+import java.io.Serializable
 
 /**
  * Holds gameplay stage
  */
 
-object Environment {
+object Environment : Serializable {
     /**
      * Time that one in-game day occures (ms)
      */
@@ -31,11 +32,26 @@ object Environment {
 
     var consoleCounter = 0
 
+    lateinit var player: Player
+
     /**
      * Loads game state. Call on startup
      */
     fun initialize() {
-        Player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
+
+        day = 0
+
+        activeMalware = null
+        infectedNodes = 0L
+
+        currentSuspiciousness = 0.0f
+        isMalwareDetected = false
+
+        consoleCounter = 0
+
+        player = Player()
+
+        player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
 
         // run day updater
         Core.instance.addTask(Core.Task(-1, DAY_TASK_PERIOD, {

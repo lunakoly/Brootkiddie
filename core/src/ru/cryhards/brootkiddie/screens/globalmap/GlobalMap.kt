@@ -11,7 +11,6 @@ import ru.cryhards.brootkiddie.Environment.TOTAL_NODES
 import ru.cryhards.brootkiddie.Environment.currentSuspiciousness
 import ru.cryhards.brootkiddie.Environment.infectedNodes
 import ru.cryhards.brootkiddie.Environment.isMalwareDetected
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.effects.Converter.sigmoid
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
@@ -49,9 +48,9 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
             infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)
 
-            Player.money += (pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
+            Environment.player.money += (pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
 
-            Gdx.app.log("DAY", "infected: $infectedNodes money: ${Player.money} susp: $currentSuspiciousness")
+            Gdx.app.log("DAY", "infected: $infectedNodes money: ${Environment.player.money} susp: $currentSuspiciousness")
         }
 
         val ptd = pointsToDraw()

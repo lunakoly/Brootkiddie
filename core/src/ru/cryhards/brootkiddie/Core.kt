@@ -13,13 +13,14 @@ import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.market.MarketScreen
+import java.io.Serializable
 import java.lang.System.currentTimeMillis
 
 
 /**
  * Main entry point
  */
-class Core : Game() {
+class Core : Game(), Serializable {
 
     /**
      * Use this batch to draw something from different screens
@@ -246,4 +247,5 @@ class Core : Game() {
                 repeatCount--
         }
     }
+
 }

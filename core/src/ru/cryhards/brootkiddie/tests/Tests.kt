@@ -4,12 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.DisguiseEffect
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 import ru.cryhards.brootkiddie.screens.SplashScreen
 
 /**
@@ -40,7 +35,7 @@ class Tests {
     }
 
     fun nuke() {
-        println(Player.money)
+        println(Environment.player.money)
         println(Environment.day)
         Core.instance.switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
         Core.instance.switchScreen(SplashScreen())

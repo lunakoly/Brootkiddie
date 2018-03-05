@@ -3,18 +3,16 @@ package ru.cryhards.brootkiddie.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Core
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.ui.DialogDisplay
 import ru.cryhards.brootkiddie.ui.ImageActor
@@ -113,11 +111,11 @@ class DialogsScreen : ScreenAdapter() {
         dialogsBySender.clear()
         sendersGroup.clear()
 
-        if (!Player.senders.isEmpty()) {
+        if (!Environment.player.senders.isEmpty()) {
 
             emptyDialogsLabel.remove()
 
-            for (d in Player.dialogs) {
+            for (d in Environment.player.dialogs) {
                 if (!dialogsBySender.contains(d.sender)) {
                     dialogsBySender[d.sender] = mutableListOf(d)
                 } else {
@@ -126,7 +124,7 @@ class DialogsScreen : ScreenAdapter() {
             }
 
             for (s in dialogsBySender.keys) {
-                val sender = Player.senders[s]
+                val sender = Environment.player.senders[s]
                 val image = ImageActor(sender!!)
                 image.setSize(50f, 50f)
 

@@ -3,7 +3,7 @@ package ru.cryhards.brootkiddie.screens.market
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import ru.cryhards.brootkiddie.Player
+import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.effects.Converter
 import ru.cryhards.brootkiddie.ui.UI
@@ -21,11 +21,11 @@ class MarketItem(title: String, info: String, iconTexture: Texture, val cost: Fl
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (bought) return
 
-                if (Player.money < cost) {
+                if (Environment.player.money < cost) {
                     buyButton.setText("NOT ENOUGH $")
                 } else {
-                    Player.money -= cost
-                    Player.Inventory.items.add(payload)
+                    Environment.player.money -= cost
+                    Environment.player.inventory.items.add(payload)
                     buyButton.setText("BOUGHT")
                     bought = true
                 }
