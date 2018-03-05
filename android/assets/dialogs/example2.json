@@ -1,0 +1,43 @@
+{
+  "id": "example2",
+  "sender": "Game Master",
+  "topic" : "Next Part",
+  "states": [
+    {
+      "id": "start",
+      "start": true,
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "Hello again. It was an event system test. Thank you for your assistance."
+      }
+    },
+    {
+      "id": "end",
+      "triggers": [
+        {
+          "function": "logger",
+          "data": "at the end!"
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Bye."
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "start",
+      "to": "end",
+      "info": {
+        "function": "printer",
+        "data": "Bye"
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    }
+  ]
+}

@@ -1,20 +1,28 @@
 package ru.cryhards.brootkiddie
 
-import ru.cryhards.brootkiddie.malware.Malware
-import ru.cryhards.brootkiddie.malware.scripts.BaseScript
-import ru.cryhards.brootkiddie.malware.scripts.Script
+import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.items.Item
 
 
-open class Player {
-    var malwareList: List<Malware> = emptyList()
-    var baseList : List<BaseScript> = emptyList()
-    var scriptList : List<Script> = emptyList()
+/**
+ * Global reference to the player
+ */
+object Player {
+    var name = "user0"
+    var level = 0
+    var money = 0.0f
+    val dialogs = mutableListOf<Dialog>()
+    val senders = mapOf(Pair("Game Master", "img/items/worm.png"))
 
-    var crypto = 0f
-
-    fun addMalware(malware: Malware) {
-        malwareList += malware
+    /**
+     * Collection of items owned by player
+     */
+    object Inventory {
+        /**
+         * All things that Player has
+         */
+        val items = ArrayList<Item>()
+        // tools (script optimizer!!! - decreases size)
     }
 
-    fun loadProfile() {}
 }
