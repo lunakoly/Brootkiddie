@@ -264,7 +264,7 @@ object UI {
 
 
     /**
-     * Spreading Multiplyer
+     * Spreading Multiplier
      */
     fun spreadingMultiplier(side: Script.SIDES): Script {
         val block = Script(

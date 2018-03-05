@@ -29,7 +29,7 @@ class InventoryScreen : ScreenAdapter() {
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  $100  ")
+    private val crypto = UI.GlitchLabel("  ${Player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
@@ -87,16 +87,6 @@ class InventoryScreen : ScreenAdapter() {
 
         // test inventory
         Player.Inventory.items.add(UI.emptyItem())
-        Player.Inventory.items.add(UI.loremItem())
-        val exmalw = Malware("PETYA", "MINER", Texture("img/items/malware.png"))
-        exmalw.combine(DisguiseEffect())
-        exmalw.combine(MiningEffect())
-        exmalw.combine(SpreadingEffect())
-        Player.Inventory.items.add(exmalw)
-
-
-        Player.Inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
-        Player.Inventory.items.add(UI.SpreaderV3000())
     }
 
 
@@ -113,6 +103,7 @@ class InventoryScreen : ScreenAdapter() {
     override fun show() {
         blockSpace.fill(Player.Inventory.items)
         Gdx.input.inputProcessor = stage
+        crypto.setText("${Player.money}")
         super.show()
     }
 

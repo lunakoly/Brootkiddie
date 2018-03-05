@@ -1,0 +1,100 @@
+{
+  "id": "introduction1",
+  "sender": "Game Master",
+  "topic" : "Introduction",
+  "states": [
+    {
+      "id": "start",
+      "start": true,
+      "triggers": [
+        {
+          "function" : "runEvent",
+          "data" :
+          {
+            "event" : "Introduction 1",
+            "data" : {}
+          }
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Hello. I am this game's master. Honestly, there isn't much to do right now. But it is only for this moment. Let me introduce you to main aspects of my game."
+      }
+    },
+    {
+      "id": "second",
+      "triggers": [],
+      "info": {
+        "function": "printer",
+        "data": "You are a hacker. Trust me. I know it better. And here you will have all the tools to utilize that ability and control the world. Main tool are malwares. You can create them in bench. For malwares you need scripts, which you can buy on black market. Go back and try it. I will give you some money."
+      }
+    },
+    {
+      "id": "third",
+      "triggers": [
+        {
+          "function" : "payer",
+          "data" : 50
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Answer me, when you had bought it."
+      }
+    },
+    {
+      "id": "fourth",
+      "triggers": [
+        {
+          "function" : "runEvent",
+          "data" : {
+            "event" : "Introduction 2",
+            "data" : {}
+          }
+        }
+      ],
+      "info": {
+        "function": "printer",
+        "data": "Alright. Now go to your inventory. (Access it from map). You need to drag one script on another to make a malware. After that press \"Inspect\" on created malware and place scripts as you want. Note that they can get bonuses from certain combinations. After your malware was completed press \"Activate\" to launch it in the world."
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "start",
+      "to": "second",
+      "info": {
+        "function": "printer",
+        "data": "Okay."
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    },
+    {
+      "from": "second",
+      "to": "third",
+      "info": {
+        "function": "printer",
+        "data": "I will do it."
+      },
+      "availability": {
+        "function": "true",
+        "data": {}
+      }
+    },
+    {
+      "from": "third",
+      "to": "fourth",
+      "info": {
+        "function": "printer",
+        "data": "I've bought it."
+      },
+      "availability": {
+        "function": "checkItem",
+        "data": "Spreader V3000"
+      }
+    }
+  ]
+}

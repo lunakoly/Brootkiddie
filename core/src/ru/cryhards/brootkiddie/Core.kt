@@ -12,6 +12,7 @@ import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
+import ru.cryhards.brootkiddie.screens.market.MarketScreen
 import java.lang.System.currentTimeMillis
 
 
@@ -83,6 +84,7 @@ class Core : Game() {
     private lateinit var browserScreen : BrowserScreen
     private lateinit var dialogsScreen: DialogsScreen
     private lateinit var benchScreen: BenchScreen
+    private lateinit var marketScreen : MarketScreen
 
     private var prevScreen: Screen? = null
     private var mustDispose = false
@@ -100,6 +102,7 @@ class Core : Game() {
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
         benchScreen = BenchScreen()
+        marketScreen = MarketScreen()
     }
 
     /**
@@ -137,6 +140,15 @@ class Core : Game() {
         mustDispose = false
         prevScreen = getScreen()
         setScreen(dialogsScreen)
+    }
+
+    /**
+     * Shows dialogs screen
+     */
+    fun toMarket(){
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(marketScreen)
     }
 
     /**

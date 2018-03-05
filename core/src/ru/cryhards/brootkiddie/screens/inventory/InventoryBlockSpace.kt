@@ -178,10 +178,13 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
                     val sourceItem = (source!!.actor as ItemActor).item
 
                     if (item.item is Combinable) {
+
+                        val temp = item.item.clone()
+
                         val res = item.item.combine(sourceItem)
-                        Player.Inventory.items.remove(sourceItem)
                         Player.Inventory.items.remove(item.item)
                         Player.Inventory.items.add(res)
+                        Player.Inventory.items.add(temp as Item)
                         this@InventoryBlockSpace.fill(Player.Inventory.items)
                         explorer.explore(res)
                     }

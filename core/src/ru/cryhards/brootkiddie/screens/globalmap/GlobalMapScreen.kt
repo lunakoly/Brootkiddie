@@ -94,7 +94,7 @@ class GlobalMapScreen : ScreenAdapter() {
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         console.addListener(object : ClickListener(){
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                consoleCounter++
+                if (consoleCounter < 4) consoleCounter++
                 if (consoleCounter == 3){
                     showUI(0)
                     Environment.UI.console?.log("Now it should be fine.")
@@ -125,6 +125,9 @@ class GlobalMapScreen : ScreenAdapter() {
     fun updateUI() {
         infected.setText(humanReadable(Environment.infectedNodes))
         crypto.setText("$" + humanReadable(Player.money.toFloat()))
+        if (Environment.consoleCounter == 5){
+            showUI(1)
+        }
     }
 
     override fun show() {
@@ -138,10 +141,10 @@ class GlobalMapScreen : ScreenAdapter() {
                 openBrowserButton.isVisible = true
                 crypto.isVisible = true
                 infected.isVisible = true
-                openInventoryButton.isVisible = true
             }
 
             1 -> {
+                openInventoryButton.isVisible = true
             }
         }
     }

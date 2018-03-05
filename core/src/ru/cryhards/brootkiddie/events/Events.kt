@@ -35,7 +35,7 @@ class Events {
                 Pair("Introduction 1", object : GameEvent("Introduction 1", "One of the introduction events") {
                     override fun act(data: Map<String, Any?>) {
                         var countdown = 30
-                        Core.instance.addTask(Core.Task(-1, (Environment.DAY_TASK_PERIOD*1.5f).toLong(), {
+                        Core.instance.addTask(Core.Task(-1, (Environment.DAY_TASK_PERIOD*1f).toLong(), {
                             countdown-=1
 
                             if (Environment.consoleCounter >= 3) {
@@ -98,6 +98,19 @@ class Events {
 
                 Pair("Introduction 2", object : GameEvent("Introduction 2", "One of the introduction events"){
                     override fun act(data: Map<String, Any?>) {
+                        Environment.consoleCounter = 5
+                        Environment.UI.console?.log("Your inventory is now available.")
+                        Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
+
+                            if (Environment.activeMalware != null) {
+                                val dialog = Dialog.readFromFile("dialogs/introduction2.json")
+                                Player.dialogs.add(dialog)
+                                Environment.UI.console?.log("You've got a letter from ${dialog.sender}")
+                                return@Task true
+                            }
+
+                            return@Task false
+                        }))
                     }
                 })
         )

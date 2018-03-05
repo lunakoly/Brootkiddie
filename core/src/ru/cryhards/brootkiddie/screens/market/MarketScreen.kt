@@ -32,7 +32,7 @@ class MarketScreen : ScreenAdapter() {
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
 
     private val explorer = ItemExplorer()
-    private val blockSpace = InventoryBlockSpace(explorer)
+    private val blockSpace = MarketBlockSpace(explorer)
 
     init {
         // background
@@ -71,7 +71,6 @@ class MarketScreen : ScreenAdapter() {
         pane.setPosition(stage.width - explorer.width, stage.height, Align.topRight)
 
         blockSpace.shader = Assets.Shaders.WAVE
-        blockSpace.pane = pane
         stage.addActor(pane)
     }
 

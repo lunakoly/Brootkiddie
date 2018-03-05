@@ -8,18 +8,18 @@ import com.badlogic.gdx.graphics.Texture
 class Script(title: String, info: String, iconTexture: Texture, var size: Int) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
 
     /**
-     * The script level affets effects stats
+     * The script level affects effects stats
      * Initial value = 1
      */
     var level = 1
 
     /**
-     * Used by BlockSpace's to determin saved position
+     * Used by BlockSpace's to determine saved position
      */
     var gridX: Int = 0
 
     /**
-     * Used by BlockSpace's to determin saved position
+     * Used by BlockSpace's to determine saved position
      */
     var gridY: Int = 0
 
@@ -150,5 +150,9 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
         LEFT("left"),
         RIGHT("right"),
         BOTTOM("bottom")
+    }
+
+    public override fun clone(): Any {
+        return super<Combinable>.clone()
     }
 }

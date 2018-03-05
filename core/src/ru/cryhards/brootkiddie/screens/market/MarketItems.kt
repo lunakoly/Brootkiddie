@@ -5,10 +5,10 @@ package ru.cryhards.brootkiddie.screens.market
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.custom.MiningScript
-import ru.cryhards.brootkiddie.items.custom.SpreadingScript
+import ru.cryhards.brootkiddie.ui.UI
 import java.lang.Math.pow
 import java.lang.Math.sqrt
+import kotlin.math.max
 
 object MarketItems {
 
@@ -35,11 +35,11 @@ object MarketItems {
             }
         }
 
-        val mining = MiningScript(miningLevel)
+        val mining = UI.SpreaderV3000()
+        val multiplier = UI.spreadingMultiplier(Script.SIDES.LEFT)
         result.add(MarketItem(mining.title, mining.info, mining.iconTexture, pow(50.0, sqrt(miningLevel.toDouble())).toFloat(), mining))
+        result.add(MarketItem(multiplier.title, multiplier.info, multiplier.iconTexture, pow(100.0, sqrt(spreadingLevel.toDouble())).toFloat(), multiplier))
 
-        val spreading = SpreadingScript(spreadingLevel)
-        result.add(MarketItem(spreading.title, spreading.info, spreading.iconTexture, pow(50.0, sqrt(spreadingLevel.toDouble())).toFloat(), spreading))
 
         return result
     }

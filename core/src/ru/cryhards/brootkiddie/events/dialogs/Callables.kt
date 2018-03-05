@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.events.dialogs
 
 import com.badlogic.gdx.Gdx
+import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.events.Events
 
 /**
@@ -15,16 +16,16 @@ object Callables {
     private val callables = mutableMapOf<String, Callable>()
 
     init {
-        callables.put("printer", object : Callable() {
+        callables["printer"] = object : Callable() {
             override val id: String
                 get() = "printer"
 
             override fun act(data: Any?): Any? {
                 return data as String
             }
-        })
+        }
 
-        callables.put("logger", object : Callable() {
+        callables["logger"] = object : Callable() {
             override val id: String
                 get() = "logger"
 
@@ -32,27 +33,27 @@ object Callables {
                 Gdx.app.log("Callable-logger", data.toString())
                 return null
             }
-        })
+        }
 
-        callables.put("true", object : Callable() {
+        callables["true"] = object : Callable() {
             override val id: String
                 get() = "true"
 
             override fun act(data: Any?): Any? {
                 return true
             }
-        })
+        }
 
-        callables.put("false", object : Callable() {
+        callables["false"] = object : Callable() {
             override val id: String
                 get() = "false"
 
             override fun act(data: Any?): Any? {
                 return false
             }
-        })
+        }
 
-        callables.put("runEvent", object : Callable(){
+        callables["runEvent"] = object : Callable(){
             override val id: String
                 get() = "runEvent"
 
@@ -61,7 +62,36 @@ object Callables {
                 return null
             }
 
-        })
+        }
+
+        callables["payer"] = object : Callable(){
+            override val id: String
+                get() = "payer"
+
+            override fun act(data: Any?): Any? {
+                Player.money += (data as Double).toFloat()
+                return null
+            }
+        }
+
+        callables["checkItem"] = object : Callable(){
+            override val id: String
+                get() = "checkItem"
+
+            override fun act(data: Any?): Any? {
+                return Player.Inventory.items.any { it.title == data as String }
+            }
+        }
+
+        callables["showUI"] = object : Callable(){
+            override val id: String
+                get() = "showUI"
+
+            override fun act(data: Any?): Any? {
+
+                return null
+            }
+        }
     }
 
     fun get(key: String): Callable? {
