@@ -32,7 +32,7 @@ class BrowserScreen : ScreenAdapter() {
         })
 
         pageGroup.addActor(dialogsButton)
-        pageGroup.addActor(newsButton)
+        //pageGroup.addActor(newsButton)
         pageGroup.addActor(marketButton)
         pageGroup.pack()
 
