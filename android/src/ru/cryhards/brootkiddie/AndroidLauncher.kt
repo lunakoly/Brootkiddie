@@ -3,9 +3,7 @@ package ru.cryhards.brootkiddie
 import android.annotation.TargetApi
 import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
-
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 
@@ -14,7 +12,6 @@ class AndroidLauncher : AndroidApplication() {
         hideSystemUi()
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
-
         config.hideStatusBar = true
         config.useImmersiveMode = true
         initialize(Core(), config)

@@ -2,8 +2,6 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.custom.MiningScript
-import ru.cryhards.brootkiddie.items.custom.SpreadingScript
 
 
 /**
@@ -13,7 +11,8 @@ object Player {
     var name = "user0"
     var level = 0
     var money = 0.0f
-    var dialogs = mutableListOf<Dialog>()
+    val dialogs = mutableListOf<Dialog>()
+    val senders = mapOf(Pair("Game Master", "img/items/worm.png"))
 
     /**
      * Collection of items owned by player
@@ -23,12 +22,6 @@ object Player {
          * All things that Player has
          */
         val items = ArrayList<Item>()
-
-        // test bench
-        init {
-            items.add(MiningScript())
-            items.add(SpreadingScript())
-        }
         // tools (script optimizer!!! - decreases size)
     }
 

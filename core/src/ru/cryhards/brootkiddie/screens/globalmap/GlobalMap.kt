@@ -38,7 +38,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
         shapeBatch.color = Color.RED
     }
 
-    fun nextDay() {
+    private fun nextDay() {
         Environment.activeMalware?.run {
             Gdx.app.log("GlobalMapDay", "running day-logic")
             currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)

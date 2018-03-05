@@ -29,11 +29,13 @@ object Environment {
     var currentSuspiciousness = 0.0f
     var isMalwareDetected = false
 
+    var consoleCounter = 0
+
     /**
      * Loads game state. Call on startup
      */
     fun initialize() {
-        Player.dialogs.add(Dialog.readFromFile("dialogs/example.json"))
+        Player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
 
         // run day updater
         Core.instance.addTask(Core.Task(-1, DAY_TASK_PERIOD, {

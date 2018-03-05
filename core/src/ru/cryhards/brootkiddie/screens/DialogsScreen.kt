@@ -5,16 +5,19 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
-import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.DialogDisplay
+import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -23,43 +26,72 @@ import ru.cryhards.brootkiddie.ui.UI
 
 class DialogsScreen : ScreenAdapter() {
 
-    private val background = Texture("img/bg/logo.png")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
-    val dialogWidget : DialogDisplay by lazy {
-        val w = DialogDisplay(Player.dialogs[0])
-        uiGroup.addActor(w)
-        uiGroup.pack()
-        w
-    }
-    private val dialogsGroup = HorizontalGroup()
-    private val uiGroup : VerticalGroup = VerticalGroup()
+    private val dialogDisplay = DialogDisplay()
+
+    private val uiGroup = Table()
+    private val sendersGroup = Table()
+    private val senderViewer = Table()
+
+    private val dialogsGroup = Table()
+
+    private val emptyDialogsLabel = UI.StaticLabel("Looks like you have no dialogs at the moment.\n" +
+            "Come back later")
+
     private val stage = Stage()
 
+
+    private val dialogsBySender = mutableMapOf<String, MutableList<Dialog>>()
+
     init {
-        uiGroup.columnLeft()
-        uiGroup.align(Align.topLeft)
-        uiGroup.pad(10f)
-        uiGroup.space(10f)
+        //uiGroup.pad(10f)
+        //uiGroup.space(10f)
         uiGroup.setFillParent(true)
+        uiGroup.align(Align.topLeft)
         stage.addActor(uiGroup)
 
-        uiGroup.addActor(dialogsGroup)
+        sendersGroup.width = 100f
+        sendersGroup.align(Align.topLeft)
 
-        if (Player.dialogs.size > 0) {
-            dialogWidget.refreshInfo()
-        }
+
+        senderViewer.align(Align.topLeft)
+        //dialogsGroup.debug = true
+
+        dialogsGroup.align(Align.topLeft)
+
+
+        senderViewer.add(dialogsGroup).align(Align.topLeft).row()
+
+        val pane = ScrollPane(sendersGroup)
+        pane.width = sendersGroup.width
+        pane.height = Gdx.graphics.height * 1f
+
+
+        //senderViewer.grow()
+        senderViewer.add(dialogDisplay).grow()
+
+        val leftTable = Table()
+
+        Gdx.app.log("DD", "${backButton.prefWidth}")
+
+        leftTable.add(pane).align(Align.topLeft).growY().row()
+        leftTable.add(backButton).align(Align.topLeft).pad(5f, 50f, 50f, 0f).prefSize(backButton.width, backButton.height)
+
+        uiGroup.add(leftTable).align(Align.topLeft).growY()
+        uiGroup.add(senderViewer).grow()
+        //uiGroup.debug = true
+
+
 
 
         refreshDialogs()
-
-        backButton.setPosition(Gdx.graphics.width.toFloat() - 50f, 50f, Align.bottomRight)
-        stage.addActor(backButton)
 
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Core.instance.toGlobalMap()
             }
         })
+
 
     }
 
@@ -71,32 +103,82 @@ class DialogsScreen : ScreenAdapter() {
         stage.draw()
     }
 
-    override fun dispose() {
-        background.dispose()
-    }
-
     /**
      * Refresh list of dialogs
      */
 
     private fun refreshDialogs(){
-        dialogsGroup.clear()
 
-        for (dialog in Player.dialogs)
-        {
-            val button = UI.StaticTextButton(dialog.id)
-            Gdx.app.log("Dialog", dialog.id)
-            button.addListener(object : ClickListener(){
-                override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                    dialogWidget.dialog = dialog
-                    dialogWidget.refreshInfo()
+
+        dialogsBySender.clear()
+        sendersGroup.clear()
+
+        if (!Player.senders.isEmpty()) {
+
+            emptyDialogsLabel.remove()
+
+            for (d in Player.dialogs) {
+                if (!dialogsBySender.contains(d.sender)) {
+                    dialogsBySender[d.sender] = mutableListOf(d)
+                } else {
+                    dialogsBySender[d.sender]!!.add(d)
+                }
+            }
+
+            for (s in dialogsBySender.keys) {
+                val sender = Player.senders[s]
+                val image = ImageActor(sender!!)
+                image.setSize(50f, 50f)
+
+                val nameLabel = UI.StaticLabel(s)
+
+                val group = HorizontalGroup()
+                group.addActor(image)
+                group.addActor(nameLabel)
+
+                group.rowAlign(Align.center)
+
+                group.pack()
+
+                group.addListener(object : InputListener() {
+                    override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                        showSender(sender)
+                    }
+                })
+
+                sendersGroup.add(group).align(Align.topLeft).row()
+            }
+
+            sendersGroup.pack()
+
+            //uiGroup.pack()
+
+            showSender(dialogsBySender.keys.elementAt(0))
+        } else {
+            emptyDialogsLabel.isVisible = true
+            emptyDialogsLabel.setPosition(Gdx.graphics.width / 2f, Gdx.graphics.height / 2f, Align.center)
+            stage.addActor(emptyDialogsLabel)
+        }
+    }
+
+    fun showSender(sender: String) {
+        dialogsGroup.clear()
+        val dialogs = dialogsBySender[sender]
+        for (d in dialogs!!) {
+            val label = UI.StaticTextButton(d.topic)
+            label.addListener(object : ClickListener(){
+
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    dialogDisplay.setDialog(d)
+                    Gdx.app.log("Dialog", "Up")
                 }
             })
-            dialogsGroup.addActor(button)
+            dialogsGroup.add(label).align(Align.topLeft).pad(0f,0f,0f,10f)
         }
 
-        dialogsGroup.pack()
-        uiGroup.pack()
+        dialogDisplay.setDialog(dialogs[0])
+
+        //dialogsGroup.pack()
     }
 
     override fun show() {

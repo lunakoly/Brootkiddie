@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
+import ru.cryhards.brootkiddie.Environment.consoleCounter
 import ru.cryhards.brootkiddie.Player
 import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
@@ -59,6 +60,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         // inventory
         openInventoryButton.setPosition(50f, 50f, Align.bottomLeft)
+        openInventoryButton.isVisible = false
         uiStage.addActor(openInventoryButton)
 
         openInventoryButton.addListener(object : ClickListener() {
@@ -69,6 +71,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         // browser
         openBrowserButton.setPosition(Gdx.graphics.width - 50f, 50f, Align.bottomRight)
+        openBrowserButton.isVisible = false
         uiStage.addActor(openBrowserButton)
 
         openBrowserButton.addListener(object : ClickListener() {
@@ -79,14 +82,26 @@ class GlobalMapScreen : ScreenAdapter() {
 
         // crypto
         crypto.setPosition(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f, Align.topRight)
+        crypto.isVisible = false
         uiStage.addActor(crypto)
 
         // infected
         infected.setPosition(Gdx.graphics.width - 50f, Gdx.graphics.height - 150f, Align.topRight)
+        infected.isVisible = false
         uiStage.addActor(infected)
 
         // console
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
+        console.addListener(object : ClickListener(){
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (consoleCounter < 4) consoleCounter++
+                if (consoleCounter == 3){
+                    showUI(0)
+                    Environment.UI.console?.log("Now it should be fine.")
+                }
+            }
+        })
+
         Environment.UI.console = console
         uiStage.addActor(console)
     }
@@ -110,10 +125,27 @@ class GlobalMapScreen : ScreenAdapter() {
     fun updateUI() {
         infected.setText(humanReadable(Environment.infectedNodes))
         crypto.setText("$" + humanReadable(Player.money.toFloat()))
+        if (Environment.consoleCounter == 5){
+            showUI(1)
+        }
     }
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, mapStage)
         super.show()
+    }
+
+    fun showUI(a : Int) {
+        when (a) {
+            0 -> {
+                openBrowserButton.isVisible = true
+                crypto.isVisible = true
+                infected.isVisible = true
+            }
+
+            1 -> {
+                openInventoryButton.isVisible = true
+            }
+        }
     }
 }

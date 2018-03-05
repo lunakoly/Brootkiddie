@@ -2,18 +2,11 @@ package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
-import ru.cryhards.brootkiddie.ui.Draggable
-import ru.cryhards.brootkiddie.ui.ImageActor
 
 /**
  * Represents an item that the Player may own
  */
-open class Item(val title: String, var info: String, var iconTexture: Texture, val type: Type) : ImageActor(iconTexture), Draggable {
-    /*
-        Boolean for DragAndDrop
-     */
-    override var isDragged = false
-
+open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : Cloneable {
     /**
      * Represents an item type
      */
@@ -30,15 +23,10 @@ open class Item(val title: String, var info: String, var iconTexture: Texture, v
      */
     val effects = ArrayList<Effect>()
 
-    open fun combine(effect: Effect): Item {
-        effects.add(effect)
-        return this
-    }
-
     /**
      * Returns effect with matching title
      */
-    fun findEffect(name: String) = effects.find { it.title == name }
+    open fun findEffect(name: String) = effects.find { it.title == name }
 
 
     /**
