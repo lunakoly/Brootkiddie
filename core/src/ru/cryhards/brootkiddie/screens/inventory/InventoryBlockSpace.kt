@@ -18,6 +18,8 @@ import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Combinable
 import ru.cryhards.brootkiddie.items.Item
+import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.ItemActor
 import kotlin.math.max
 import kotlin.math.truncate
@@ -26,7 +28,7 @@ import kotlin.math.truncate
  * Inventory field
  */
 @Suppress("PrivatePropertyName")
-class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
+class InventoryBlockSpace(val explorer: ItemExplorer, val bin : Actor) : Table() {
     /**
      * The preferred size of a single square block
      */
@@ -38,8 +40,9 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
     var shader: ShaderProgram? = null
 
     /**
-     * For DragAndDrop
+     * For DnD
      */
+
     private val dragAndDrop = DragAndDrop()
 
     /**
@@ -108,6 +111,27 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
         buildBlockSpace(rowCount)
         dragAndDrop.clear()
 
+        dragAndDrop.addTarget(object : DragAndDrop.Target(bin){
+            override fun drop(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int) {
+                val item = (source!!.actor as ItemActor).item
+                Environment.player.inventory.items.remove(item)
+                fill(Environment.player.inventory.items)
+            }
+
+            override fun drag(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int): Boolean {
+                if (source!!.actor is ItemActor) {
+                    bin.color = COLOR_ACCEPT
+                    return true
+                }
+                return false
+            }
+
+            override fun reset(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?) {
+
+                bin.color = COLOR_NORMAL
+            }
+
+        })
 
         for (k in 0 until items.size) {
             val item = ItemActor(items[k])
@@ -179,12 +203,18 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
 
                     if (item.item is Combinable) {
 
-                        val temp = item.item.clone()
+                        //val temp = item.item.clone()
 
-                        val res = item.item.combine(sourceItem)
-                        Environment.player.inventory.items.remove(item.item)
+                        val res = (item.item).combine(sourceItem )
+                        //Environment.player.inventory.items.remove(item.item)
                         Environment.player.inventory.items.add(res)
-                        Environment.player.inventory.items.add(temp as Item)
+                        if (item.item is Malware) {
+                            Environment.player.inventory.items.remove(item.item)
+                        }
+                        else if (sourceItem is Malware) {
+                            Environment.player.inventory.items.remove(sourceItem)
+                        }
+                        //Environment.player.inventory.items.add(temp as Item)
                         this@InventoryBlockSpace.fill(Environment.player.inventory.items)
                         explorer.explore(res)
                     }

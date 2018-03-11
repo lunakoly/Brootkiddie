@@ -15,7 +15,7 @@ class DisguiseEffect(var suspiciousness: Float = 0.5f) : Item.Effect(
 
     override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
         // TODO: make dependencies[0] (script level) affect the affection)))
-        (target as Malware.Stats).suspiciousness -= Converter.pnsqrt(Environment.player.level * suspiciousness)
+        (target as Malware.Stats).suspiciousness -= Converter.pnsqrt(level * suspiciousness)
         return super.affect(target)
     }
 

@@ -3,7 +3,7 @@ package ru.cryhards.brootkiddie.events.dialogs
 import com.badlogic.gdx.Gdx
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.events.Events
-
+@Suppress("UNCHECKED_CAST")
 /**
  * Created by remmargorp on 11.02.18.
  */

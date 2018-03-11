@@ -100,13 +100,15 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
      */
     fun combine(script: Script) = Malware(
             this.title.substring(0, 3) + " + " + script.title.substring(0, 3),
-            "Combo of " + this.title + " and " + script.title, Texture("img/items/malware.png"), this, script)
+            "Combo of " + this.title + " and " + script.title, Texture("img/items/malware.png"), Script(this), Script(script))
 
     /**
      * Adds this to malware and returns it
      */
     fun combine(malware: Malware): Malware {
-        malware.scripts.add(this)
+        malware.title += title.subSequence(0, 3)
+        malware.info += " and " + title
+        malware.scripts.add(Script(this))
         return malware
     }
 
@@ -190,5 +192,15 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
 
     override fun clone(): Any {
         return super<Combinable>.clone()
+    }
+
+    constructor(script: Script) : this(script.title, script.info, script.iconTexture, script.size) {
+        effects.clear()
+        @Suppress("UNCHECKED_CAST")
+        effects += script.effects.clone() as Collection<Effect>
+        applyDependency = script.applyDependency
+        sideAffection = script.sideAffection
+        dependencyDescription = script.dependencyDescription
+        sideEffectsDescription = script.sideEffectsDescription
     }
 }

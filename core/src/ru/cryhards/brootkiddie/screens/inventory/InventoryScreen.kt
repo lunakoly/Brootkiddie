@@ -27,9 +27,10 @@ class InventoryScreen : ScreenAdapter() {
     private val crypto = UI.GlitchLabel("  ${Environment.player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
+    private val bin = UI.GlitchImageButton("img/ui/bin.png")
 
     private val explorer = ItemExplorer()
-    private val blockSpace = InventoryBlockSpace(explorer)
+    private val blockSpace = InventoryBlockSpace(explorer, bin)
 
     init {
         // background
@@ -49,7 +50,7 @@ class InventoryScreen : ScreenAdapter() {
         })
 
         // browser
-        openBrowserButton.setPosition(50f, stage.height - 50f, Align.topLeft)
+        openBrowserButton.setPosition(50f, stage.height - 30f, Align.topLeft)
         stage.addActor(openBrowserButton)
 
         openBrowserButton.addListener(object : ClickListener() {
@@ -59,7 +60,9 @@ class InventoryScreen : ScreenAdapter() {
         })
 
         // crypto
-        crypto.setPosition(50f, stage.height - openBrowserButton.height - 100f, Align.topLeft)
+        bin.setPosition(50f, openBrowserButton.y - 30f, Align.topLeft)
+        stage.addActor(bin)
+        crypto.setPosition(50f,   bin.y - 30f, Align.topLeft)
         crypto.setSize(openBrowserButton.width, crypto.height)
         crypto.style.background = null
         stage.addActor(crypto)
@@ -79,7 +82,6 @@ class InventoryScreen : ScreenAdapter() {
 
         blockSpace.shader = Assets.Shaders.WAVE
         stage.addActor(pane)
-
 
         // test inventory
         Environment.player.inventory.items.add(UI.emptyItem())

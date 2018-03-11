@@ -15,6 +15,7 @@ import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
+import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 
 
 @Suppress("FunctionName")
@@ -258,6 +259,7 @@ object UI {
         }
 
         block.dependencyDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
+        block.effects.add(SpreadingEffect())
         return block
     }
 

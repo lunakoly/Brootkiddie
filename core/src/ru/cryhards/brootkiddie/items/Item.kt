@@ -40,13 +40,19 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
     /**
      * Represents an effect that can be applied to an item
      */
-    open class Effect(val title: String, val info: String) : Serializable {
+    open class Effect(val title: String, val info: String) : Serializable, Cloneable {
         /**
-         * Affects he given target according to the given dependencies
+         * Affects the given target according to the given dependencies
          */
         open fun affect(target: Any?, vararg dependencies: Any?): Effect {
             return this
         }
+
+        /*
+            Effect level
+         */
+
+        var level = 1
     }
 
     /**
