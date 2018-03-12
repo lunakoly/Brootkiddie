@@ -8,14 +8,16 @@ import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 
 class AndroidLauncher : AndroidApplication() {
+
+    var core = Core()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         hideSystemUi()
         super.onCreate(savedInstanceState)
         val config = AndroidApplicationConfiguration()
         config.hideStatusBar = true
         config.useImmersiveMode = true
-        initialize(Core(), config)
-
+        initialize(core, config)
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -31,4 +33,8 @@ class AndroidLauncher : AndroidApplication() {
         Core.instance.toBack()
     }
 
+    override fun onStop() {
+        super.onStop()
+        core.saveGame(filesDir)
+    }
 }

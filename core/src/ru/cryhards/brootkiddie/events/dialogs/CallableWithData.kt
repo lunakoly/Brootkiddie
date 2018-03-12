@@ -1,5 +1,7 @@
 package ru.cryhards.brootkiddie.events.dialogs
 
+import java.io.Serializable
+
 /**
  * Created by remmargorp on 11.02.18.
  */
@@ -8,7 +10,7 @@ package ru.cryhards.brootkiddie.events.dialogs
  * Callable with predefined data field
  */
 
-class CallableWithData(private val callable: Callable, private val data: Any) {
+class CallableWithData(private val callable: Callable, private val data: Any) : Serializable {
     fun act(): Any? {
         return callable.act(data)
     }

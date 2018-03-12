@@ -1,6 +1,5 @@
 package ru.cryhards.brootkiddie.screens.market
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import ru.cryhards.brootkiddie.Environment
@@ -12,7 +11,7 @@ import ru.cryhards.brootkiddie.ui.UI
  * Created by remmargorp on 02.03.18.
  */
 
-class MarketItem(title: String, info: String, iconTexture: Texture, val cost: Float, val payload: Item) : Item(title, info, iconTexture, Item.Type.MARKET) {
+class MarketItem(title: String, info: String, iconTexturePath: String, val cost: Float, val payload: Item) : Item(title, info, iconTexturePath, Item.Type.MARKET) {
     var bought = false
 
     init {

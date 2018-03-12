@@ -2,6 +2,8 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.Scripts
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 import ru.cryhards.brootkiddie.ui.ShaderableConsole
 import java.io.Serializable
@@ -52,6 +54,10 @@ object Environment : Serializable {
         player = Player()
 
         player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
+        Environment.player.inventory.items.add(Scripts.emptyItem())
+        Environment.player.inventory.items.add(Scripts.loremItem())
+        Environment.player.inventory.items.add(Scripts.spreaderV3000())
+        Environment.player.inventory.items.add(Scripts.spreadingMultiplier(1, Script.SIDES.LEFT))
 
         // run day updater
         Core.instance.addTask(Core.Task(-1, DAY_TASK_PERIOD, {

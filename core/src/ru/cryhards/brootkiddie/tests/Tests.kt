@@ -1,6 +1,5 @@
 package ru.cryhards.brootkiddie.tests
 
-import com.badlogic.gdx.graphics.Texture
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
@@ -12,7 +11,7 @@ import ru.cryhards.brootkiddie.screens.SplashScreen
  */
 class Tests {
     fun test() {
-        val apple = Item("Apple", "Fruit", Texture("img/items/worm.png"), Item.Type.SCRIPT)
+        val apple = Item("Apple", "Fruit", "img/items/worm.png", Item.Type.SCRIPT)
         println(apple.title)
         println(apple.info)
         println(apple.type.info)

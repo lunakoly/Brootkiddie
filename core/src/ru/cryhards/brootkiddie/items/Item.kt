@@ -1,13 +1,12 @@
 package ru.cryhards.brootkiddie.items
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
 import java.io.Serializable
 
 /**
  * Represents an item that the Player may own
  */
-open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : Cloneable, Serializable {
+open class Item(var title: String, var info: String, var iconTexturePath: String, val type: Type) : Cloneable, Serializable {
     /**
      * Represents an item type
      */
@@ -47,6 +46,8 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
         open fun affect(target: Any?, vararg dependencies: Any?): Effect {
             return this
         }
+
+        open fun generateStats(level: Int) {}
     }
 
     /**

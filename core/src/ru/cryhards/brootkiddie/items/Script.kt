@@ -1,20 +1,18 @@
 package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Actor
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * Represents a script that can be combined into malware
  */
-class Script(title: String, info: String, iconTexture: Texture, var size: Int) : Item(title, info, iconTexture, Item.Type.SCRIPT), Combinable {
+class Script(title: String, info: String, iconTexturePath: String, var size: Int, var level: Int) : Item(title, info, iconTexturePath, Item.Type.SCRIPT), Combinable {
 
-    /**
-     * The script level affects effects stats
-     * Initial value = 1
-     */
-    var level = 1
+    init {
+
+    }
+
 
     /**
      * Used by BlockSpace's to determine saved position
@@ -100,7 +98,7 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
      */
     fun combine(script: Script) = Malware(
             this.title.substring(0, 3) + " + " + script.title.substring(0, 3),
-            "Combo of " + this.title + " and " + script.title, Texture("img/items/malware.png"), this, script)
+            "Combo of " + this.title + " and " + script.title, "img/items/malware.png", this, script)
 
     /**
      * Adds this to malware and returns it
@@ -190,5 +188,11 @@ class Script(title: String, info: String, iconTexture: Texture, var size: Int) :
 
     override fun clone(): Any {
         return super<Combinable>.clone()
+    }
+
+    fun generateStats() {
+        for (e in effects) {
+            e.generateStats(level)
+        }
     }
 }

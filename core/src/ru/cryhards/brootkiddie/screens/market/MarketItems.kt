@@ -5,7 +5,7 @@ package ru.cryhards.brootkiddie.screens.market
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.ui.UI
+import ru.cryhards.brootkiddie.items.Scripts
 import java.lang.Math.pow
 import java.lang.Math.sqrt
 import kotlin.math.max
@@ -35,10 +35,10 @@ object MarketItems {
             }
         }
 
-        val mining = UI.SpreaderV3000()
-        val multiplier = UI.spreadingMultiplier(Script.SIDES.LEFT)
-        result.add(MarketItem(mining.title, mining.info, mining.iconTexture, pow(50.0, sqrt(miningLevel.toDouble())).toFloat(), mining))
-        result.add(MarketItem(multiplier.title, multiplier.info, multiplier.iconTexture, pow(100.0, sqrt(spreadingLevel.toDouble())).toFloat(), multiplier))
+        val mining = Scripts.spreaderV3000()
+        val multiplier = Scripts.spreadingMultiplier(side = Script.SIDES.LEFT)
+        result.add(MarketItem(mining.title, mining.info, mining.iconTexturePath, pow(50.0, sqrt(miningLevel.toDouble())).toFloat(), mining))
+        result.add(MarketItem(multiplier.title, multiplier.info, multiplier.iconTexturePath, pow(100.0, sqrt(spreadingLevel.toDouble())).toFloat(), multiplier))
 
 
         return result

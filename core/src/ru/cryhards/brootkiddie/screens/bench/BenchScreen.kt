@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.items.Malware
+import ru.cryhards.brootkiddie.items.Scripts
 import ru.cryhards.brootkiddie.screens.inventory.ItemExplorer
 import ru.cryhards.brootkiddie.ui.UI
 
@@ -62,7 +63,7 @@ class BenchScreen : ScreenAdapter() {
 
 
     fun inspect(malware: Malware) {
-        explorer.explore(malware.scripts.firstOrNull() ?: UI.emptyItem())
+        explorer.explore(malware.scripts.firstOrNull() ?: Scripts.emptyItem())
         blockSpace.inspect(malware)
     }
 

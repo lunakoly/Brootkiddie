@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.ui.Cropper
+import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -53,6 +53,13 @@ class MainMenuScreen : ScreenAdapter() {
         // actions
         playButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Core.instance.newGame()
+            }
+        })
+
+        loadButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Core.instance.loadGame()
                 Core.instance.openMap()
             }
         })

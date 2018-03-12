@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.Scripts
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -68,7 +68,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Environment.player.inventory.items.firstOrNull() ?: UI.emptyItem())
+        explorer.explore(Environment.player.inventory.items.firstOrNull() ?: Scripts.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
@@ -82,10 +82,6 @@ class InventoryScreen : ScreenAdapter() {
 
 
         // test inventory
-        Environment.player.inventory.items.add(UI.emptyItem())
-        Environment.player.inventory.items.add(UI.loremItem())
-        Environment.player.inventory.items.add(UI.SpreaderV3000())
-        Environment.player.inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
     }
 
 
