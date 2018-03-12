@@ -1,10 +1,7 @@
 package ru.cryhards.brootkiddie.items
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * Scripts factory
@@ -32,20 +29,13 @@ object Scripts {
      * Returns Item debug example 2
      */
     fun loremItem(level: Int = 1): Script {
-        val logger = UI.GlitchTextButton("LOL")
-
-        logger.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Gdx.app.log("test", "lol")
-            }
-        })
 
         val block = Script(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
                 "img/ui/back.png", 1, level)
 
-        block.actions.add(logger)
+
         return block
     }
 
