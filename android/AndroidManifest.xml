@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.cryhards.brootkiddie"
-    android:versionCode="2">
+    package="ru.cryhards.brootkiddie">
 
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="26" />
 
