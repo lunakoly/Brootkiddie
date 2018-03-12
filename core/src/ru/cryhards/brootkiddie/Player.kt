@@ -9,7 +9,7 @@ import ru.cryhards.brootkiddie.items.Item
  */
 class Player {
     var name = "user0"
-    var level = 0
+    var level = 1
     var money = 0.0f
     val dialogs = mutableListOf<Dialog>()
     val senders = mapOf(Pair("Game Master", "img/items/worm.png"))
