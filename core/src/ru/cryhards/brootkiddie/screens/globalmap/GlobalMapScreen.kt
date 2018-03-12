@@ -103,7 +103,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         Environment.UI.console = console
         uiStage.addActor(console)
-        showUI(1)
+        //showUI(1)
     }
 
 

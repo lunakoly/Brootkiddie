@@ -1,6 +1,8 @@
 package ru.cryhards.brootkiddie.screens.market
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import ru.cryhards.brootkiddie.Environment
@@ -36,5 +38,23 @@ class MarketItem(title: String, info: String, iconTexture: Texture, val cost: Fl
 
     override fun toString(): String {
         return "Cost: $${Converter.humanReadable(cost)}\n" + payload.toString()
+    }
+
+    override fun represent(): Array<Actor> {
+        val out = ArrayList<Actor>()
+
+        val eff = UI.StaticLabel("Effects:")
+        eff.setWrap(true)
+        eff.style.background = null
+        eff.color = Color.CORAL
+        if (effects.size != 0) {
+            effects.forEach { eff.setText(eff.text.toString() + "\n * ${it.title}\n ${it.info}") }
+        } else {
+            eff.setText(eff.text.toString() + "\n ** NONE **")
+        }
+        out += eff
+
+        actions.forEach { out += it }
+        return out.toTypedArray()
     }
 }
