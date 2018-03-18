@@ -182,10 +182,10 @@ class InventoryBlockSpace(val explorer: ItemExplorer) : Table() {
                         val temp = item.item.clone()
 
                         val res = item.item.combine(sourceItem)
-                        Environment.player.inventory.items.remove(item.item)
-                        Environment.player.inventory.items.add(res)
-                        Environment.player.inventory.items.add(temp as Item)
-                        this@InventoryBlockSpace.fill(Environment.player.inventory.items)
+                        Environment.instance.player.inventory.items.remove(item.item)
+                        Environment.instance.player.inventory.items.add(res)
+                        Environment.instance.player.inventory.items.add(temp as Item)
+                        this@InventoryBlockSpace.fill(Environment.instance.player.inventory.items)
                         explorer.explore(res)
                     }
 

@@ -12,11 +12,14 @@ import java.io.Serializable
  * Holds gameplay stage
  */
 
-object Environment : Serializable {
+class Environment : Serializable {
     /**
      * Time that one in-game day occures (ms)
      */
-    const val DAY_TASK_PERIOD = 2000L
+    companion object {
+        const val DAY_TASK_PERIOD = 2000L
+        lateinit var instance: Environment
+    }
 
     /**
      * Current day
@@ -39,7 +42,9 @@ object Environment : Serializable {
     /**
      * Loads game state. Call on startup
      */
-    fun initialize() {
+    init {
+
+        instance = this
 
         day = 0
 
@@ -54,16 +59,18 @@ object Environment : Serializable {
         player = Player()
 
         player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
-        Environment.player.inventory.items.add(Scripts.emptyItem())
-        Environment.player.inventory.items.add(Scripts.loremItem())
-        Environment.player.inventory.items.add(Scripts.spreaderV3000())
-        Environment.player.inventory.items.add(Scripts.spreadingMultiplier(1, Script.SIDES.LEFT))
+        Environment.instance.player.inventory.items.add(Scripts.emptyItem())
+        Environment.instance.player.inventory.items.add(Scripts.loremItem())
+        Environment.instance.player.inventory.items.add(Scripts.spreaderV3000())
+        Environment.instance.player.inventory.items.add(Scripts.spreadingMultiplier(1, Script.SIDES.LEFT))
 
         // run day updater
         Core.instance.addTask(Core.Task(-1, DAY_TASK_PERIOD, {
             UI.console?.log("Day ${++day}")
             false
         }))
+
+
     }
 
 

@@ -92,7 +92,7 @@ class Core : Game(), Serializable {
     private var mustDispose = false
 
     fun newGame() {
-        Environment.initialize()
+        val env = Environment()
         openMap()
     }
 
@@ -253,23 +253,35 @@ class Core : Game(), Serializable {
         }
     }
 
-    fun saveGame(path: File) {
-        val f = File(path.absolutePath + "/save.out")
+    fun saveGame() {
+        Gdx.app.log("Saving", savePath)
+        val f = File(savePath)
         if (!f.exists()) f.createNewFile()
+
         val oos = ObjectOutputStream(FileOutputStream(f))
-        oos.writeObject(Environment.player)
+
+        val save = GameSave(Environment.instance, Core.instance.tasks)
+        oos.writeObject(save)
         oos.flush()
         oos.close()
     }
 
     fun loadGame() {
         try {
-            val ois = ObjectInputStream(FileInputStream("save.out"))
-            val player = ois.readObject() as Player
-            Environment.player = player
+            val ois = ObjectInputStream(FileInputStream(savePath))
+            val save = ois.readObject() as GameSave
+            Environment.instance = save.env
+            Core.instance.tasks.clear()
+            Core.instance.tasks += save.tasks
             ois.close()
         } catch (e: IOException) {
             Gdx.app.log("Loading", "No save was found")
         }
     }
+
+    var savePath : String = ""
+
+    data class GameSave(val env: Environment, val tasks : ArrayList<Task>) : Serializable {
+    }
+
 }

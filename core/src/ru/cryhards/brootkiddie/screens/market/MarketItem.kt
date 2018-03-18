@@ -20,11 +20,11 @@ class MarketItem(title: String, info: String, iconTexturePath: String, val cost:
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (bought) return
 
-                if (Environment.player.money < cost) {
+                if (Environment.instance.player.money < cost) {
                     buyButton.setText("NOT ENOUGH $")
                 } else {
-                    Environment.player.money -= cost
-                    Environment.player.inventory.items.add(payload)
+                    Environment.instance.player.money -= cost
+                    Environment.instance.player.inventory.items.add(payload)
                     buyButton.setText("BOUGHT")
                     bought = true
                 }

@@ -34,8 +34,8 @@ class Tests {
     }
 
     fun nuke() {
-        println(Environment.player.money)
-        println(Environment.day)
+        println(Environment.instance.player.money)
+        println(Environment.instance.day)
         Core.instance.switchBackgroundMusic(Assets.Sounds.AUTUMNS_DREAM_LULLABY)
         Core.instance.switchScreen(SplashScreen())
     }

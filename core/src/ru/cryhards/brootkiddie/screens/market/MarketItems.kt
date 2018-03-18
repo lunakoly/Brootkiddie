@@ -15,7 +15,7 @@ object MarketItems {
     fun generateItems(): ArrayList<Item> {
         val result = ArrayList<Item>()
 
-        val got = Environment.player.inventory.items.map {
+        val got = Environment.instance.player.inventory.items.map {
             Pair<String, Int>(it.title, if (it is Script) {
                 it.level
             } else {

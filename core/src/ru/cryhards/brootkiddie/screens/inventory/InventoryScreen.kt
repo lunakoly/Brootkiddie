@@ -24,7 +24,7 @@ class InventoryScreen : ScreenAdapter() {
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  ${Environment.player.money}  ")
+    private val crypto = UI.GlitchLabel("  ${Environment.instance.player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
 
@@ -68,7 +68,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Environment.player.inventory.items.firstOrNull() ?: Scripts.emptyItem())
+        explorer.explore(Environment.instance.player.inventory.items.firstOrNull() ?: Scripts.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
@@ -96,10 +96,10 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Environment.player.inventory.items)
+        blockSpace.fill(Environment.instance.player.inventory.items)
         explorer.reexplore()
         Gdx.input.inputProcessor = stage
-        crypto.setText("${Environment.player.money}")
+        crypto.setText("${Environment.instance.player.money}")
         super.show()
     }
 

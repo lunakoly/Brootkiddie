@@ -17,6 +17,7 @@ class AndroidLauncher : AndroidApplication() {
         val config = AndroidApplicationConfiguration()
         config.hideStatusBar = true
         config.useImmersiveMode = true
+        core.savePath = filesDir.absolutePath + "save.out"
         initialize(core, config)
     }
 
@@ -35,6 +36,6 @@ class AndroidLauncher : AndroidApplication() {
 
     override fun onStop() {
         super.onStop()
-        core.saveGame(filesDir)
+        core.saveGame()
     }
 }

@@ -78,7 +78,7 @@ class MarketScreen : ScreenAdapter() {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        crypto.setText("$" + Converter.humanReadable(Environment.player.money))
+        crypto.setText("$" + Converter.humanReadable(Environment.instance.player.money))
 
         stage.act(delta)
         stage.draw()
@@ -88,7 +88,7 @@ class MarketScreen : ScreenAdapter() {
 
     override fun show() {
         blockSpace.fill(MarketItems.generateItems())
-        crypto.setText("$" + Converter.humanReadable(Environment.player.money))
+        crypto.setText("$" + Converter.humanReadable(Environment.instance.player.money))
         Gdx.input.inputProcessor = stage
         super.show()
     }
