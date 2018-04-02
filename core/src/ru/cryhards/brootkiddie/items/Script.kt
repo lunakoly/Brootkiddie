@@ -171,7 +171,7 @@ class Script(title: String, info: String, iconTexturePath: String, var size: Int
             out += dep
         }
 
-        actions.forEach { out += it }
+        actions.forEach { out += it() }
         return out.toTypedArray()
     }
 

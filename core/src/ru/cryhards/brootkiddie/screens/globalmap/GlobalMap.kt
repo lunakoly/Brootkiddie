@@ -9,6 +9,7 @@ import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.effects.Converter.sigmoid
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
+import ru.cryhards.brootkiddie.ui.UI
 import java.lang.Math.*
 import java.util.*
 
@@ -25,7 +26,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
     init {
         Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
-            nextDay()
+            UI.globalMap!!.nextDay()
             false
         }))
 
@@ -38,7 +39,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
             Environment.instance.currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)
             if (Environment.instance.currentSuspiciousness > 0.55f) {
                 Environment.instance.isMalwareDetected = true
-                Environment.UI.console?.log("YOUR MALWARE IS DETECTED")
+                UI.console?.log("YOUR MALWARE IS DETECTED")
             }
 
             Environment.instance.infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)

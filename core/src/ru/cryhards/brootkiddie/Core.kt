@@ -281,7 +281,6 @@ class Core : Game(), Serializable {
 
     var savePath : String = ""
 
-    data class GameSave(val env: Environment, val tasks : ArrayList<Task>) : Serializable {
-    }
+    data class GameSave(val env: Environment, val tasks: ArrayList<Task>) : Serializable {}
 
 }

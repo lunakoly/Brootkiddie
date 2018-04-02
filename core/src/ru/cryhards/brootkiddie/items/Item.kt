@@ -33,7 +33,7 @@ open class Item(var title: String, var info: String, var iconTexturePath: String
      * List of UI components to be added
      * to Explorer tab
      */
-    val actions = ArrayList<Actor>()
+    val actions = ArrayList<() -> Actor>()
 
 
     /**

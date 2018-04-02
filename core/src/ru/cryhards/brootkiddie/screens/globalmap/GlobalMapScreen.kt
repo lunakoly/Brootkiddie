@@ -49,7 +49,7 @@ class GlobalMapScreen : ScreenAdapter() {
         background.setPosition(bounds[0], bounds[1])
         background.setSize(bounds[2], bounds[3])
         mapStage.batch.shader = Assets.Shaders.WAVE
-        Environment.UI.globalMap = background
+        UI.globalMap = background
         mapStage.addActor(background)
 
         // camera controls
@@ -95,12 +95,12 @@ class GlobalMapScreen : ScreenAdapter() {
                 if (Environment.instance.consoleCounter < 4) Environment.instance.consoleCounter++
                 if (Environment.instance.consoleCounter == 3){
                     showUI(0)
-                    Environment.UI.console?.log("Now it should be fine.")
+                    UI.console?.log("Now it should be fine.")
                 }
             }
         })
 
-        Environment.UI.console = console
+        UI.console = console
         uiStage.addActor(console)
         showUI(1)
     }
@@ -147,4 +147,5 @@ class GlobalMapScreen : ScreenAdapter() {
             }
         }
     }
+
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 
 
 @Suppress("FunctionName")
@@ -225,4 +226,11 @@ object UI {
 
         return but
     }
+
+    /**
+     * Gives quick access to main ui
+     */
+
+    var console: ShaderableConsole? = null
+    var globalMap: GlobalMap? = null
 }
