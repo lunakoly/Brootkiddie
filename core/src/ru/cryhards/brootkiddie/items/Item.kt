@@ -7,7 +7,7 @@ import java.io.Serializable
 /**
  * Represents an item that the Player may own
  */
-open class Item(var title: String, var info: String, var iconTexture: Texture, val type: Type) : Cloneable, Serializable {
+open class Item(var title: String, var info: String, var iconTexturePath: String, val type: Type) : Cloneable, Serializable {
     /**
      * Represents an item type
      */
@@ -34,7 +34,7 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
      * List of UI components to be added
      * to Explorer tab
      */
-    val actions = ArrayList<Actor>()
+    val actions = ArrayList<() -> Actor>()
 
 
     /**
@@ -47,6 +47,8 @@ open class Item(var title: String, var info: String, var iconTexture: Texture, v
         open fun affect(target: Any?, vararg dependencies: Any?): Effect {
             return this
         }
+
+        open fun generateStats(level: Int) {}
 
         /*
             Effect level

@@ -3,12 +3,13 @@ package ru.cryhards.brootkiddie.events.dialogs
 import com.badlogic.gdx.Gdx
 import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.Gson
+import java.io.Serializable
 
 /**
  * Represents Dialog's logic
  */
 
-class Dialog(config: Map<String, Any>) {
+class Dialog(config: Map<String, Any>) : Serializable {
 
     /**
      * Id of the dialog
@@ -134,7 +135,7 @@ class Dialog(config: Map<String, Any>) {
     /**
      * Represents single State of the Finite Automaton (FA) used in Dialog
      */
-    class State(config: Map<String, Any>) {
+    class State(config: Map<String, Any>) : Serializable {
         /**
          * Id of the State
          */
@@ -184,7 +185,7 @@ class Dialog(config: Map<String, Any>) {
     /**
      * Represents single Transition of FA
      */
-    class Transition(config: Map<String, Any>) {
+    class Transition(config: Map<String, Any>) : Serializable {
         /**
          * from & to - State ids
          */

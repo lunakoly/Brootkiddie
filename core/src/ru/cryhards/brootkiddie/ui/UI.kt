@@ -1,6 +1,5 @@
 package ru.cryhards.brootkiddie.ui
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -16,6 +15,7 @@ import ru.cryhards.brootkiddie.items.Malware
 import ru.cryhards.brootkiddie.items.Script
 import ru.cryhards.brootkiddie.items.effects.MiningEffect
 import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
+import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 
 
 @Suppress("FunctionName")
@@ -203,107 +203,6 @@ object UI {
 
 
     /**
-     * Returns Item debug example
-     */
-    fun emptyItem() = Script(
-            "<Name>",
-            "<Some info about item>",
-            Texture("img/ui/empty.png"), 1)
-
-
-    /**
-     * Returns Item debug example 2
-     */
-    fun loremItem(): Script {
-        val logger = UI.GlitchTextButton("LOL")
-
-        logger.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Gdx.app.log("test", "lol")
-            }
-        })
-
-        val block = Script(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fermentum at metus at dapibus. Morbi consequat in eros nec rutrum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi porttitor, metus eget luctus pretium, ligula est sollicitudin risus, id accumsan justo enim eu ante. Aliquam sit amet magna lacus. In commodo rhoncus quam quis faucibus. Sed et odio sit amet tellus consequat egestas id vitae diam. Cras in risus velit. Vestibulum eget tincidunt eros. Integer congue massa vitae nibh interdum, a suscipit eros iaculis. Nullam facilisis consectetur lectus, id venenatis turpis mollis ac. Suspendisse eleifend nunc rutrum sem scelerisque accumsan. Mauris nec vestibulum mi.",
-                Texture("img/ui/back.png"), 1)
-
-        block.actions.add(logger)
-        return block
-    }
-
-
-    /**
-     * Basic spreading script
-     */
-    fun SpreaderV3000(): Script {
-        val block = Script(
-                "Spreader V3000",
-                "adds 50 to spreading",
-                Texture("img/items/worm.png"), 1)
-
-        block.applyDependency = { script, sides, i ->
-            Gdx.app.log("UI", "DABDM CALLED")
-
-            when (sides) {
-                Script.SIDES.BOTTOM -> {
-                    if (script.title == "<Name>") {
-                        Gdx.app.log("UI", "DABDM")
-                        script.temporaryEffects.add(MiningEffect())
-                    }
-                }
-                else -> {
-                    // nothing
-                }
-            }
-        }
-
-        block.dependencyDescription = "Adds extra Mining Effect if located to the top of <Name> test item"
-        block.effects.add(SpreadingEffect())
-        return block
-    }
-
-
-    /**
-     * Spreading Multiplier
-     */
-    fun spreadingMultiplier(side: Script.SIDES): Script {
-        val block = Script(
-                "Spreading Mult",
-                "Multiplies spreading effect of the item to the ${side.text} of script",
-                Texture("img/ui/back.png"), 1)
-
-        block.sideAffection = { script, sides, i ->
-            Gdx.app.log("UI", "YAHOOO CALLED")
-
-            when (sides) {
-                side -> {
-                    val affection = object : Item.Effect(
-                            "Affected Spreading (Spreading Mult)",
-                            "x2 | Add-on given by Spreading Mult") {
-                        override fun affect(target: Any?, vararg dependencies: Any?): Item.Effect {
-                            (target as Malware.Stats).spreadingSpeed *= 2
-                            return super.affect(target, *dependencies)
-                        }
-                    }
-
-                    Gdx.app.log("UI", "YAHOOO")
-
-                    script.temporaryEffects.add(affection)
-                }
-                else -> {
-                    // nothing
-                }
-            }
-        }
-
-        block.sideEffectsDescription = "Affects item located to the $side of it"
-        block.dependencyDescription = "Np dep provided"
-        return block
-    }
-
-
-    /**
      * Returns button with common style
      */
 
@@ -332,4 +231,11 @@ object UI {
 
         return but
     }
+
+    /**
+     * Gives quick access to main ui
+     */
+
+    var console: ShaderableConsole? = null
+    var globalMap: GlobalMap? = null
 }

@@ -2,12 +2,13 @@ package ru.cryhards.brootkiddie
 
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
 import ru.cryhards.brootkiddie.items.Item
+import java.io.Serializable
 
 
 /**
  * Global reference to the player
  */
-class Player {
+class Player : Serializable {
     var name = "user0"
     var level = 1
     var money = 0.0f
@@ -17,7 +18,7 @@ class Player {
     /**
      * Collection of items owned by player
      */
-    class Inventory {
+    class Inventory : Serializable {
         /**
          * All things that Player has
          */

@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.Environment.consoleCounter
 import ru.cryhards.brootkiddie.items.effects.Converter.humanReadable
 import ru.cryhards.brootkiddie.screens.cameras.FloatingCameraControls
 import ru.cryhards.brootkiddie.ui.Cropper
@@ -50,7 +49,7 @@ class GlobalMapScreen : ScreenAdapter() {
         background.setPosition(bounds[0], bounds[1])
         background.setSize(bounds[2], bounds[3])
         mapStage.batch.shader = Assets.Shaders.WAVE
-        Environment.UI.globalMap = background
+        UI.globalMap = background
         mapStage.addActor(background)
 
         // camera controls
@@ -93,15 +92,15 @@ class GlobalMapScreen : ScreenAdapter() {
         console.setPosition(50f, Gdx.graphics.height - 50f, Align.topLeft)
         console.addListener(object : ClickListener(){
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (consoleCounter < 4) consoleCounter++
-                if (consoleCounter == 3){
+                if (Environment.instance.consoleCounter < 4) Environment.instance.consoleCounter++
+                if (Environment.instance.consoleCounter == 3){
                     showUI(0)
-                    Environment.UI.console?.log("Now it should be fine.")
+                    UI.console?.log("Now it should be fine.")
                 }
             }
         })
 
-        Environment.UI.console = console
+        UI.console = console
         uiStage.addActor(console)
         //showUI(1)
     }
@@ -123,9 +122,9 @@ class GlobalMapScreen : ScreenAdapter() {
     }
 
     fun updateUI() {
-        infected.setText(humanReadable(Environment.infectedNodes))
-        crypto.setText("$" + humanReadable(Environment.player.money.toFloat()))
-        if (Environment.consoleCounter == 5){
+        infected.setText(humanReadable(Environment.instance.infectedNodes))
+        crypto.setText("$" + humanReadable(Environment.instance.player.money.toFloat()))
+        if (Environment.instance.consoleCounter == 5){
             showUI(1)
         }
     }
@@ -148,4 +147,5 @@ class GlobalMapScreen : ScreenAdapter() {
             }
         }
     }
+
 }

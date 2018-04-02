@@ -111,11 +111,11 @@ class DialogsScreen : ScreenAdapter() {
         dialogsBySender.clear()
         sendersGroup.clear()
 
-        if (!Environment.player.senders.isEmpty()) {
+        if (!Environment.instance.player.senders.isEmpty()) {
 
             emptyDialogsLabel.remove()
 
-            for (d in Environment.player.dialogs) {
+            for (d in Environment.instance.player.dialogs) {
                 if (!dialogsBySender.contains(d.sender)) {
                     dialogsBySender[d.sender] = mutableListOf(d)
                 } else {
@@ -124,7 +124,7 @@ class DialogsScreen : ScreenAdapter() {
             }
 
             for (s in dialogsBySender.keys) {
-                val sender = Environment.player.senders[s]
+                val sender = Environment.instance.player.senders[s]
                 val image = ImageActor(sender!!)
                 image.setSize(50f, 50f)
 

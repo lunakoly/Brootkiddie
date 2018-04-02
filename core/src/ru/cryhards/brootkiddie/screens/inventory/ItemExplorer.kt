@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie.screens.inventory
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -62,7 +63,7 @@ class ItemExplorer : ScrollPane(Table()) {
         lastBlock = block
         name.setText(block.title)
         info.setText(block.info)
-        icon.drawable = Image(block.iconTexture).drawable
+        icon.drawable = Image(Texture(block.iconTexturePath)).drawable
 
         actions.clear()
 

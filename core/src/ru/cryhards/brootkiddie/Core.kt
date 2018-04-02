@@ -1,6 +1,7 @@
 package ru.cryhards.brootkiddie
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -13,7 +14,7 @@ import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.market.MarketScreen
-import java.io.Serializable
+import java.io.*
 import java.lang.System.currentTimeMillis
 
 
@@ -90,6 +91,10 @@ class Core : Game(), Serializable {
     private var prevScreen: Screen? = null
     private var mustDispose = false
 
+    fun newGame() {
+        val env = Environment()
+        openMap()
+    }
 
     /**
      * Initializes map screen and switches to it
@@ -97,13 +102,13 @@ class Core : Game(), Serializable {
     fun openMap() {
         globalMapScreen = GlobalMapScreen()
         prevScreen = globalMapScreen
-        Environment.initialize()
-        switchScreen(globalMapScreen)
+
         inventoryScreen = InventoryScreen()
         browserScreen = BrowserScreen()
         dialogsScreen = DialogsScreen()
         benchScreen = BenchScreen()
         marketScreen = MarketScreen()
+        switchScreen(globalMapScreen)
     }
 
     /**
@@ -222,7 +227,7 @@ class Core : Game(), Serializable {
     /**
      * Piece of code to be invoked later
      */
-    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Boolean) {
+    class Task(private var repeatCount: Int, var period: Long, private val task: () -> Boolean) : Serializable {
         /**
          * Saves time when the code got invoked the last time
          * or holds initial time
@@ -247,5 +252,35 @@ class Core : Game(), Serializable {
                 repeatCount--
         }
     }
+
+    fun saveGame() {
+        Gdx.app.log("Saving", savePath)
+        val f = File(savePath)
+        if (!f.exists()) f.createNewFile()
+
+        val oos = ObjectOutputStream(FileOutputStream(f))
+
+        val save = GameSave(Environment.instance, Core.instance.tasks)
+        oos.writeObject(save)
+        oos.flush()
+        oos.close()
+    }
+
+    fun loadGame() {
+        try {
+            val ois = ObjectInputStream(FileInputStream(savePath))
+            val save = ois.readObject() as GameSave
+            Environment.instance = save.env
+            Core.instance.tasks.clear()
+            Core.instance.tasks += save.tasks
+            ois.close()
+        } catch (e: IOException) {
+            Gdx.app.log("Loading", "No save was found")
+        }
+    }
+
+    var savePath : String = ""
+
+    data class GameSave(val env: Environment, val tasks: ArrayList<Task>) : Serializable {}
 
 }

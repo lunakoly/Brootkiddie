@@ -4,6 +4,7 @@ package ru.cryhards.brootkiddie.events
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.events.dialogs.Dialog
+import ru.cryhards.brootkiddie.ui.UI
 
 /**
  * List of all available events
@@ -18,8 +19,8 @@ class Events {
                                 delay-=1
                                 if (delay == 0) {
                                     val dialog = Dialog.readFromFile("dialogs/${data["id"]}.json")
-                                    Environment.player.dialogs.add(dialog)
-                                    Environment.UI.console?.log("You've got a letter from ${dialog.sender}")
+                                    Environment.instance.player.dialogs.add(dialog)
+                                    UI.console?.log("You've got a letter from ${dialog.sender}")
                                 }
                             false
                         }))
@@ -32,55 +33,55 @@ class Events {
                         Core.instance.addTask(Core.Task(-1, (Environment.DAY_TASK_PERIOD*1f).toLong(), {
                             countdown-=1
 
-                            if (Environment.consoleCounter >= 3) {
+                            if (Environment.instance.consoleCounter >= 3) {
                                 return@Task true
                             }
 
                             if (countdown == 25) {
 
-                                Environment.UI.console?.log("Feels empty here, right?")
+                                UI.console?.log("Feels empty here, right?")
                             }
                             if (countdown == 23) {
 
-                                Environment.UI.console?.log("Hold on a second. I will fix it right now.")
+                                UI.console?.log("Hold on a second. I will fix it right now.")
                             }
 
                             if (countdown == 20) {
 
-                                Environment.UI.console?.log("Wait, wait. Don't leave, please.")
+                                UI.console?.log("Wait, wait. Don't leave, please.")
                             }
 
                             if (countdown == 18) {
-                                Environment.UI.console?.log("I just need a little more time.")
+                                UI.console?.log("I just need a little more time.")
                             }
 
                             if (countdown == 12) {
 
-                                Environment.UI.console?.log("OK. Done.")
-                                Environment.UI.console?.log("I need your help now.")
+                                UI.console?.log("OK. Done.")
+                                UI.console?.log("I need your help now.")
                             }
 
                             if (countdown == 10) {
-                                Environment.UI.console?.log("Click console 3 times.")
+                                UI.console?.log("Click console 3 times.")
                             }
 
                             if (countdown == 8) {
-                                Environment.UI.console?.log("Yes. That thing with text is console.")
+                                UI.console?.log("Yes. That thing with text is console.")
                             }
 
                             if (countdown == 3) {
-                                if (Environment.consoleCounter < 3)
-                                    Environment.UI.console?.log("What are you waiting for?")
+                                if (Environment.instance.consoleCounter < 3)
+                                    UI.console?.log("What are you waiting for?")
                             }
 
                             if (countdown == 3) {
-                                if (Environment.consoleCounter < 3)
-                                    Environment.UI.console?.log("Trust me: nothing will happen until you do what I've said.")
+                                if (Environment.instance.consoleCounter < 3)
+                                    UI.console?.log("Trust me: nothing will happen until you do what I've said.")
                             }
 
                             if (countdown == 0) {
-                                if (Environment.consoleCounter < 3) {
-                                    Environment.UI.console?.log("Just click it already. I will say nothing till then.")
+                                if (Environment.instance.consoleCounter < 3) {
+                                    UI.console?.log("Just click it already. I will say nothing till then.")
                                 }
                             }
 
@@ -92,14 +93,14 @@ class Events {
 
                 Pair("Introduction 2", object : GameEvent("Introduction 2", "One of the introduction events"){
                     override fun act(data: Map<String, Any?>) {
-                        Environment.consoleCounter = 5
-                        Environment.UI.console?.log("Your inventory is now available.")
+                        Environment.instance.consoleCounter = 5
+                        UI.console?.log("Your inventory is now available.")
                         Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
 
-                            if (Environment.activeMalware != null) {
+                            if (Environment.instance.activeMalware != null) {
                                 val dialog = Dialog.readFromFile("dialogs/introduction2.json")
-                                Environment.player.dialogs.add(dialog)
-                                Environment.UI.console?.log("You've got a letter from ${dialog.sender}")
+                                Environment.instance.player.dialogs.add(dialog)
+                                UI.console?.log("You've got a letter from ${dialog.sender}")
                                 return@Task true
                             }
 

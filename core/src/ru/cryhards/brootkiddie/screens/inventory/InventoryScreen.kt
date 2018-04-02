@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align
 import ru.cryhards.brootkiddie.Assets
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.items.Script
+import ru.cryhards.brootkiddie.items.Scripts
 import ru.cryhards.brootkiddie.ui.UI
 
 /**
@@ -24,7 +24,7 @@ class InventoryScreen : ScreenAdapter() {
 
     private val background = Image(UI.colorToDrawable(Color(.07f, .07f, .07f, 1f)))
 
-    private val crypto = UI.GlitchLabel("  ${Environment.player.money}  ")
+    private val crypto = UI.GlitchLabel("  ${Environment.instance.player.money}  ")
     private val backButton = UI.GlitchImageButton("img/ui/back.png")
     private val openBrowserButton = UI.GlitchImageButton("img/ui/browser.png")
     private val bin = UI.GlitchImageButton("img/ui/bin.png")
@@ -71,7 +71,7 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Environment.player.inventory.items.firstOrNull() ?: UI.emptyItem())
+        explorer.explore(Environment.instance.player.inventory.items.firstOrNull() ?: Scripts.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)
@@ -84,10 +84,6 @@ class InventoryScreen : ScreenAdapter() {
         stage.addActor(pane)
 
         // test inventory
-        Environment.player.inventory.items.add(UI.emptyItem())
-        Environment.player.inventory.items.add(UI.loremItem())
-        Environment.player.inventory.items.add(UI.SpreaderV3000())
-        Environment.player.inventory.items.add(UI.spreadingMultiplier(Script.SIDES.LEFT))
     }
 
 
@@ -102,10 +98,10 @@ class InventoryScreen : ScreenAdapter() {
     }
 
     override fun show() {
-        blockSpace.fill(Environment.player.inventory.items)
+        blockSpace.fill(Environment.instance.player.inventory.items)
         explorer.reexplore()
         Gdx.input.inputProcessor = stage
-        crypto.setText("${Environment.player.money}")
+        crypto.setText("${Environment.instance.player.money}")
         super.show()
     }
 

@@ -69,7 +69,7 @@ object Callables {
                 get() = "payer"
 
             override fun act(data: Any?): Any? {
-                Environment.player.money += (data as Double).toFloat()
+                Environment.instance.player.money += (data as Double).toFloat()
                 return null
             }
         }
@@ -79,7 +79,7 @@ object Callables {
                 get() = "checkItem"
 
             override fun act(data: Any?): Any? {
-                return Environment.player.inventory.items.any { it.title == data as String }
+                return Environment.instance.player.inventory.items.any { it.title == data as String }
             }
         }
 

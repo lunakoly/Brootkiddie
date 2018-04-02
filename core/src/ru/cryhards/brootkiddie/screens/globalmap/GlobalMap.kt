@@ -6,14 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
-import ru.cryhards.brootkiddie.Environment.SUSPICIOUSNESS_DETECT
-import ru.cryhards.brootkiddie.Environment.TOTAL_NODES
-import ru.cryhards.brootkiddie.Environment.currentSuspiciousness
-import ru.cryhards.brootkiddie.Environment.infectedNodes
-import ru.cryhards.brootkiddie.Environment.isMalwareDetected
 import ru.cryhards.brootkiddie.items.effects.Converter.sigmoid
 import ru.cryhards.brootkiddie.ui.Cropper
 import ru.cryhards.brootkiddie.ui.ImageActor
+import ru.cryhards.brootkiddie.ui.UI
 import java.lang.Math.*
 import java.util.*
 
@@ -30,7 +26,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
 
     init {
         Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
-            nextDay()
+            UI.globalMap!!.nextDay()
             false
         }))
 
@@ -38,19 +34,19 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
     }
 
     private fun nextDay() {
-        Environment.activeMalware?.run {
+        Environment.instance.activeMalware?.run {
             Gdx.app.log("GlobalMapDay", "running day-logic")
-            currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)
-            if (currentSuspiciousness > 0.55f) {
-                isMalwareDetected = true
-                Environment.UI.console?.log("YOUR MALWARE IS DETECTED")
+            Environment.instance.currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)
+            if (Environment.instance.currentSuspiciousness > 0.55f) {
+                Environment.instance.isMalwareDetected = true
+                UI.console?.log("YOUR MALWARE IS DETECTED")
             }
 
-            infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)
+            Environment.instance.infectedNodes += deltaInfected(stats.spreadingSpeed, stats.infectiousness)
 
-            Environment.player.money += (pow(infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
+            Environment.instance.player.money += (pow(Environment.instance.infectedNodes.toDouble(), 0.9) * stats.miningSpeed).toFloat()
 
-            Gdx.app.log("DAY", "infected: $infectedNodes money: ${Environment.player.money} susp: $currentSuspiciousness")
+            Gdx.app.log("DAY", "infected: ${Environment.instance.infectedNodes} money: ${Environment.instance.player.money} susp: ${Environment.instance.currentSuspiciousness}")
         }
 
         val ptd = pointsToDraw()
@@ -63,17 +59,17 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
         Gdx.app.log("PTD", "drawing ${points.size} points on global map")
     }
 
-    private fun deltaSuspiciousness(suspiciousness: Float) = sqrt(sigmoid(infectedNodes.toFloat() / TOTAL_NODES + if (isMalwareDetected) 0.1f else 0f).toDouble()).toFloat() * suspiciousness * (1f / 8f)
+    private fun deltaSuspiciousness(suspiciousness: Float) = sqrt(sigmoid(Environment.instance.infectedNodes.toFloat() / Environment.instance.TOTAL_NODES + if (Environment.instance.isMalwareDetected) 0.1f else 0f).toDouble()).toFloat() * suspiciousness * (1f / 8f)
 
     private fun deltaInfected(spreadingSpeed: Float, infectiousness: Float): Long {
-        val aware = currentSuspiciousness / SUSPICIOUSNESS_DETECT
+        val aware = Environment.instance.currentSuspiciousness / Environment.instance.SUSPICIOUSNESS_DETECT
 
         val shouldBeInfected = min(
-                (TOTAL_NODES * exp(-pow(aware * 1.23, 9.0))).toLong(), // suspiciousness limit
-                ((infectedNodes + 5) * (1 + infectiousness)).toLong()
+                (Environment.instance.TOTAL_NODES * exp(-pow(aware * 1.23, 9.0))).toLong(), // suspiciousness limit
+                ((Environment.instance.infectedNodes + 5) * (1 + infectiousness)).toLong()
         )
 
-        var delta = (shouldBeInfected - infectedNodes)
+        var delta = (shouldBeInfected - Environment.instance.infectedNodes)
 
         if (delta > 0)
             delta = max(1L, (delta * spreadingSpeed).toLong())
@@ -82,7 +78,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
     }
 
     private fun pointsToDraw(): Int {
-        return (pow(infectedNodes / TOTAL_NODES.toDouble(), 0.37) * MAX_POINTS).toInt()
+        return (pow(Environment.instance.infectedNodes / Environment.instance.TOTAL_NODES.toDouble(), 0.37) * MAX_POINTS).toInt()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
