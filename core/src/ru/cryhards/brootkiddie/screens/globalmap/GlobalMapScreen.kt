@@ -93,7 +93,7 @@ class GlobalMapScreen : ScreenAdapter() {
         console.addListener(object : ClickListener(){
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (Environment.instance.consoleCounter < 4) Environment.instance.consoleCounter++
-                if (Environment.instance.consoleCounter == 3){
+                if (Environment.instance.consoleCounter == 3) {
                     showUI(0)
                     UI.console?.log("Now it should be fine.")
                 }
@@ -102,7 +102,6 @@ class GlobalMapScreen : ScreenAdapter() {
 
         UI.console = console
         uiStage.addActor(console)
-        //showUI(1)
     }
 
 
@@ -124,7 +123,8 @@ class GlobalMapScreen : ScreenAdapter() {
     fun updateUI() {
         infected.setText(humanReadable(Environment.instance.infectedNodes))
         crypto.setText("$" + humanReadable(Environment.instance.player.money.toFloat()))
-        if (Environment.instance.consoleCounter == 5){
+        if (Environment.instance.consoleCounter == 5) {
+            showUI(0)
             showUI(1)
         }
     }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import ru.cryhards.brootkiddie.Core
 import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.effects.Converter.sigmoid
 import ru.cryhards.brootkiddie.ui.Cropper
@@ -25,15 +24,10 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
     private val MAX_POINTS = 1000
 
     init {
-        Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
-            UI.globalMap!!.nextDay()
-            false
-        }))
-
         shapeBatch.color = Color.RED
     }
 
-    private fun nextDay() {
+    fun nextDay() {
         Environment.instance.activeMalware?.run {
             Gdx.app.log("GlobalMapDay", "running day-logic")
             Environment.instance.currentSuspiciousness += deltaSuspiciousness(stats.suspiciousness)
@@ -56,6 +50,7 @@ class GlobalMap : ImageActor("img/bg/map.jpg") {
         while (points.size < ptd) {
             points.add(randomXYInRegions())
         }
+        Environment.instance.day++
         Gdx.app.log("PTD", "drawing ${points.size} points on global map")
     }
 

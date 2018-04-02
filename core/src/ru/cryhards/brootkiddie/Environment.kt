@@ -59,13 +59,12 @@ class Environment : Serializable {
 
         player.dialogs.add(Dialog.readFromFile("dialogs/introduction1.json"))
         Environment.instance.player.inventory.items.add(Scripts.emptyItem())
-        Environment.instance.player.inventory.items.add(Scripts.loremItem())
-        Environment.instance.player.inventory.items.add(Scripts.spreaderV3000())
         Environment.instance.player.inventory.items.add(Scripts.spreadingMultiplier(1, Script.SIDES.LEFT))
 
         // run day updater
-        Core.instance.addTask(Core.Task(-1, DAY_TASK_PERIOD, {
-            UI.console?.log("Day ${++day}")
+        Core.instance.addTask(Core.Task(-1, Environment.DAY_TASK_PERIOD, {
+            UI.globalMap!!.nextDay()
+            UI.console?.log("Day ${Environment.instance.day}")
             false
         }))
     }

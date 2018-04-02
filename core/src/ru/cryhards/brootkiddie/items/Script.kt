@@ -192,7 +192,7 @@ class Script(title: String, info: String, iconTexturePath: String, var size: Int
         return super<Combinable>.clone()
     }
 
-    constructor(script: Script) : this(script.title, script.info, script.iconTexture, script.size) {
+    constructor(script: Script) : this(script.title, script.info, script.iconTexturePath, script.size, script.level) {
         effects.clear()
         @Suppress("UNCHECKED_CAST")
         effects += script.effects.clone() as Collection<Effect>

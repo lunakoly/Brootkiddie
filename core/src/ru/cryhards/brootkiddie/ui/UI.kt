@@ -10,11 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import ru.cryhards.brootkiddie.Assets
-import ru.cryhards.brootkiddie.items.Item
-import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.items.Script
-import ru.cryhards.brootkiddie.items.effects.MiningEffect
-import ru.cryhards.brootkiddie.items.effects.SpreadingEffect
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMap
 
 

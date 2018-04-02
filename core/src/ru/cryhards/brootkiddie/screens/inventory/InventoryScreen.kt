@@ -71,7 +71,8 @@ class InventoryScreen : ScreenAdapter() {
         explorer.setSize(stage.width / 3.5f, stage.height)
         explorer.setPosition(stage.width, stage.height, Align.topRight)
         stage.addActor(explorer)
-        explorer.explore(Environment.instance.player.inventory.items.firstOrNull() ?: Scripts.emptyItem())
+        explorer.explore(Environment.instance.player.inventory.items.firstOrNull()
+                ?: Scripts.emptyItem())
 
         // blockSpace
         val pane = ScrollPane(blockSpace)

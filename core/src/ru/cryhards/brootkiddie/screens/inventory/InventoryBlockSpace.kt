@@ -19,7 +19,6 @@ import ru.cryhards.brootkiddie.Environment
 import ru.cryhards.brootkiddie.items.Combinable
 import ru.cryhards.brootkiddie.items.Item
 import ru.cryhards.brootkiddie.items.Malware
-import ru.cryhards.brootkiddie.ui.ImageActor
 import ru.cryhards.brootkiddie.ui.ItemActor
 import kotlin.math.max
 import kotlin.math.truncate
@@ -114,8 +113,8 @@ class InventoryBlockSpace(val explorer: ItemExplorer, val bin : Actor) : Table()
         dragAndDrop.addTarget(object : DragAndDrop.Target(bin){
             override fun drop(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int) {
                 val item = (source!!.actor as ItemActor).item
-                Environment.player.inventory.items.remove(item)
-                fill(Environment.player.inventory.items)
+                Environment.instance.player.inventory.items.remove(item)
+                fill(Environment.instance.player.inventory.items)
             }
 
             override fun drag(source: DragAndDrop.Source?, payload: DragAndDrop.Payload?, x: Float, y: Float, pointer: Int): Boolean {
@@ -207,15 +206,15 @@ class InventoryBlockSpace(val explorer: ItemExplorer, val bin : Actor) : Table()
 
                         val res = (item.item).combine(sourceItem )
                         //Environment.player.inventory.items.remove(item.item)
-                        Environment.player.inventory.items.add(res)
+                        Environment.instance.player.inventory.items.add(res)
                         if (item.item is Malware) {
-                            Environment.player.inventory.items.remove(item.item)
+                            Environment.instance.player.inventory.items.remove(item.item)
                         }
                         else if (sourceItem is Malware) {
-                            Environment.player.inventory.items.remove(sourceItem)
+                            Environment.instance.player.inventory.items.remove(sourceItem)
                         }
                         //Environment.player.inventory.items.add(temp as Item)
-                        this@InventoryBlockSpace.fill(Environment.player.inventory.items)
+                        this@InventoryBlockSpace.fill(Environment.instance.player.inventory.items)
                         explorer.explore(res)
                     }
 
