@@ -59,8 +59,8 @@ class MainMenuScreen : ScreenAdapter() {
 
         loadButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Core.instance.loadGame()
-                Core.instance.openMap()
+                if (Core.instance.loadGame()) Core.instance.openMap()
+                else loadButton.setText("NO SAVE")
             }
         })
 

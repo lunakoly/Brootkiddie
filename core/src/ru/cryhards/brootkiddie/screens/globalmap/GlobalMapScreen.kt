@@ -102,6 +102,7 @@ class GlobalMapScreen : ScreenAdapter() {
 
         UI.console = console
         uiStage.addActor(console)
+        updateUI()
     }
 
 
@@ -123,8 +124,10 @@ class GlobalMapScreen : ScreenAdapter() {
     fun updateUI() {
         infected.setText(humanReadable(Environment.instance.infectedNodes))
         crypto.setText("$" + humanReadable(Environment.instance.player.money.toFloat()))
-        if (Environment.instance.consoleCounter == 5) {
+        if (Environment.instance.consoleCounter >= 4) {
             showUI(0)
+        }
+        if (Environment.instance.consoleCounter >= 5) {
             showUI(1)
         }
     }

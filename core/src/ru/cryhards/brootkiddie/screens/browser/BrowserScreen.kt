@@ -21,6 +21,7 @@ class BrowserScreen : ScreenAdapter() {
     private val pageGroup = VerticalGroup()
     private val dialogsButton : ShaderableButton = UI.StaticTextButton("dialogs")
     private val newsButton : ShaderableButton = UI.StaticTextButton("news")
+    private val clickerButton = UI.StaticTextButton("clicker")
     private val marketButton: ShaderableButton = UI.StaticTextButton("black market")
 
     init {
@@ -34,6 +35,7 @@ class BrowserScreen : ScreenAdapter() {
         pageGroup.addActor(dialogsButton)
         //pageGroup.addActor(newsButton)
         pageGroup.addActor(marketButton)
+        pageGroup.addActor(clickerButton)
         pageGroup.pack()
 
         pageGroup.setPosition(Gdx.graphics.width/2f, Gdx.graphics.height/2f, Align.center)
@@ -51,6 +53,12 @@ class BrowserScreen : ScreenAdapter() {
         marketButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Core.instance.toMarket()
+            }
+        })
+
+        clickerButton.addListener(object : ClickListener(){
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Core.instance.toClicker()
             }
         })
     }

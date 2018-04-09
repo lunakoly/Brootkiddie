@@ -11,6 +11,7 @@ import ru.cryhards.brootkiddie.screens.MainMenuScreen
 import ru.cryhards.brootkiddie.screens.SplashScreen
 import ru.cryhards.brootkiddie.screens.bench.BenchScreen
 import ru.cryhards.brootkiddie.screens.browser.BrowserScreen
+import ru.cryhards.brootkiddie.screens.clicker.ClickerScreen
 import ru.cryhards.brootkiddie.screens.globalmap.GlobalMapScreen
 import ru.cryhards.brootkiddie.screens.inventory.InventoryScreen
 import ru.cryhards.brootkiddie.screens.market.MarketScreen
@@ -87,6 +88,7 @@ class Core : Game(), Serializable {
     private lateinit var dialogsScreen: DialogsScreen
     private lateinit var benchScreen: BenchScreen
     private lateinit var marketScreen : MarketScreen
+    private lateinit var clickerScreen : ClickerScreen
 
     private var prevScreen: Screen? = null
     private var mustDispose = false
@@ -108,6 +110,8 @@ class Core : Game(), Serializable {
         dialogsScreen = DialogsScreen()
         benchScreen = BenchScreen()
         marketScreen = MarketScreen()
+        clickerScreen = ClickerScreen()
+
         switchScreen(globalMapScreen)
     }
 
@@ -164,6 +168,15 @@ class Core : Game(), Serializable {
         mustDispose = false
         prevScreen = getScreen()
         setScreen(browserScreen)
+    }
+
+    /**
+     * Shows clicker screen
+     */
+    fun toClicker(){
+        mustDispose = false
+        prevScreen = getScreen()
+        setScreen(clickerScreen)
     }
 
     /**
@@ -266,7 +279,7 @@ class Core : Game(), Serializable {
         oos.close()
     }
 
-    fun loadGame() {
+    fun loadGame() : Boolean{
         try {
             val ois = ObjectInputStream(FileInputStream(savePath))
             val save = ois.readObject() as GameSave
@@ -274,8 +287,10 @@ class Core : Game(), Serializable {
             Core.instance.tasks.clear()
             Core.instance.tasks += save.tasks
             ois.close()
+            return true
         } catch (e: IOException) {
             Gdx.app.log("Loading", "No save was found")
+            return false
         }
     }
 
